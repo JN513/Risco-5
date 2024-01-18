@@ -1,0 +1,21 @@
+<?xml version="1" encoding="UTF-8"?>
+<!DOCTYPE gowin-fpga-project>
+<Project>
+    <Template>FPGA</Template>
+    <Version>5</Version>
+    <Device name="GW2AR-18C" pn="GW2AR-LV18QN88PC8/I7">gw2ar18c-011</Device>
+    <FileList>
+        <File path="main.v" type="file.verilog" enable="1"/>
+        <File path="pinout.cst" type="file.cst" enable="1"/>
+        <File path="../../src/alu_control.v" type="file.verilog" enable="1"/>
+        <File path="../../src/alu.v" type="file.verilog" enable="1"/>
+        <File path="../../src/control_unit.v" type="file.verilog" enable="1"/>
+        <File path="../../src/core.v" type="file.verilog" enable="1"/>
+        <File path="../../src/data_memory.v" type="file.verilog" enable="1"/>
+        <File path="../../src/immediate_generator.v" type="file.verilog" enable="1"/>
+        <File path="../../src/instruction_memory.v" type="file.verilog" enable="1"/>
+        <File path="../../src/mux.v" type="file.verilog" enable="1"/>
+        <File path="../../src/pc.v" type="file.verilog" enable="1"/>
+        <File path="../../src/registers.v" type="file.verilog" enable="1"/>
+    </FileList>
+</Project>

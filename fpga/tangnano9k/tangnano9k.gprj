@@ -1,0 +1,21 @@
+<?xml version="1" encoding="UTF-8"?>
+<!DOCTYPE gowin-fpga-project>
+<Project>
+    <Template>FPGA</Template>
+    <Version>5</Version>
+    <Device name="GW1N-9C" pn="GW1N-LV9QN48C6/I5">gw1n9c-000</Device>
+    <FileList>
+        <File path="main.v" type="file.verilog" enable="1"/>
+        <File path="/home/julio/eda/projetos/processador_risc/src/alu.v" type="file.verilog" enable="1"/>
+        <File path="/home/julio/eda/projetos/processador_risc/src/alu_control.v" type="file.verilog" enable="1"/>
+        <File path="/home/julio/eda/projetos/processador_risc/src/control_unit.v" type="file.verilog" enable="1"/>
+        <File path="/home/julio/eda/projetos/processador_risc/src/core.v" type="file.verilog" enable="1"/>
+        <File path="/home/julio/eda/projetos/processador_risc/src/data_memory.v" type="file.verilog" enable="1"/>
+        <File path="/home/julio/eda/projetos/processador_risc/src/immediate_generator.v" type="file.verilog" enable="1"/>
+        <File path="/home/julio/eda/projetos/processador_risc/src/instruction_memory.v" type="file.verilog" enable="1"/>
+        <File path="/home/julio/eda/projetos/processador_risc/src/mux.v" type="file.verilog" enable="1"/>
+        <File path="/home/julio/eda/projetos/processador_risc/src/pc.v" type="file.verilog" enable="1"/>
+        <File path="/home/julio/eda/projetos/processador_risc/src/registers.v" type="file.verilog" enable="1"/>
+        <File path="pinout.cst" type="file.cst" enable="1"/>
+    </FileList>
+</Project>
