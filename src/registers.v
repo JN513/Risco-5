@@ -7,8 +7,7 @@ module Registers (
     input wire [4:0] writeRegister,
     input wire [31:0] writeData,
     output reg [31:0] readData1,
-    output reg [31:0] readData2,
-    output wire [7:0]leds
+    output reg [31:0] readData2
 );
 
 reg [31:0] register0;
@@ -227,7 +226,5 @@ always @(posedge clk) begin
         endcase
     end
 end
-
-assign leds = ~register15[7:0];
 
 endmodule
