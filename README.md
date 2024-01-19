@@ -1,4 +1,4 @@
-# Pequeno RISCO 5
+# RISCO 5
 
 Processador [RISC-V](https://riscv.org/) de multi ciclo com implementação RV32I construído em alguns dias de folga.
 
@@ -29,6 +29,10 @@ Em caso de dúvida ou sugestão fique a vontade para utilizar a seção [ISSUES]
 ### S
 
 ### SB
+
+### U
+
+### UJ
 
 ## Licença
 
