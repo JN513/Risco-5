@@ -1,4 +1,5 @@
 module Data_Memory #(
+    parameter MEMORY_FILE = "",
     parameter MEMORY_SIZE = 4096
 )(
     input wire clk,
@@ -20,6 +21,10 @@ assign read_data = (memory_read == 1'b1) ? ram[address] : 32'h00000000;
 initial begin
     for (i = 0; i < (MEMORY_SIZE/4)-1; i = i + 1) begin
        ram[i] = 32'h00000000; 
+    end
+
+    if(MEMORY_FILE != "") begin
+        $readmemh(MEMORY_FILE, memory, 0, MEMORY_SIZE);
     end
 end
 
