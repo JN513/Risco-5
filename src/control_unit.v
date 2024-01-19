@@ -1,11 +1,16 @@
 module Control_Unit (
     input wire [6:0]instrution_opcode,
-    output reg branch,
+    output reg pc_write_cond,
+    output reg pc_write,
+    output reg lorD,
     output reg memory_read,
-    output reg memory_to_reg,
-    output reg [1:0] aluop,
     output reg memory_write,
-    output reg alu_src,
+    output reg memory_to_reg,
+    output reg ir_write,
+    output reg pc_source,
+    output reg [1:0] aluop,
+    output reg [1:0]alu_src_b,
+    output reg alu_src_a,
     output reg reg_write
 );
 

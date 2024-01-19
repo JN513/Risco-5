@@ -1,116 +1,138 @@
 module Core #(
     parameter CLOCK_FREQ=25000000,
     parameter BOOT_ADDRESS=32'h00000000,
-    parameter INSTRUCTION_MEMORY_SIZE=1024,
-    parameter DATA_MEMORY_SIZE=4096,
-    parameter MEMORY_FILE=""
+    parameter DATA_MEMORY_SIZE=4096
 ) (
+    // Control signal
     input wire clk,
     input wire reset,
-    output wire [7:0]leds
+
+    // Memory BUS
+    input wire memory_read,
+    input wire memory_write,
+    input wire [31:0] read_data,
+    output wire [31:0] address,
+    output wire [31:0] write_data
 );
 
-wire alu_zero, memory_to_reg, memory_read, memory_write, pc_option,
-    branch, alu_src, reg_write;
-wire [1:0] aluop;
-wire [3:0] alu_operation;
-wire [31:0] read_data_1, read_data_2, instruction, immediate, 
-    instruction_address, data_address, memory_data, reg_write_data,
-    ALU_in_Y, PC_immediate_inclement; // data_address is alu output
+wire lorD, IRWrite, register_data_1_out, register_data_2_out
+    zero, aluop, reg_write, alu_src_a, pc_load, and_zero_out;
+wire [1:0] alu_src_b, aluop;
+wire [31:0] pc_output, pc_input, register_input,
+    alu_input_a, alu_input_b, alu_out, immediate;
+reg [31:0] instruction_register, memory_register, alu_out_register,
+    register_data_1, register_data_2;
 
-wire pc_inclement, pc_load;
+initial begin
+    instruction_register = 0;
+    memory_register = 0;
+    alu_out = 0;
+end
 
-assign PC_immediate_inclement = instruction_address + (immediate >> 1);
-assign pc_inclement = (pc_option == 1'b0) ? 1'b1 : 1'b0;
-assign pc_load = ~pc_inclement;
-
-and(pc_option, alu_zero, branch);
-
-MUX Reg_write_mux(
-    .A(data_address),
-    .B(memory_data),
-    .S(reg_write_data),
-    .option(memory_to_reg)
-);
-
-MUX Alu_src_mux(
-    .A(read_data_2),
-    .B(immediate),
-    .S(ALU_in_Y),
-    .option(alu_src)
-);
-
-PC PC(
+PC Pc(
     .clk(clk),
     .reset(reset),
-    .Input(PC_immediate_inclement),
-    .Output(instruction_address),
-    .inclement(pc_inclement),
-    .load(pc_load)
+    .load(pc_load),
+    .Input(pc_input),
+    .Output(pc_output)
 );
 
-ALU Alu(
-    .operation(alu_operation),
-    .ALU_in_X(read_data_1),
-    .ALU_in_Y(ALU_in_Y),
-    .ALU_out_S(data_address),
-    .ZR(alu_zero)
+MUX MemoryAddressMUX(
+    .option({1'b0, lorD}),
+    .A(pc_output),
+    .B(alu_out_register),
+    .S(address),
 );
 
-ALU_Control Alu_Control(
-    .aluop_in(aluop),
-    .func7(instruction[31:25]),
-    .func3(instruction[14:12]),
-    .instruction_opcode(instruction[6:0]),
-    .aluop_out(alu_operation)
+MUX MemoryDataMUX(
+    .option({1'b0, memory_to_reg}),
+    .A(alu_out_register),
+    .B(memory_register),
+    .S(register_input),
 );
 
-Control_Unit Control_unit(
-    .instrution_opcode(instruction[6:0]),
-    .branch(branch),
+MUX AluInputAMUX(
+    .option({1'b0, alu_src_a}),
+    .A(pc_output),
+    .B(register_data_1),
+    .S(alu_input_a),
+);
+
+MUX AluInputBMUX(
+    .option(alu_src_b),
+    .A(register_data_2),
+    .B(32'h1),
+    .C(immediate),
+    .S(alu_input_b),
+);
+
+MUX PCSourceMUX(
+    .option({1'b0, pc_source}),
+    .A(alu_out),
+    .B(alu_out_register),
+    .S(pc_input)
+);
+
+Registers RegisterBank(
+    .clk(clk),
+    .reset(reset),
+    .regWrite(reg_write),
+    .readRegister1(instruction_register[19:15]),
+    .readRegister2(instruction_register[24:20]),
+    .writeRegister(instruction_register[11:7]),
+    .writeData(register_input),
+    .readData1(register_data_1_out),
+    .readData2(register_data_2_out)
+);
+
+and(and_zero_out, zero, pc_write_cond);
+or(pc_load, pc_write, and_zero_out);
+
+Control_Unit Control_Unit(
+    .instrution_opcode(instruction_register[6:0]),
+    .pc_write_cond(),
+    .pc_write(),
+    .lorD(lorD),
     .memory_read(memory_read),
-    .memory_to_reg(memory_to_reg),
-    .aluop(aluop),
     .memory_write(memory_write),
-    .alu_src(alu_src),
+    .memory_to_reg(memory_to_reg),
+    .ir_write(IRWrite),
+    .pc_source(pc_source),
+    .aluop(aluop),
+    .alu_src_b(alu_src_b),
+    .alu_src_a(alu_src_a),
     .reg_write(reg_write)
 );
 
-Instruction_Memory #(
-    .MEMORY_SIZE(INSTRUCTION_MEMORY_SIZE),
-    .MEMORY_FILE(MEMORY_FILE)
-) Instruction_memory(
-    .reset(reset),
-    .instruction_out(instruction),
-    .read_address(instruction_address)
+ALU_Control ALU_Control(
+    .aluop_in(aluop),
+    .func7(instruction_register[31:25]),
+    .func3(instruction_register[14:12]),
+    .instruction_opcode(instruction_register[6:0]),
+    .aluop_out(aluop)
 );
 
-Data_Memory Data_memory(
-    .clk(clk),
-    .reset(reset),
-    .memory_read(memory_read),
-    .memory_write(memory_write),
-    .address(data_address),
-    .write_data(read_data_2),
-    .read_data(memory_data)
+ALU Alu(
+    .operation(aluop),
+    .ALU_in_X(alu_input_a),
+    .ALU_in_Y(alu_input_b),
+    .ALU_out_S(alu_out),
+    .ZR(zero)
 );
 
-Immediate_Generator Immediate_generator(
-    .instruction(instruction),
+Immediate_Generator Immediate_Generator(
+    .instruction(instruction_register),
     .immediate(immediate)
 );
 
-Registers registers(
-    .readRegister1(instruction[19:15]),
-    .readRegister2(instruction[24:20]),
-    .writeRegister(instruction[11:7]),
-    .regWrite(reg_write),
-    .clk(clk),
-    .reset(reset),
-    .readData1(read_data_1),
-    .readData2(read_data_2),
-    .writeData(reg_write_data),
-    .leds(leds)
-);
+always @(posedge clk ) begin
+    if(IRWrite == 1'b1)begin
+        instruction_register <= read_data;
+    end
+    memory_register <= read_data;
+    register_data_1 <= register_data_1_out;
+    register_data_2 <= register_data_2_out;
+    alu_out_register <= alu_out;
+end
     
 endmodule
