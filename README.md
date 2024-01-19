@@ -6,7 +6,7 @@ Processador [RISC-V](https://riscv.org/) de multi ciclo com implementação RV32
 
 O processador foi implementado utilizando Verilog HDL, e tendo como base a implementação de ciclo único disponível no livro [Computer Organization and Design RISC-V Edition: The Hardware Software Interface (The Morgan Kaufmann Series in Computer Architecture and Design) - 2º Edition](https://www.amazon.com/Computer-Organization-Design-RISC-V-Architecture/dp/0128203315)
 
-![Esquematico do processador](docs/imgs/esquematico.png)
+![Esquemático do processador](docs/imgs/esquematico.png)
 
 ## Software
 
