@@ -152,8 +152,6 @@ always @(*) begin
     endcase
 end
 
-
-
 always @(posedge clk) begin
     if(reset == 1'b1) begin
         register0  <= 32'd0;

@@ -4,7 +4,7 @@ module MUX (
     input wire [31:0] B,
     input wire [31:0] C,
     input wire [31:0] D,
-    output wire [31:0] S
+    output reg [31:0] S
 );
 
 always @(*) begin

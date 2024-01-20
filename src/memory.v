@@ -1,4 +1,4 @@
-module Data_Memory #(
+module Memory #(
     parameter MEMORY_FILE = "",
     parameter MEMORY_SIZE = 4096
 )(
@@ -11,30 +11,30 @@ module Data_Memory #(
     output wire [31:0] read_data
 );
 
-reg [31:0] ram [(MEMORY_SIZE/4)-1: 0];
+reg [31:0] memory [(MEMORY_SIZE/4)-1: 0];
 integer i;
 
 wire [31:0] normalized_address;
 
-assign read_data = (memory_read == 1'b1) ? ram[address] : 32'h00000000;
+assign read_data = (memory_read == 1'b1) ? memory[address] : 32'h00000000;
 
 initial begin
     for (i = 0; i < (MEMORY_SIZE/4)-1; i = i + 1) begin
-       ram[i] = 32'h00000000; 
+       memory[i] = 32'h00000000; 
     end
 
     if(MEMORY_FILE != "") begin
-        $readmemh(MEMORY_FILE, memory, 0, MEMORY_SIZE);
+        $readmemh(MEMORY_FILE, memory, 0, (MEMORY_SIZE/4) - 1);
     end
 end
 
 always @(posedge clk) begin
-    if(reset == 1'b1) begin 
+    /*if(reset == 1'b1) begin 
         for (i = 0; i < (MEMORY_SIZE/4)-1; i = i +1) begin
-        ram[i] <= 32'h00000000;
+        memory[i] <= 32'h00000000;
     end
-    end else if(memory_write == 1'b1) begin
-        ram[address] <= write_data;
+    end else*/ if(memory_write == 1'b1) begin
+        memory[address] <= write_data;
     end
 end
     
