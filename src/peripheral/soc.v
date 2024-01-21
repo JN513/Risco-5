@@ -1,16 +1,19 @@
-module top (
+module SOC #(
+    parameter CLOCK_FREQ = 25000000,
+    parameter BOOT_ADDRESS = 32'h00000000,
+    parameter MEMORY_SIZE = 4096,
+    parameter MEMORY_FILE = "";
+)(
     input wire clk,
-    input wire reset,
-    input wire rx,
-    output wire tx,
-    output wire [7:0]led
+    input wire reset
 );
 
-reg reset_bousing;
 wire memory_read, memory_write;
 wire [31:0] address, write_data, read_data;
 
-Core Core(
+Core #(
+    .BOOT_ADDRESS(BOOT_ADDRESS)
+) Core(
     .clk(clk),
     .reset(reset_bousing),
     .memory_read(memory_read),
@@ -21,7 +24,8 @@ Core Core(
 );
 
 Memory #(
-    .MEMORY_FILE("../../software/memory/addi.hex")
+    .MEMORY_SIZE(MEMORY_SIZE),
+    .MEMORY_FILE(MEMORY_FILE)
 ) Memory(
     .clk(clk),
     .reset(reset),
@@ -31,9 +35,5 @@ Memory #(
     .read_data(read_data),
     .address(address)
 );
-
-always @(posedge clk ) begin
-    reset_bousing <= reset;
-end
 
 endmodule

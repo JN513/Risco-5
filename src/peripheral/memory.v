@@ -29,11 +29,7 @@ initial begin
 end
 
 always @(posedge clk) begin
-    /*if(reset == 1'b1) begin 
-        for (i = 0; i < (MEMORY_SIZE/4)-1; i = i +1) begin
-        memory[i] <= 32'h00000000;
-    end
-    end else*/ if(memory_write == 1'b1) begin
+    if(memory_write == 1'b1) begin
         memory[address] <= write_data;
     end
 end

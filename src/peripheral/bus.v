@@ -1,4 +1,4 @@
-module bus #(
+module BUS #(
     parameter DEVICE0_START_ADDRESS = 32'h00000000,
     parameter DEVICE0_FINAL_ADDRESS = 32'h7fffffff,
     parameter DEVICE1_START_ADDRESS = 32'h80000000,
@@ -40,7 +40,7 @@ module bus #(
 );
 
 localparam DEVICE0 = 2'd0;
-localparam DEVICE2 = 2'd1;
+localparam DEVICE1 = 2'd1;
 localparam DEVICE2 = 2'd2;
 localparam RESET = 2'd3;
 
@@ -48,23 +48,23 @@ wire device_0_is_valid;
 wire device_1_is_valid;
 wire device_2_is_valid;
 
-reg [1:0] selected_device;]
+reg [1:0] selected_device;
 
 initial begin
-    selected_device 2'b00;
+    selected_device = 2'b00;
 end
 
 assign device_0_is_valid = 
-    $unsigned(address) >= DEVICE0_START_ADDRESS && 
-    $unsigned(address) >= DEVICE0_FINAL_ADDRESS;
+    $unsigned(address) >= $unsigned(DEVICE0_START_ADDRESS) && 
+    $unsigned(address) >= $unsigned(DEVICE0_FINAL_ADDRESS);
 
 assign device_1_is_valid = 
-    $unsigned(address) >= DEVICE1_START_ADDRESS && 
-    $unsigned(address) >= DEVICE1_FINAL_ADDRESS;
+    $unsigned(address) >= $unsigned(DEVICE1_START_ADDRESS) && 
+    $unsigned(address) >= $unsigned(DEVICE1_FINAL_ADDRESS);
 
 assign device_2_is_valid = 
-    $unsigned(address) >= DEVICE2_START_ADDRESS && 
-    $unsigned(address) >= DEVICE2_FINAL_ADDRESS;
+    $unsigned(address) >= $unsigned(DEVICE2_START_ADDRESS) && 
+    $unsigned(address) >= $unsigned(DEVICE2_FINAL_ADDRESS);
 
 always @(posedge clk ) begin
     if(device_0_is_valid == 1'b1) begin

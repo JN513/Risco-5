@@ -1,7 +1,5 @@
 module Core #(
-    parameter CLOCK_FREQ=25000000,
-    parameter BOOT_ADDRESS=32'h00000000,
-    parameter DATA_MEMORY_SIZE=4096
+    parameter BOOT_ADDRESS=32'h00000000
 ) (
     // Control signal
     input wire clk,

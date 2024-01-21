@@ -17,7 +17,7 @@ Core Core(
 );
 
 Memory #(
-    .MEMORY_FILE("software/memory/srai.hex")
+    .MEMORY_FILE("software/memory/addi.hex")
 ) Memory(
     .clk(clk),
     .reset(reset),
@@ -33,13 +33,9 @@ initial begin
     $dumpvars;
 
     clk = 0;
-
     reset = 1;
-
     #6
-
     reset = 0;
-
     #120
 
     $finish;
