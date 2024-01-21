@@ -25,6 +25,8 @@ wire [31:0] pc_output, pc_input, register_input,
 reg [31:0] instruction_register, memory_register, alu_out_register,
     register_data_1, register_data_2;
 
+assign write_data = register_data_2_out;
+
 initial begin
     instruction_register = 32'h00000000;
     memory_register = 32'h00000000;
