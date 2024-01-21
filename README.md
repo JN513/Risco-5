@@ -16,23 +16,17 @@ O diretório software possui alguns exemplos e testes escritos em Assembly e os 
 
 O diretório tests possui alguns testes construídos utilizando o [Iverilog](https://steveicarus.github.io/iverilog/), todos os testes lá disponíveis são compatíveis com o mesmo.
 
+## Familia Risco 5:
+
+- Baby Risco 5 - RV16I: Ainda especulativo
+- Pequeno Risco 5 - RV32I: [https://github.com/JN513/Pequeno-Risco-5/](https://github.com/JN513/Pequeno-Risco-5/)
+- Risco 5 - RV32I: [https://github.com/JN513/Risco-5](https://github.com/JN513/Risco-5)
+- Grande Risco 5 - RV32I: Ainda especulativo
+- Risco 5 bodybuilder - RV64I: Ainda especulativo
+
 ## Dúvidas e sugestões
 
 Em caso de dúvida ou sugestão fique a vontade para utilizar a seção [ISSUES](https://github.com/JN513/Risco-5/issues) do github. Caso se sinta à vontade e queira contribuir com algo qualquer Pull request e bem vindo, todos os [Pull requests](https://github.com/JN513/Risco-5/pulls) serão revisados e se possível mergeados.
-
-## Instruções suportadas
-
-### R
-
-### I
-
-### S
-
-### SB
-
-### U
-
-### UJ
 
 ## Licença
 
