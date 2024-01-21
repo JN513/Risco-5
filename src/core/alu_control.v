@@ -25,9 +25,9 @@ always @(*) begin
                 aluop_out_reg = 4'b1010;
             3'b101: begin
                 if(func7 == 7'b0000000) begin // srli
-                    aluop_out_reg = 4'b0010;
+                    aluop_out_reg = 4'b1001;
                 end else begin // srai
-                    aluop_out_reg = 4'b0010;
+                    aluop_out_reg = 4'b1001;
                 end
             end
             3'b110: // ori
