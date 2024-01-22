@@ -6,3 +6,5 @@ _start:
 
     srai a3, a1, 1
     srai a4, a2, 1
+
+    addi a5, x0, 5 
