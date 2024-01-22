@@ -17,7 +17,7 @@ Core Core(
 );
 
 Memory #(
-    .MEMORY_FILE("software/memory/blt.hex")
+    .MEMORY_FILE("software/memory/addi.hex")
 ) Memory(
     .clk(clk),
     .reset(reset),
