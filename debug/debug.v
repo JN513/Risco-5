@@ -1,7 +1,7 @@
 module Debug #(
     parameter INITIAL_ADDRESS = 32'h0000FFFF,
     parameter COUNTER_BITS = 32,
-    parameter BUS_WIDHT = 32;
+    parameter BUS_WIDHT = 32
 )(
     input wire clk,
     input wire reset,
@@ -24,7 +24,7 @@ initial begin
     option = 1'b0;
     out_enable = 1'b0;
     pulse = 1'b0;
-    divider = COUNTER_BITS'h0;
+    divider = 32'h0;
 end
 
 ClkDivider #(

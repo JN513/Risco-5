@@ -18,7 +18,6 @@ assign clk_o = (out_enable == 1'b1) ? (option == 1'b0) ?
 
 initial begin
     clk_counter = 0;
-    clk_o = 0;
     clk_o_pulse = 0;
     clk_o_auto = 0;
 end
@@ -26,8 +25,6 @@ end
 always @(posedge clk ) begin
     if(reset == 1'b1) begin
         clk_counter <= 0;
-        clk_o <= 0;
-        clk_o_pulse <= 0;
         clk_o_auto <= 0;
     end else begin
         if(clk_counter == 0) begin
@@ -40,7 +37,7 @@ always @(posedge clk ) begin
             clk_counter <= clk_counter + 1;
         end
 
-        if(clk_counter == CLK_DIV - 1) begin
+        if(clk_counter == divider - 1) begin
             clk_counter <= 0;
         end
     end
