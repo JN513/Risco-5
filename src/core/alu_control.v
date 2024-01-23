@@ -47,10 +47,14 @@ always @(*) begin
             5'b01_001: // bne
                 aluop_out_reg = 4'b1110;
             default: 
-                aluop_out_reg = 4'b0110; // 
+                aluop_out_reg = 4'b0010; // 
         endcase
+    end else if(instruction_opcode == 7'b0010111 || instruction_opcode == 7'b0110111) begin // AUIPC or LUI
+        aluop_out_reg = 4'b0010;
     end else begin
         case ({aluop_in, func7, func3})
+            12'b00_xxxxxxx_xxx:
+                aluop_out_reg = 4'b0010; // sum
             12'b00_0000000_000:  
                 aluop_out_reg = 4'b0010; // sum
             12'b01_0000000_000:  

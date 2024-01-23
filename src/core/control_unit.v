@@ -110,6 +110,18 @@ always @(*) begin
                     aluop = 2'b10;
                 end
 
+                7'b0010011: begin // AUIPC instruction 
+                    alu_src_a = 1'b0;
+                    alu_src_b = 2'b10;
+                    aluop = 2'b10;
+                end
+
+                7'b0010011: begin // LUI instruction 
+                    alu_src_a = 1'b1;
+                    alu_src_b = 2'b10;
+                    aluop = 2'b10;
+                end
+
                 7'b0000011, 7'b0100011: begin // lw, sw
                     alu_src_a = 1'b1;
                     alu_src_b = 2'b10;
