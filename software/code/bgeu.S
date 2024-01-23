@@ -4,7 +4,7 @@ _start:
     addi x1, x0, 1
     addi x2, x0, 2
 
-    bge x1, x2, desvio
+    bgeu x1, x2, desvio
 
     addi x3, x0, 10
 

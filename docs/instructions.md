@@ -38,3 +38,8 @@
 - bge
 - bgeu
 - bne
+
+# U
+
+- auipc (não prontas)
+- lui (não prontas)
