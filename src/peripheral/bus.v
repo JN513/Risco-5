@@ -1,15 +1,11 @@
 module BUS #(
     parameter DEVICE0_START_ADDRESS = 32'h00000000,
-    parameter DEVICE0_FINAL_ADDRESS = 32'h7fffffff,
-    parameter DEVICE1_START_ADDRESS = 32'h80000000,
-    parameter DEVICE1_FINAL_ADDRESS = 32'hffffffff,
-    parameter DEVICE2_START_ADDRESS = 32'h80000000,
-    parameter DEVICE2_FINAL_ADDRESS = 32'hffffffff
+    parameter DEVICE0_FINAL_ADDRESS = 32'h00000FFF,
+    parameter DEVICE1_START_ADDRESS = 32'h00001000,
+    parameter DEVICE1_FINAL_ADDRESS = 32'h00001002,
+    parameter DEVICE2_START_ADDRESS = 32'h00001003,
+    parameter DEVICE2_FINAL_ADDRESS = 32'h000013BA
 )(
-    // signals
-    input wire clk,
-    input wire reset,
-
     // master connection
     input wire read,
     input wire write,
@@ -44,67 +40,36 @@ localparam DEVICE1 = 2'd1;
 localparam DEVICE2 = 2'd2;
 localparam RESET = 2'd3;
 
-wire device_0_is_valid;
-wire device_1_is_valid;
-wire device_2_is_valid;
+assign slave_0_read = (address >= DEVICE0_START_ADDRESS && 
+    address <= DEVICE0_FINAL_ADDRESS) ? read : 1'b0;
+assign slave_1_read = (address >= DEVICE1_START_ADDRESS && 
+    address <= DEVICE1_FINAL_ADDRESS) ? read : 1'b0;
+assign slave_2_read = (address >= DEVICE2_START_ADDRESS && 
+    address <= DEVICE2_FINAL_ADDRESS) ? read : 1'b0;
 
-reg [1:0] selected_device;
+assign slave_0_write = (address >= DEVICE0_START_ADDRESS && 
+    address <= DEVICE0_FINAL_ADDRESS) ? write : 1'b0;
+assign slave_1_write = (address >= DEVICE1_START_ADDRESS && 
+    address <= DEVICE1_FINAL_ADDRESS) ? write : 1'b0;
+assign slave_2_write = (address >= DEVICE2_START_ADDRESS && 
+    address <= DEVICE2_FINAL_ADDRESS) ? write : 1'b0;
 
-initial begin
-    selected_device = 2'b00;
-end
+assign slave_0_write_data = (address >= DEVICE0_START_ADDRESS && 
+    address <= DEVICE0_FINAL_ADDRESS) ? write_data : 32'h00000000;
+assign slave_1_write_data = (address >= DEVICE1_START_ADDRESS && 
+    address <= DEVICE1_FINAL_ADDRESS) ? write_data : 32'h00000000;
+assign slave_2_write_data = (address >= DEVICE2_START_ADDRESS && 
+    address <= DEVICE2_FINAL_ADDRESS) ? write_data : 32'h00000000;
 
-assign device_0_is_valid = 
-    $unsigned(address) >= $unsigned(DEVICE0_START_ADDRESS) && 
-    $unsigned(address) >= $unsigned(DEVICE0_FINAL_ADDRESS);
-
-assign device_1_is_valid = 
-    $unsigned(address) >= $unsigned(DEVICE1_START_ADDRESS) && 
-    $unsigned(address) >= $unsigned(DEVICE1_FINAL_ADDRESS);
-
-assign device_2_is_valid = 
-    $unsigned(address) >= $unsigned(DEVICE2_START_ADDRESS) && 
-    $unsigned(address) >= $unsigned(DEVICE2_FINAL_ADDRESS);
-
-always @(posedge clk ) begin
-    if(device_0_is_valid == 1'b1) begin
-        selected_device <= DEVICE0;
-    end else if(device_1_is_valid == 1'b1) begin
-        selected_device <= DEVICE1;
-    end else if(device_2_is_valid == 1'b1) begin
-        selected_device <= DEVICE2;
-    end else begin
-        selected_device <= RESET;
-    end
-end
-
-always @(*) begin
-    case (selected_device)
-        RESET: begin
-            read_data = 32'h00000000;
-        end 
-        DEVICE0: begin
-            slave_0_read = read;
-            slave_0_write = write;
-            read_data = slave_0_read_data;
-            slave_0_address = address;
-            slave_0_write_data = write_data;
-        end
-        DEVICE1: begin
-            slave_1_read = read;
-            slave_1_write = write;
-            read_data = slave_1_read_data;
-            slave_1_address = address;
-            slave_1_write_data = write_data;
-        end
-        DEVICE2: begin
-            slave_2_read = read;
-            slave_2_write = write;
-            read_data = slave_2_read_data;
-            slave_2_address = address;
-            slave_2_write_data = write_data;
-        end
-    endcase
-end
+assign slave_0_address = (address >= DEVICE0_START_ADDRESS && 
+    address <= DEVICE0_FINAL_ADDRESS) ? address : 32'h00000000;
+assign slave_1_address = (address >= DEVICE1_START_ADDRESS && 
+    address <= DEVICE1_FINAL_ADDRESS) ? address : 32'h00000000;
+assign slave_2_address = (address >= DEVICE2_START_ADDRESS && 
+    address <= DEVICE2_FINAL_ADDRESS) ? address : 32'h00000000;
     
+assign read_data = (address >= DEVICE0_START_ADDRESS && 
+    address <= DEVICE0_FINAL_ADDRESS) ? slave_0_read_data : (address >= DEVICE1_START_ADDRESS && 
+    address <= DEVICE1_FINAL_ADDRESS) ? slave_1_read_data : slave_2_read_data;
+
 endmodule

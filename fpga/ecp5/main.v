@@ -7,33 +7,29 @@ module top (
 );
 
 reg reset_bousing;
-wire memory_read, memory_write;
-wire [31:0] address, write_data, read_data;
 
-Core Core(
-    .clk(clk),
-    .reset(reset_bousing),
-    .memory_read(memory_read),
-    .memory_write(memory_write),
-    .write_data(write_data),
-    .read_data(read_data),
-    .address(address)
-);
-
-Memory #(
-    .MEMORY_FILE("../../software/memory/addi.hex")
-) Memory(
+Risco_5_SOC #(
+    .MEMORY_SIZE(4096),
+    .MEMORY_FILE("../../software/memory/teste_led.hex"),
+) SOC(
     .clk(clk),
     .reset(reset),
-    .memory_read(memory_read),
-    .memory_write(memory_write),
-    .write_data(write_data),
-    .read_data(read_data),
-    .address(address)
+    .leds(led)
 );
 
+reg [8:0]counter;
+
+initial begin
+    reset_bousing = 1'b1;
+    counter = 8'h00;
+end
+
 always @(posedge clk ) begin
-    reset_bousing <= reset;
+    if(counter < 8'd255) begin
+        counter <= counter + 1'b1;
+    end else begin
+        reset_bousing <= 1'b0;
+    end
 end
 
 endmodule
