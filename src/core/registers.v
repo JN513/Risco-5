@@ -155,40 +155,8 @@ end
 always @(posedge clk) begin
     if(reset == 1'b1) begin
         register0  <= 32'd0;
-        register1  <= 32'd0;
-        register2  <= 32'd0;
-        register3  <= 32'd0;
-        register4  <= 32'd0;
-        register5  <= 32'd0;
-        register6  <= 32'd0;
-        register7  <= 32'd0;
-        register8  <= 32'd0;
-        register9  <= 32'd0;
-        register10 <= 32'd0;
-        register11 <= 32'd0;
-        register12 <= 32'd0;
-        register13 <= 32'd0;
-        register14 <= 32'd0;
-        register15 <= 32'd0;
-        register16 <= 32'd0;
-        register17 <= 32'd0;
-        register18 <= 32'd0;
-        register19 <= 32'd0;
-        register20 <= 32'd0;
-        register21 <= 32'd0;
-        register22 <= 32'd0;
-        register23 <= 32'd0;
-        register24 <= 32'd0;
-        register25 <= 32'd0;
-        register26 <= 32'd0;
-        register27 <= 32'd0;
-        register28 <= 32'd0;
-        register29 <= 32'd0;
-        register30 <= 32'd0;
-        register31 <= 32'd0;
     end else if (regWrite == 1'b1) begin
         case (writeRegister)
-            5'b00000: register0  <= writeData;
             5'b00001: register1  <= writeData;
             5'b00010: register2  <= writeData;
             5'b00011: register3  <= writeData;
