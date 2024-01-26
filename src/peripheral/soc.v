@@ -1,19 +1,23 @@
 module Risco_5_SOC #(
     parameter CLOCK_FREQ = 25000000,
+    parameter BIT_RATE = 9600,
     parameter BOOT_ADDRESS = 32'h00000000,
     parameter MEMORY_SIZE = 4096,
     parameter MEMORY_FILE = ""
 )(
     input wire clk,
     input wire reset,
+    input wire rx,
+    output wire tx,
     output wire [7:0] leds
 );
 
 wire memory_read, memory_write, slave_read, slave_write,
-    slave1_read, slave1_write;
+    slave1_read, slave1_write, slave2_read, slave2_write;
 wire [31:0] address, write_data, read_data,
     slave_address, slave_write_data, slave_read_data,
-    slave1_address, slave1_write_data, slave1_read_data;
+    slave1_address, slave1_write_data, slave1_read_data,
+    slave2_address, slave2_write_data, slave2_read_data;
 
 Core #(
     .BOOT_ADDRESS(BOOT_ADDRESS)
@@ -69,6 +73,21 @@ LEDs Leds(
     .read_data(slave1_read_data),
     .address(slave1_address),
     .leds(leds)
+);
+
+UART #(
+    .CLOCK_FREQ(CLOCK_FREQ),
+    .BIT_RATE(BIT_RATE)
+) Uart(
+    .clk(clk),
+    .reset(reset),
+    .tx(tx),
+    .rx(rx),
+    .read(slave2_read),
+    .write(slave2_write),
+    .write_data(slave2_write_data),
+    .read_data(slave2_read_data),
+    .address(slave2_address)
 );
 
 endmodule
