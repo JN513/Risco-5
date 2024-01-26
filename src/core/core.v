@@ -28,6 +28,9 @@ assign write_data = register_data_2_out;
 initial begin
     instruction_register = 32'h00000000;
     memory_register = 32'h00000000;
+    register_data_1 <= 32'h00000000;
+    register_data_2 = 32'h00000000;
+    alu_out_register = 32'h00000000;
 end
 
 PC Pc(
@@ -62,7 +65,7 @@ MUX AluInputAMUX(
 MUX AluInputBMUX(
     .option(alu_src_b),
     .A(register_data_2),
-    .B(32'h1),
+    .B(32'd4),
     .C(immediate),
     .S(alu_input_b)
 );
@@ -129,7 +132,7 @@ Immediate_Generator Immediate_Generator(
 );
 
 always @(posedge clk ) begin
-    if(reset) begin
+    if(reset == 1'b1) begin
         instruction_register <= 32'h00000000;
         memory_register <= 32'h00000000;
         register_data_1 <= 32'h00000000;

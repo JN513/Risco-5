@@ -22,7 +22,7 @@ Core #(
 );
 
 Memory #(
-    .MEMORY_FILE("software/memory/teste_led.hex"),
+    .MEMORY_FILE("software/memory/lw.hex"),
     .MEMORY_SIZE(4096)
 ) Memory(
     .clk(clk),
@@ -72,7 +72,7 @@ initial begin
     reset = 1;
     #6
     reset = 0;
-    #2000
+    #120
 
     $finish;
 end

@@ -19,8 +19,8 @@ module Control_Unit (
 parameter FETCH = 3'b000;
 parameter DECODE = 3'b001;
 parameter EXECUTION = 3'b010;
-parameter MEMORY_WRITE = 3'b011;
-parameter MEMORY_READ = 3'b100;
+parameter MEMORY_ACCESS = 3'b011;
+parameter WRITE_BACK = 3'b100;
 
 reg [2:0] state, nextstate;
 
@@ -55,13 +55,13 @@ always @(*) begin
         DECODE: nextstate = EXECUTION;
         EXECUTION: begin
             if(instrution_opcode == 7'b1100011) nextstate = FETCH;
-            else nextstate = MEMORY_WRITE;
+            else nextstate = MEMORY_ACCESS;
         end
-        MEMORY_WRITE: begin
-            if(instrution_opcode == 7'b0000011) nextstate = MEMORY_READ;
+        MEMORY_ACCESS: begin
+            if(instrution_opcode == 7'b0000011) nextstate = WRITE_BACK;
             else nextstate = FETCH;
         end
-        MEMORY_READ: nextstate = FETCH;
+        WRITE_BACK: nextstate = FETCH;
         default: nextstate = FETCH;
     endcase
 end
@@ -137,7 +137,7 @@ always @(*) begin
                 end 
             endcase
         end
-        MEMORY_WRITE: begin
+        MEMORY_ACCESS: begin
             case (instrution_opcode)
                 7'b0110011: begin // r type
                     reg_write = 1'b1;
@@ -160,7 +160,7 @@ always @(*) begin
                 end
             endcase
         end
-        MEMORY_READ: begin
+        WRITE_BACK: begin
             reg_write = 1'b1;
             memory_to_reg = 1'b1;
         end

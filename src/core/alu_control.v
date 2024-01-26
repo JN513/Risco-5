@@ -84,5 +84,21 @@ always @(*) begin
         endcase
     end
 end
-    
+/*
+case (aluop)
+    00: begin
+
+    end 
+
+    01: begin
+
+    end
+
+    10: begin
+
+    end
+
+    default: aluop_out_reg = 4'b0010;
+endcase
+*/
 endmodule
