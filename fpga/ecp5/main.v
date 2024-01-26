@@ -9,27 +9,24 @@ module top (
 reg reset_bousing;
 
 Risco_5_SOC #(
+    .CLOCK_FREQ(25000000),
+    .BIT_RATE(9600),
     .MEMORY_SIZE(4096),
-    .MEMORY_FILE("../../software/memory/teste_led.hex"),
+    .MEMORY_FILE("../../software/memory/loop_2.hex")
 ) SOC(
     .clk(clk),
-    .reset(reset),
-    .leds(led)
+    .reset(1'b0),
+    .leds(led),
+    .rx(rx),
+    .tx(tx)
 );
 
-reg [8:0]counter;
-
 initial begin
-    reset_bousing = 1'b1;
-    counter = 8'h00;
+    reset_bousing = 1'b0;
 end
 
 always @(posedge clk ) begin
-    if(counter < 8'd255) begin
-        counter <= counter + 1'b1;
-    end else begin
-        reset_bousing <= 1'b0;
-    end
+    reset_bousing <= reset;
 end
 
 endmodule

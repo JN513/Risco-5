@@ -3,7 +3,11 @@
 _start:
     addi x2, x0, 2047;
     addi x4, x0, 255;
+    addi x10, x0, 2000;
+    addi x10, x10, 1000;
+    addi x16, x0, 76;
     slli x2, x2, 15;
+
     beq x0, x0, reset;
 
 reset:
@@ -14,6 +18,7 @@ reset:
 
 loop:
     addi x15, x15, 1;
+    lw x16, 2000(x10);
 
     beq x15, x4, reset;
 
