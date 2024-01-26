@@ -14,9 +14,7 @@ module Memory #(
 reg [31:0] memory [(MEMORY_SIZE/4)-1: 0];
 integer i;
 
-wire [31:0] normalized_address;
-
-assign read_data = (memory_read == 1'b1) ? memory[address] : 32'h00000000;
+assign read_data = (memory_read == 1'b1) ? memory[address[31:2]] : 32'h00000000;
 
 initial begin
     for (i = 0; i < (MEMORY_SIZE/4)-1; i = i + 1) begin
@@ -30,7 +28,7 @@ end
 
 always @(posedge clk) begin
     if(memory_write == 1'b1) begin
-        memory[address] <= write_data;
+        memory[address[31:2]] <= write_data;
     end
 end
     
