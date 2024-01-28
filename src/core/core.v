@@ -13,9 +13,9 @@ module Core #(
     output wire [31:0] write_data
 );
 
-wire lorD, IRWrite, zero, reg_write, alu_src_a, pc_load, and_zero_out,
+wire lorD, IRWrite, zero, reg_write, pc_load, and_zero_out,
     pc_write_cond, pc_write, memory_to_reg;
-wire [1:0] alu_src_b, aluop;
+wire [1:0] alu_src_a, alu_src_b, aluop;
 wire [3:0] aluop_out;
 wire [31:0] pc_output, pc_input, register_input,
     alu_input_a, alu_input_b, alu_out, immediate, 
@@ -56,9 +56,10 @@ MUX MemoryDataMUX(
 );
 
 MUX AluInputAMUX(
-    .option({1'b0, alu_src_a}),
+    .option(alu_src_a),
     .A(pc_output),
     .B(register_data_1),
+    .C(32'd0),
     .S(alu_input_a)
 );
 
@@ -67,6 +68,7 @@ MUX AluInputBMUX(
     .A(register_data_2),
     .B(32'd4),
     .C(immediate),
+    .D(32'd0),
     .S(alu_input_b)
 );
 
@@ -114,7 +116,6 @@ ALU_Control ALU_Control(
     .aluop_in(aluop),
     .func7(instruction_register[31:25]),
     .func3(instruction_register[14:12]),
-    .instruction_opcode(instruction_register[6:0]),
     .aluop_out(aluop_out)
 );
 
