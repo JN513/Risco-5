@@ -9,11 +9,15 @@ _start:
     add a4, a4, a4
     addi a4, a4, 2
     
-    sw a3, 1(x0)
-    sw a2, 2(x0)
-    sw a1, 3(x0)
+    sw a3, 40(x0)
+    sw a2, 44(x0)
+    sw a1, 48(x0)
     sw a3, 0(a4)
 
-    lw a1, 1(x0)
-    lw a3, 2(x0)
-    lw a2, 3(x0)
+    lw a1, 40(x0)
+    lw a3, 44(x0)
+    lw a2, 48(x0)
+
+    lw a5, 40(x0)
+    lw a6, 44(x0)
+    lw a7, 48(x0)

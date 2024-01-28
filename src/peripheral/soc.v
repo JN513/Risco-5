@@ -9,7 +9,8 @@ module Risco_5_SOC #(
     input wire reset,
     input wire rx,
     output wire tx,
-    output wire [7:0] leds
+    output wire [7:0] leds,
+    output wire [2:0] d
 );
 
 wire memory_read, memory_write, slave_read, slave_write,

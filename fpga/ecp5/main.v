@@ -7,18 +7,37 @@ module top (
 );
 
 reg reset_bousing;
+wire clk_o;
+wire [7:0] leds;
+
+ClkDivider #(
+    .COUNTER_BITS(32)
+) ClkDivider(
+    .clk(clk),
+    .reset(reset),
+    .option(1'b1),
+    .out_enable(1'b1),
+    .divider(32'd25000000),
+    .pulse(1'b0),
+    .clk_o(clk_o)
+);
+
+assign led[7] = ~clk_o;
+assign led[6] = ~reset_bousing; // 5:3
+assign led[5:3] = leds [2:0];
 
 Risco_5_SOC #(
     .CLOCK_FREQ(25000000),
     .BIT_RATE(9600),
     .MEMORY_SIZE(4096),
-    .MEMORY_FILE("../../software/memory/loop_2.hex")
+    .MEMORY_FILE("../../software/memory/teste_led.hex")
 ) SOC(
-    .clk(clk),
-    .reset(1'b0),
-    .leds(led),
+    .clk(clk_o),
+    .reset(reset_bousing),
+    .leds(leds),
     .rx(rx),
-    .tx(tx)
+    .tx(tx),
+    .d(led[2:0])
 );
 
 initial begin
@@ -26,7 +45,7 @@ initial begin
 end
 
 always @(posedge clk ) begin
-    reset_bousing <= reset;
+    //reset_bousing <= reset;
 end
 
 endmodule

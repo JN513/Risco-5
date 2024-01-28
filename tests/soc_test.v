@@ -10,10 +10,10 @@ Risco_5_SOC #(
     .CLOCK_FREQ(25000000),
     .BIT_RATE(9600),
     .MEMORY_SIZE(4096),
-    .MEMORY_FILE("software/memory/loop_2.hex")
+    .MEMORY_FILE("software/memory/teste_led.hex")
 ) SOC(
     .clk(clk),
-    .reset(1'b0),
+    .reset(reset),
     .leds(led),
     .rx(rx),
     .tx(tx)
@@ -27,7 +27,7 @@ initial begin
     reset = 1;
     #6
     reset = 0;
-    #50000000
+    #240
 
     $finish;
 end

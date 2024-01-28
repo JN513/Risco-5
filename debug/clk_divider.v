@@ -37,7 +37,7 @@ always @(posedge clk ) begin
             clk_counter <= clk_counter + 1;
         end
 
-        if(clk_counter == divider - 1) begin
+        if(clk_counter >= divider - 1) begin
             clk_counter <= 0;
         end
     end
