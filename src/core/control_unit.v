@@ -88,6 +88,8 @@ always @(*) begin
             pc_write = 1'b1;
         end
         DECODE: begin
+            if(instrution_opcode == 7'b1100111) // JARL instruction
+                alu_src_a = 2'b01;
             alu_src_b = 2'b10;
         end
         EXECUTION: begin
@@ -103,13 +105,27 @@ always @(*) begin
                     aluop = 2'b10;
                 end
 
-                7'b0010011: begin // AUIPC instruction 
+                7'b0010111: begin // AUIPC instruction 
                     alu_src_b = 2'b10;
                 end
 
-                7'b0010011: begin // LUI instruction 
+                7'b0110111: begin // LUI instruction 
                     alu_src_a = 2'b10;
                     alu_src_b = 2'b10;
+                end
+
+                7'b1101111: begin // JAL instruction
+                    alu_src_a = 2'b00;
+                    alu_src_b = 2'b01; // 01
+                    pc_write = 1'b1;
+                    pc_source = 1'b1;
+                end
+
+                7'b1100111: begin // JARL instruction
+                    alu_src_a = 2'b00;
+                    alu_src_b = 2'b01; // 01
+                    pc_write = 1'b1;
+                    pc_source = 1'b1;
                 end
 
                 7'b0000011, 7'b0100011: begin // lw, sw
@@ -127,22 +143,21 @@ always @(*) begin
         end
         MEMORY_ACCESS: begin
             case (instrution_opcode)
-                7'b0110011: begin // r type
+                7'b0110011: // r type
                     reg_write = 1'b1;
-                end
 
-                7'b0010011: begin // addi type
+                7'b0010011: // addi type
                     reg_write = 1'b1;
-                end
 
-                7'b0010011: begin // AUIPC instruction 
+                7'b0010111: // AUIPC instruction 
                     reg_write = 1'b1;
-                end
 
-                7'b0010011: begin // LUI instruction 
+                7'b0110111: // LUI instruction 
                     reg_write = 1'b1;
-                end
 
+                7'b1101111: // JAL instruction
+                    reg_write = 1'b1;
+                    
                 7'b0000011: begin // lw
                     memory_read = 1'b1;
                     lorD = 1'b1;
