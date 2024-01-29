@@ -31,10 +31,10 @@ always @(*) begin
         2'b10: begin
             case (func3)
                 3'b000: // addi, add e sub
-                    if(func7 == 7'b0000000)
-                        aluop_out = 4'b0010;
-                    else
+                    if(func7 == 7'b0100000)
                         aluop_out = 4'b0110;
+                    else
+                        aluop_out = 4'b0010;
                 3'b001: // slli e sll
                     aluop_out = 4'b1000;
                 3'b010: // slti e slt
