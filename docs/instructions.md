@@ -25,6 +25,7 @@
 - srai
 - ori
 - andi
+- jalr
 
 ### S
 
@@ -41,5 +42,9 @@
 
 # U
 
-- auipc (não prontas)
-- lui (não prontas)
+- auipc
+- lui
+
+## U/J
+
+- jal
