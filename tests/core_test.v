@@ -68,10 +68,10 @@ initial begin
     $dumpfile("build/core.vcd");
     $dumpvars;
 
-    clk = 0;
-    reset = 1;
+    clk = 1'b0;
+    reset = 1'b1;
     #6
-    reset = 0;
+    reset = 1'b0;
     #120
 
     $finish;

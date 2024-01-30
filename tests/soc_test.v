@@ -10,7 +10,7 @@ Risco_5_SOC #(
     .CLOCK_FREQ(25000000),
     .BIT_RATE(9600),
     .MEMORY_SIZE(4096),
-    .MEMORY_FILE("software/memory/function.hex")
+    .MEMORY_FILE("software/memory/generic.hex")
 ) SOC(
     .clk(clk),
     .reset(reset),
@@ -23,10 +23,10 @@ initial begin
     $dumpfile("build/soc.vcd");
     $dumpvars;
 
-    clk = 0;
-    reset = 1;
+    clk = 1'b0;
+    reset = 1'b1;
     #6
-    reset = 0;
+    reset = 1'b0;
     #560
 
     $finish;

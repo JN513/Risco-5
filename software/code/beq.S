@@ -20,5 +20,3 @@ _start:
 desvio:
     addi x16, x0, 17;
     andi x16, x16, 17;
-
-    ret;
