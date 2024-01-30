@@ -30,7 +30,7 @@ Risco_5_SOC #(
     .CLOCK_FREQ(25000000),
     .BIT_RATE(9600),
     .MEMORY_SIZE(4096),
-    .MEMORY_FILE("../../software/memory/teste_led.hex")
+    .MEMORY_FILE("../../software/memory/teste_uart_tx.hex")
 ) SOC(
     .clk(clk_o),
     .reset(reset_bousing),

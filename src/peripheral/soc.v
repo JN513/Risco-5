@@ -62,7 +62,13 @@ BUS Bus(
     .slave_1_write(slave1_write),
     .slave_1_read_data(slave1_read_data),
     .slave_1_address(slave1_address),
-    .slave_1_write_data(slave1_write_data)
+    .slave_1_write_data(slave1_write_data),
+
+    .slave_2_read(slave2_read),
+    .slave_2_write(slave2_write),
+    .slave_2_read_data(slave2_read_data),
+    .slave_2_address(slave2_address),
+    .slave_2_write_data(slave2_write_data)
 );
 
 LEDs Leds(
