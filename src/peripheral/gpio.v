@@ -6,10 +6,6 @@ module GPIO (
 );
 
 assign data_out = (gpio & direction) | (data_in & ~data_in);
-
-always @(*) begin
-    if(direction == 1'b0)
-        gpio = data_in;
-end
+assign gpio = (direction == 1'b1) ? 1'bz : data_in;
     
 endmodule

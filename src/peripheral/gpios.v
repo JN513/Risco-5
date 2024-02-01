@@ -8,10 +8,11 @@ module GPIOS #(
     input wire [31:0] address,
     input wire [31:0] write_data,
     output wire [31:0] read_data,
-    inout wire [WIDHT - 1:0] gpio
+    inout [WIDHT - 1:0] gpio
 );
 
-reg [WIDHT - 1:0] gpio_direction, gpio_value, gpio_out;
+reg [WIDHT - 1:0] gpio_direction, gpio_value;
+wire [WIDHT -1:0] gpio_out;
 
 parameter SET_DIRECTION = 1'b0;
 parameter READ = 1'b1;
