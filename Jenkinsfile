@@ -1,49 +1,46 @@
 pipeline {
     agent any
-    
-    options {
-        buildDiscarder(logRotator(numToKeepStr: '10'))
-    }
-    
+
     stages {
-        stage('Checkout') {
+        stage('git_clone') {
             steps {
-                // Clona o repositório
-                checkout scm
+                sh 'rm -Rf Risco-5/ build/'
+                sh 'git clone https://github.com/JN513/Risco-5'
+                sh 'cd Risco-5'
             }
         }
-
         stage('Yosys') {
             steps {
-                // Realiza as etapas de compilação
-                sh 'echo "Yosys"'
+                sh 'mkdir -p build'
+                sh'''
+                    /eda/oss-cad-suite/bin/yosys -p " \
+                        read_verilog Risco-5/fpga/ecp5/*.v; \
+                        read_verilog Risco-5/debug/clk_divider.v; \
+                        read_verilog Risco-5/src/core/*.v; \
+                        read_verilog Risco-5/src/peripheral/*.v; \
+                        synth_ecp5 -json ./build/out.json -abc9 \
+                    "
+                    '''
             }
         }
-
         stage('NextPNR') {
             steps {
-                // Executa testes automatizados
-                sh 'echo "NextPNR"'
+                sh '''
+                    /eda/oss-cad-suite/bin/nextpnr-ecp5 --json ./build/out.json --write ./build/out_pnr.json --45k \
+                        --lpf Risco-5/fpga/ecp5/pinout.lpf --textcfg ./build/out.config --package CABGA381 \
+                        --speed 6
+                    '''
             }
         }
-
         stage('ECPPACK') {
             steps {
-                // Implementa ou faz o deploy da aplicação
-                // (Substitua com seus comandos específicos)
-                sh 'echo "Implementação/Deploy"'
+                sh '/eda/oss-cad-suite/bin/ecppack --compress --input ./build/out.config  --bit ./build/out.bit'
             }
         }
-    }
-    
-    post {
-        success {
-            // Ações a serem executadas em caso de sucesso
-            echo 'Pipeline foi executada com sucesso!'
-        }
-        failure {
-            // Ações a serem executadas em caso de falha
-            echo 'A pipeline falhou. Realize as correções necessárias.'
+        stage('openFPGAloader') {
+            steps {
+                sh '/eda/oss-cad-suite/bin/openFPGALoader -b colorlight-i9 ./build/out.bit'
+            }
         }
     }
 }
