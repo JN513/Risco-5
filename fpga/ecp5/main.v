@@ -3,7 +3,8 @@ module top (
     input wire reset,
     input wire rx,
     output wire tx,
-    output wire [7:0]led
+    output wire [7:0]led,
+    inout [4:0]gpios
 );
 
 wire clk_o, reset_o;
@@ -16,7 +17,7 @@ ClkDivider #(
     .reset(reset),
     .option(1'b1),
     .out_enable(1'b1),
-    .divider(32'd25000000),
+    .divider(32'd12500000),
     .pulse(1'b0),
     .clk_o(clk_o)
 );
@@ -36,13 +37,15 @@ Risco_5_SOC #(
     .CLOCK_FREQ(25000000),
     .BIT_RATE(9600),
     .MEMORY_SIZE(4096),
-    .MEMORY_FILE("../../software/memory/loop3.hex")
+    .MEMORY_FILE("../../software/memory/loop3.hex"),
+    .GPIO_WIDHT(5)
 ) SOC(
     .clk(clk_o),
     .reset(reset_o),
     .leds(leds),
     .rx(rx),
     .tx(tx),
+    .gpios(gpios)
 );
 
 
