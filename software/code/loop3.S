@@ -2,9 +2,9 @@
 
 _start:
     addi x5, zero, 63;
-    addi x2, zero, 2047
-    add x2, x2, x2
-    addi x2, x2, 2
+    addi a4, zero, 2047
+    add a4, a4, a4
+    addi a4, a4, 2
 
     j reset;
     
@@ -21,5 +21,5 @@ loop:
 
 fim:
     addi x4, zero, 5
-    j loop;
+    j reset;
     
