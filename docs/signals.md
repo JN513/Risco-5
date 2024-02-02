@@ -94,8 +94,8 @@ ALU_Control ALU_Control(
     .aluop_in(), // Opção da instrução - 2 bits
     .func7(), // Função 7 - 7 bits
     .func3(), // Função 3 - 3 bits
-    .instruction_opcode(), // Opção da instrução - 7 bits
-    .aluop_out() // Opção para a ALU - 4 bits
+    .aluop_out(), // Opção para a ALU - 4 bits
+    .is_immediate() // Ativo se a instrução for de imediato
 );
 ```
 
@@ -129,6 +129,7 @@ Control_Unit Control_Unit(
     .aluop(),
     .alu_src_b(),
     .alu_src_a(),
-    .reg_write() // Habilita escrita nos registradores - 1 bit
+    .reg_write(), // Habilita escrita nos registradores - 1 bit
+    .is_immediate() // Ativo se a instrução for de imediato
 );
 ```

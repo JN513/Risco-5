@@ -14,7 +14,7 @@ module Core #(
 );
 
 wire lorD, IRWrite, zero, reg_write, pc_load, and_zero_out,
-    pc_write_cond, pc_write, memory_to_reg;
+    pc_write_cond, pc_write, memory_to_reg, is_immediate;
 wire [1:0] alu_src_a, alu_src_b, aluop;
 wire [3:0] aluop_out;
 wire [31:0] pc_output, pc_input, register_input,
@@ -109,10 +109,12 @@ Control_Unit Control_Unit(
     .aluop(aluop),
     .alu_src_b(alu_src_b),
     .alu_src_a(alu_src_a),
-    .reg_write(reg_write)
+    .reg_write(reg_write),
+    .is_immediate(is_immediate)
 );
 
 ALU_Control ALU_Control(
+    .is_immediate(is_immediate),
     .aluop_in(aluop),
     .func7(instruction_register[31:25]),
     .func3(instruction_register[14:12]),

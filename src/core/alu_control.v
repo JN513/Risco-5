@@ -1,4 +1,5 @@
 module ALU_Control (
+    input wire is_immediate,
     input wire [1:0] aluop_in,
     input wire [6:0] func7,
     input wire [2:0] func3,
@@ -31,7 +32,7 @@ always @(*) begin
         2'b10: begin
             case (func3)
                 3'b000: // addi, add e sub
-                    if(func7 == 7'b0100000)
+                    if(is_immediate == 1'b0 && func7 == 7'b0100000)
                         aluop_out = 4'b0110;
                     else
                         aluop_out = 4'b0010;

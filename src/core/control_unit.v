@@ -10,6 +10,7 @@ module Control_Unit (
     output reg memory_to_reg,
     output reg ir_write,
     output reg pc_source,
+    output reg is_immediate,
     output reg [1:0] aluop,
     output reg [1:0] alu_src_a,
     output reg [1:0] alu_src_b,
@@ -59,6 +60,7 @@ initial begin
     alu_src_b = 2'b00;
     alu_src_a = 1'b0;
     reg_write = 1'b0;
+    is_immediate = 1'b0;
 end
 
 always @(posedge clk ) begin
@@ -119,6 +121,7 @@ always @(*) begin
     alu_src_b = 2'b00;
     alu_src_a = 2'b00;
     reg_write = 1'b0;
+    is_immediate = 1'b0;
 
     case (state)
         FETCH: begin
@@ -166,6 +169,7 @@ always @(*) begin
             alu_src_a = 2'b01;
             alu_src_b = 2'b10;
             aluop = 2'b10;
+            is_immediate = 1'b1;
         end
 
         JAL: begin
@@ -187,6 +191,7 @@ always @(*) begin
             alu_src_b = 2'b01; // 01
             pc_write = 1'b1;
             pc_source = 1'b1;
+            is_immediate = 1'b1;
         end
 
         AUIPC: begin
