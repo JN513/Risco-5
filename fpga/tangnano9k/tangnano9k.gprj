@@ -6,16 +6,26 @@
     <Device name="GW1N-9C" pn="GW1N-LV9QN48C6/I5">gw1n9c-000</Device>
     <FileList>
         <File path="main.v" type="file.verilog" enable="1"/>
-        <File path="/home/julio/eda/projetos/processador_risc/src/alu.v" type="file.verilog" enable="1"/>
-        <File path="/home/julio/eda/projetos/processador_risc/src/alu_control.v" type="file.verilog" enable="1"/>
-        <File path="/home/julio/eda/projetos/processador_risc/src/control_unit.v" type="file.verilog" enable="1"/>
-        <File path="/home/julio/eda/projetos/processador_risc/src/core.v" type="file.verilog" enable="1"/>
-        <File path="/home/julio/eda/projetos/processador_risc/src/data_memory.v" type="file.verilog" enable="1"/>
-        <File path="/home/julio/eda/projetos/processador_risc/src/immediate_generator.v" type="file.verilog" enable="1"/>
-        <File path="/home/julio/eda/projetos/processador_risc/src/instruction_memory.v" type="file.verilog" enable="1"/>
-        <File path="/home/julio/eda/projetos/processador_risc/src/mux.v" type="file.verilog" enable="1"/>
-        <File path="/home/julio/eda/projetos/processador_risc/src/pc.v" type="file.verilog" enable="1"/>
-        <File path="/home/julio/eda/projetos/processador_risc/src/registers.v" type="file.verilog" enable="1"/>
+        <File path="reset.v" type="file.verilog" enable="1"/>
+        <File path="pinout.cst" type="file.cst" enable="1"/>
+        <File path="../../debug/clk_divider.v" type="file.verilog" enable="1"/>
+        <File path="../../src/core/alu_control.v" type="file.verilog" enable="1"/>
+        <File path="../../src/core/alu.v" type="file.verilog" enable="1"/>
+        <File path="../../src/core/control_unit.v" type="file.verilog" enable="1"/>
+        <File path="../../src/core/core.v" type="file.verilog" enable="1"/>
+        <File path="../../src/core/immediate_generator.v" type="file.verilog" enable="1"/>
+        <File path="../../src/core/mux.v" type="file.verilog" enable="1"/>
+        <File path="../../src/core/pc.v" type="file.verilog" enable="1"/>
+        <File path="../../src/core/registers.v" type="file.verilog" enable="1"/>
+        <File path="../../src/peripheral/bus.v" type="file.verilog" enable="1"/>
+        <File path="../../src/peripheral/gpio.v" type="file.verilog" enable="1"/>
+        <File path="../../src/peripheral/gpios.v" type="file.verilog" enable="1"/>
+        <File path="../../src/peripheral/leds.v" type="file.verilog" enable="1"/>
+        <File path="../../src/peripheral/memory.v" type="file.verilog" enable="1"/>
+        <File path="../../src/peripheral/soc.v" type="file.verilog" enable="1"/>
+        <File path="../../src/peripheral/uart_rx.v" type="file.verilog" enable="1"/>
+        <File path="../../src/peripheral/uart_tx.v" type="file.verilog" enable="1"/>
+        <File path="../../src/peripheral/uart.v" type="file.verilog" enable="1"/>
         <File path="pinout.cst" type="file.cst" enable="1"/>
     </FileList>
 </Project>
