@@ -28,7 +28,7 @@ pipeline {
                 sh '''
                     /eda/oss-cad-suite/bin/nextpnr-ecp5 --json ./build/out.json --write ./build/out_pnr.json --45k \
                         --lpf Risco-5/fpga/ecp5/pinout.lpf --textcfg ./build/out.config --package CABGA381 \
-                        --speed 6
+                        --speed 6 --ignore-loops 
                     '''
             }
         }

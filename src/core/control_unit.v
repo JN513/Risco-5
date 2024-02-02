@@ -16,17 +16,37 @@ module Control_Unit (
     output reg reg_write
 );
 
-parameter FETCH = 3'b000;
-parameter DECODE = 3'b001;
-parameter EXECUTION = 3'b010;
-parameter MEMORY_ACCESS = 3'b011;
-parameter WRITE_BACK = 3'b100;
+// machine states
+parameter FETCH = 4'b0000;
+parameter DECODE = 4'b0001;
+parameter MEMADR = 4'b0010;
+parameter MEMREAD = 4'b0011;
+parameter MEMWB = 4'b0100;
+parameter MEMWRITE = 4'b0101;
+parameter EXECUTER = 4'b0110;
+parameter ALUWB = 4'b0111;
+parameter EXECUTEI = 4'b1000;
+parameter JAL = 4'b1001;
+parameter BEQ = 4'b1010;
+parameter JALR = 4'b1011;
+parameter AUIPC = 4'b1100;
+parameter LUI = 4'b1101;
 
-reg [2:0] state, nextstate;
+// Instruction Opcodes
+parameter LW = 7'b0000011;
+parameter SW = 7'b0100011;
+parameter RTYPE = 7'b0110011;
+parameter ITYPE = 7'b0010011;
+parameter JALI = 7'b1101111;
+parameter BEQI = 7'b1100011;
+parameter JALRI = 7'b1100111;
+parameter AUIPCI = 7'b0010111;
+parameter LUII = 7'b0110111;
+
+reg [3:0] state, nextstate;
 
 initial begin
-    state = 3'b000;
-    nextstate = 3'b000;
+    state = 4'b0000;
     pc_write_cond = 1'b0;
     pc_write = 1'b0;
     lorD = 1'b0;
@@ -52,16 +72,36 @@ end
 always @(*) begin
     case (state)
         FETCH: nextstate = DECODE;
-        DECODE: nextstate = EXECUTION;
-        EXECUTION: begin
-            if(instrution_opcode == 7'b1100011) nextstate = FETCH;
-            else nextstate = MEMORY_ACCESS;
+        DECODE: begin
+            case (instrution_opcode)
+                LW: nextstate = MEMADR;
+                SW: nextstate = MEMADR;
+                RTYPE: nextstate = EXECUTER;
+                ITYPE: nextstate = EXECUTEI;
+                JALI: nextstate = JAL;
+                BEQI: nextstate = BEQ;
+                JALRI: nextstate = JALR;
+                AUIPCI: nextstate = AUIPC;
+                LUII: nextstate = LUI;
+            endcase
         end
-        MEMORY_ACCESS: begin
-            if(instrution_opcode == 7'b0000011) nextstate = WRITE_BACK;
-            else nextstate = FETCH;
+        MEMADR: begin
+            if(instrution_opcode == LW)
+                nextstate = MEMREAD;
+            else
+                nextstate = MEMWRITE;
         end
-        WRITE_BACK: nextstate = FETCH;
+        MEMREAD: nextstate = MEMWB;
+        MEMWB: nextstate = FETCH;
+        MEMWRITE: nextstate = FETCH;
+        EXECUTER: nextstate = ALUWB;
+        ALUWB: nextstate = FETCH;
+        EXECUTEI: nextstate = ALUWB;
+        JAL: nextstate = ALUWB;
+        BEQ: nextstate = FETCH;
+        JALR: nextstate = ALUWB;
+        AUIPC: nextstate = ALUWB;
+        LUI: nextstate = ALUWB;
         default: nextstate = FETCH;
     endcase
 end
@@ -88,90 +128,74 @@ always @(*) begin
             pc_write = 1'b1;
         end
         DECODE: begin
-            if(instrution_opcode == 7'b1100111) // JARL instruction
+            if(instrution_opcode == 7'b1100111) // JALR instruction
                 alu_src_a = 2'b01;
             alu_src_b = 2'b10;
         end
-        EXECUTION: begin
-            case (instrution_opcode)
-                7'b0110011: begin // r type
-                    alu_src_a = 2'b01;
-                    aluop = 2'b10;
-                end
 
-                7'b0010011: begin // addi instruction 
-                    alu_src_a = 2'b01;
-                    alu_src_b = 2'b10;
-                    aluop = 2'b10;
-                end
-
-                7'b0010111: begin // AUIPC instruction 
-                    alu_src_b = 2'b10;
-                end
-
-                7'b0110111: begin // LUI instruction 
-                    alu_src_a = 2'b10;
-                    alu_src_b = 2'b10;
-                end
-
-                7'b1101111: begin // JAL instruction
-                    alu_src_a = 2'b00;
-                    alu_src_b = 2'b01; // 01
-                    pc_write = 1'b1;
-                    pc_source = 1'b1;
-                end
-
-                7'b1100111: begin // JARL instruction
-                    alu_src_a = 2'b00;
-                    alu_src_b = 2'b01; // 01
-                    pc_write = 1'b1;
-                    pc_source = 1'b1;
-                end
-
-                7'b0000011, 7'b0100011: begin // lw, sw
-                    alu_src_a = 2'b01;
-                    alu_src_b = 2'b10;
-                end
-
-                7'b1100011: begin // branch
-                    alu_src_a = 2'b01;
-                    aluop = 2'b01;
-                    pc_write_cond = 1'b1;
-                    pc_source = 1'b1;
-                end 
-            endcase
+        MEMADR: begin
+            alu_src_a = 2'b01;
+            alu_src_b = 2'b10;
         end
-        MEMORY_ACCESS: begin
-            case (instrution_opcode)
-                7'b0110011: // r type
-                    reg_write = 1'b1;
-
-                7'b0010011: // addi type
-                    reg_write = 1'b1;
-
-                7'b0010111: // AUIPC instruction 
-                    reg_write = 1'b1;
-
-                7'b0110111: // LUI instruction 
-                    reg_write = 1'b1;
-
-                7'b1101111: // JAL instruction
-                    reg_write = 1'b1;
-                    
-                7'b0000011: begin // lw
-                    memory_read = 1'b1;
-                    lorD = 1'b1;
-                end
-
-                7'b0100011: begin // sw
-                    memory_write = 1'b1;
-                    lorD = 1'b1;
-                end
-            endcase
+        
+        MEMREAD: begin
+            memory_read = 1'b1;
+            lorD = 1'b1;
         end
-        WRITE_BACK: begin
+
+        MEMWB: begin
             reg_write = 1'b1;
             memory_to_reg = 1'b1;
+        end
+
+        MEMWRITE: begin
+            memory_write = 1'b1;
+            lorD = 1'b1;
+        end
+
+        EXECUTER: begin
+            alu_src_a = 2'b01;
+            aluop = 2'b10;
+        end
+
+        ALUWB: begin
+            reg_write = 1'b1;
+        end
+
+        EXECUTEI: begin
+            alu_src_a = 2'b01;
+            alu_src_b = 2'b10;
+            aluop = 2'b10;
+        end
+
+        JAL: begin
+            alu_src_a = 2'b00;
+            alu_src_b = 2'b01; // 01
+            pc_write = 1'b1;
+            pc_source = 1'b1;
+        end
+
+        BEQ: begin
+            alu_src_a = 2'b01;
+            aluop = 2'b01;
+            pc_write_cond = 1'b1;
+            pc_source = 1'b1;
+        end
+
+        JALR: begin
+            alu_src_a = 2'b00;
+            alu_src_b = 2'b01; // 01
+            pc_write = 1'b1;
+            pc_source = 1'b1;
+        end
+
+        AUIPC: begin
+            alu_src_b = 2'b10;
+        end
+
+        LUI: begin
+            alu_src_a = 2'b10;
+            alu_src_b = 2'b10;
         end
     endcase
 end

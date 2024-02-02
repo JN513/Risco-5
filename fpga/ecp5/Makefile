@@ -7,7 +7,7 @@ all: ./build/out.bit
 ./build/out.config: ./build/out.json
 	nextpnr-ecp5 --json ./build/out.json --write ./build/out_pnr.json --45k \
 		--lpf pinout.lpf --textcfg ./build/out.config --package CABGA381 \
-		--speed 6 --lpf-allow-unconstrained
+		--speed 6 --lpf-allow-unconstrained --ignore-loops 
 
 ./build/out.json: main.v pinout.lpf buildFolder
 	yosys -p " \

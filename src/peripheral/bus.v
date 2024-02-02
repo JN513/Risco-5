@@ -44,11 +44,11 @@ module BUS #(
     output wire [31:0] slave_3_write_data
 );
 
-localparam DEVICE0 = 2'd0;
-localparam DEVICE1 = 2'd1;
-localparam DEVICE2 = 2'd2;
-localparam DEVICE3 = 2'd2;
-localparam RESET = 2'd4;
+localparam DEVICE0 = 3'd0;
+localparam DEVICE1 = 3'd1;
+localparam DEVICE2 = 3'd2;
+localparam DEVICE3 = 3'd3;
+localparam RESET = 3'd4;
 
 assign slave_0_read = (address >= DEVICE0_START_ADDRESS && 
     address <= DEVICE0_FINAL_ADDRESS) ? read : 1'b0;
