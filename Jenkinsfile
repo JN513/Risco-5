@@ -22,7 +22,7 @@ pipeline {
                     /eda/oss-cad-suite/bin/iverilog -o build/soc_test.o -s soc_tb Risco-5/src/core/*.v Risco-5/src/peripheral/*.v Risco-5/tests/soc_test.v
                     '''
                 sh '/eda/oss-cad-suite/bin/vvp build/soc_test.o'
-                sh 'rm -f Risco5/software/memory/generic.hex'
+                sh 'rm -f Risco-5/software/memory/generic.hex'
             }
         }
 
@@ -64,8 +64,9 @@ pipeline {
 
                 stage('Gowin') {
                     steps {
-                        sh 'cd Risco-5'
-                        sh '/eda/gowin/IDE/bin/gw_sh fpga/tangnano20k/run.tcl'
+                        sh 'rm -rf Risco-5/impl/pnr'
+                        sh 'mkdir -p Risco-5/impl/pnr'
+                        //sh 'cd Risco-5 && /eda/gowin/IDE/bin/gw_sh fpga/tangnano20k/run.tcl'
                     }
                 }
             }

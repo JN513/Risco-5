@@ -44,4 +44,14 @@ O projeto oferece suporte a teste em algumas FPGAs, sendo elas:
 
 Os exemplos estão disponíveis no diretório FPGA. Para FPGAs sipeed (Tangnano 9k e 20k) os exemplos foram feitos utilizando a IDE gowin, e para as FPGA Lattice/ColorLight os exemplos foram feitos utilizando o Yosys + NextPNR e podem ser sintetizados e flashado utilizando o makefile disponível nos diretórios.
 
+## Maquina de estados da unidade de controle e Esquemático
+
+#### Maquina de estados da unidade de controle
+
+![Maquina de estados da unidade de controle](docs/imgs/risco5_state_machine.jpg)
+
+#### Esquemático do processador
+
+![Esquemático do processador](docs/imgs/esquematico.png)
+
 ## Debug
