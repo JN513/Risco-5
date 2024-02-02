@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    options {
+        parallelsAlwaysFailFast()
+    }
+
     stages {
         stage('Git Clone') {
             steps {
@@ -24,53 +28,47 @@ pipeline {
 
         stage('Síntese') {
             parallel {
-                stage('Yosys') {
-                    steps {
-                        sh'''
-                            /eda/oss-cad-suite/bin/yosys -p " \
-                                read_verilog Risco-5/fpga/ecp5/*.v; \
-                                read_verilog Risco-5/debug/clk_divider.v; \
-                                read_verilog Risco-5/src/core/*.v; \
-                                read_verilog Risco-5/src/peripheral/*.v; \
-                                synth_ecp5 -json ./build/out.json -abc9 \
-                            "
-                            '''
+                stage('OSS-Cad-Suite') {
+                    stages{
+                        stage('Yosys'){
+                            steps {
+                                sh'''
+                                    /eda/oss-cad-suite/bin/yosys -p " \
+                                        read_verilog Risco-5/fpga/ecp5/*.v; \
+                                        read_verilog Risco-5/debug/clk_divider.v; \
+                                        read_verilog Risco-5/src/core/*.v; \
+                                        read_verilog Risco-5/src/peripheral/*.v; \
+                                        synth_ecp5 -json ./build/out.json -abc9 \
+                                    "
+                                    '''
+                            }
+                        }
+
+                        stage('NextPNR') {
+                            steps {
+                                sh '''
+                                    /eda/oss-cad-suite/bin/nextpnr-ecp5 --json ./build/out.json --write ./build/out_pnr.json --45k \
+                                        --lpf Risco-5/fpga/ecp5/pinout.lpf --textcfg ./build/out.config --package CABGA381 \
+                                        --speed 6 --ignore-loops --lpf-allow-unconstrained
+                                    '''
+                            }
+                        }
+
+                        stage('ECPPACK') {
+                            steps {
+                                sh '/eda/oss-cad-suite/bin/ecppack --compress --input ./build/out.config  --bit ./build/out.bit'
+                            }
+                        }
                     }
                 }
 
                 stage('Gowin') {
                     steps {
-                        sh 'echo ""'
-                    }
-                }
-            }
-        }
-        
-        stage('Roteamento') {
-            parallel {
-                stage('NextPNR') {
-                    steps {
                         sh '''
-                            /eda/oss-cad-suite/bin/nextpnr-ecp5 --json ./build/out.json --write ./build/out_pnr.json --45k \
-                                --lpf Risco-5/fpga/ecp5/pinout.lpf --textcfg ./build/out.config --package CABGA381 \
-                                --speed 6 --ignore-loops --lpf-allow-unconstrained
-                            '''
-                    }
-                }
-
-                stage('Gowin Route') {
-                    steps {
-                        sh '''
-                            echo "route"
+                            /eda/gowin/IDE/bin/gw_sh Risco-5/fpga/tangnano20k/run.tcl
                         '''
                     }
                 }
-            }
-        }
-
-        stage('ECPPACK') {
-            steps {
-                sh '/eda/oss-cad-suite/bin/ecppack --compress --input ./build/out.config  --bit ./build/out.bit'
             }
         }
 
