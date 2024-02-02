@@ -64,9 +64,8 @@ pipeline {
 
                 stage('Gowin') {
                     steps {
-                        sh '''
-                            /eda/gowin/IDE/bin/gw_sh Risco-5/fpga/tangnano20k/run.tcl
-                        '''
+                        sh 'cd Risco-5'
+                        sh '/eda/gowin/IDE/bin/gw_sh fpga/tangnano20k/run.tcl'
                     }
                 }
             }
