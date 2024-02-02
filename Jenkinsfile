@@ -9,9 +9,22 @@ pipeline {
                 sh 'cd Risco-5'
             }
         }
-        stage('Yosys') {
+
+        stage('IVerilog') {
             steps {
                 sh 'mkdir -p build'
+                sh 'cp Risco-5/software/memory/add.hex Risco-5/software/memory/generic.hex'
+                sh'''
+                    /eda/oss-cad-suite/bin/iverilog -o build/soc_test.o -s soc_tb \
+                    Risco-5/src/core/* Risco-5/src/peripheral/*.v Risco-5/tests/soc_test.v
+                    '''
+                sh 'vvp build/soc_test.o'
+                sh 'rm Risco5/software/memory/generic.hex'
+            }
+        }
+
+        stage('Yosys') {
+            steps {
                 sh'''
                     /eda/oss-cad-suite/bin/yosys -p " \
                         read_verilog Risco-5/fpga/ecp5/*.v; \

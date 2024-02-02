@@ -17,7 +17,7 @@ ClkDivider #(
     .reset(reset),
     .option(1'b1),
     .out_enable(1'b1),
-    .divider(32'd12500000),
+    .divider(32'd6250000),
     .pulse(1'b0),
     .clk_o(clk_o)
 );
