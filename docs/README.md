@@ -48,10 +48,10 @@ Os exemplos estão disponíveis no diretório FPGA. Para FPGAs sipeed (Tangnano 
 
 #### Maquina de estados da unidade de controle
 
-![Maquina de estados da unidade de controle](docs/imgs/risco5_state_machine.jpg)
+![Maquina de estados da unidade de controle](imgs/risco5_state_machine.jpg)
 
 #### Esquemático do processador
 
-![Esquemático do processador](docs/imgs/esquematico.png)
+![Esquemático do processador](imgs/esquematico.png)
 
 ## Debug
