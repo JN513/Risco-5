@@ -1,0 +1,6 @@
+digilent_arty.cache/
+digilent_arty.hw/
+digilent_arty.ip_user_files/
+.Xil/
+report/
+vivado_*.backup.*

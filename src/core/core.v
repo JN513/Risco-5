@@ -97,7 +97,7 @@ or(pc_load, pc_write, and_zero_out);
 Control_Unit Control_Unit(
     .clk(clk),
     .reset(reset),
-    .instrution_opcode(instruction_register[6:0]),
+    .instruction_opcode(instruction_register[6:0]),
     .pc_write_cond(pc_write_cond),
     .pc_write(pc_write),
     .lorD(lorD),

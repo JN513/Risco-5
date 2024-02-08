@@ -1,7 +1,7 @@
 module Control_Unit (
     input wire clk,
     input wire reset,
-    input wire [6:0]instrution_opcode,
+    input wire [6:0]instruction_opcode,
     output reg pc_write_cond,
     output reg pc_write,
     output reg lorD,
@@ -32,6 +32,7 @@ parameter BEQ = 4'b1010;
 parameter JALR = 4'b1011;
 parameter AUIPC = 4'b1100;
 parameter LUI = 4'b1101;
+parameter DECODE_JARL = 4'b1110;
 
 // Instruction Opcodes
 parameter LW = 7'b0000011;
@@ -48,6 +49,7 @@ reg [3:0] state, nextstate;
 
 initial begin
     state = 4'b0000;
+    nextstate = 4'b0000;
     pc_write_cond = 1'b0;
     pc_write = 1'b0;
     lorD = 1'b0;
@@ -72,23 +74,29 @@ always @(posedge clk ) begin
 end
 
 always @(*) begin
+    nextstate = FETCH;
     case (state)
-        FETCH: nextstate = DECODE;
+        FETCH: begin
+            case (instruction_opcode)
+                JALRI: nextstate = DECODE_JARL;
+                default: nextstate = DECODE;
+            endcase
+        end
+        DECODE_JARL: nextstate = JALR;
         DECODE: begin
-            case (instrution_opcode)
+            case (instruction_opcode)
                 LW: nextstate = MEMADR;
                 SW: nextstate = MEMADR;
                 RTYPE: nextstate = EXECUTER;
                 ITYPE: nextstate = EXECUTEI;
                 JALI: nextstate = JAL;
                 BEQI: nextstate = BEQ;
-                JALRI: nextstate = JALR;
                 AUIPCI: nextstate = AUIPC;
                 LUII: nextstate = LUI;
             endcase
         end
         MEMADR: begin
-            if(instrution_opcode == LW)
+            if(instruction_opcode == LW)
                 nextstate = MEMREAD;
             else
                 nextstate = MEMWRITE;
@@ -130,9 +138,13 @@ always @(*) begin
             alu_src_b = 2'b01;
             pc_write = 1'b1;
         end
+
+        DECODE_JARL: begin
+            alu_src_a = 2'b01;
+            alu_src_b = 2'b10;
+        end
+
         DECODE: begin
-            if(instrution_opcode == 7'b1100111) // JALR instruction
-                alu_src_a = 2'b01;
             alu_src_b = 2'b10;
         end
 

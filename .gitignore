@@ -4,3 +4,11 @@ x.*
 build/
 rascunho.v
 utils/
+fpga/digilent_arty/vivado_131673.backup.jou
+fpga/digilent_arty/vivado_131673.backup.log
+fpga/digilent_arty/vivado.jou
+fpga/digilent_arty/vivado.log
+fpga/digilent_arty/digilent_arty_timing_synth.rpt
+fpga/digilent_arty/digilent_arty_route.dcp
+fpga/digilent_arty/clockInfo.txt
+fpga/digilent_arty/digilent_arty_place.dcp
