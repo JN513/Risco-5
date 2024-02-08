@@ -4,7 +4,7 @@ module top (
     input wire rx,
     output wire tx,
     output wire [7:0]led,
-    inout [4:0]gpios
+    inout [5:0]gpios
 );
 
 wire clk_o, reset_o;
@@ -38,7 +38,7 @@ Risco_5_SOC #(
     .BIT_RATE(9600),
     .MEMORY_SIZE(4096),
     .MEMORY_FILE("../../software/memory/loop3.hex"),
-    .GPIO_WIDHT(5)
+    .GPIO_WIDHT(6)
 ) SOC(
     .clk(clk_o),
     .reset(reset_o),

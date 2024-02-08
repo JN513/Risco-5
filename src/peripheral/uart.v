@@ -16,13 +16,22 @@ module UART #(
     output wire [31:0] read_data
 );
 
-wire [PAYLOAD_BITS-1:0]  uart_rx_data, uart_tx_data;
-wire uart_rx_valid, uart_rx_break, uart_tx_busy, uart_tx_en;
-//assign uart_tx_data = uart_rx_data;
-//assign uart_tx_en   = uart_rx_valid;
+wire [PAYLOAD_BITS-1:0]  uart_rx_data;
+wire uart_rx_valid, uart_rx_break, uart_tx_busy;
+reg uart_tx_en;
+reg [PAYLOAD_BITS-1:0] uart_tx_data;
 
-assign uart_tx_data = write_data[7:0];
-assign uart_tx_en   = write;
+assign read_data = (read == 1'b1) ? {24'h000000 , uart_rx_data} : 32'h00000000;
+
+initial begin
+    uart_tx_en = 1'b0;
+    uart_tx_data = 8'h00;
+end
+
+always @(posedge clk ) begin
+    uart_tx_en <= write;
+    uart_tx_data <= write_data[7:0];
+end
 
 // UART RX
 uart_tool_rx #(
