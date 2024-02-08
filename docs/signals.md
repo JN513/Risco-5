@@ -117,7 +117,7 @@ PC Pc(
 Control_Unit Control_Unit(
     .clk(), // Sinal de clock - 1 bit
     .reset(), // Sinal de reset - 1 bit
-    .instrution_opcode(), // Opção da instrução - 7 bits
+    .instruction_opcode(), // Opção da instrução - 7 bits
     .pc_write_cond(),
     .pc_write(), // Habilita escrita no PC - 1 bit
     .lorD(),
