@@ -8,7 +8,7 @@ _start:
 
     jalr a2, x1, 0;
 
-    addi a4, x0, 5;
+    addi a4, x0, 7;
 
 subrotina:
     addi a5, x0, 10;

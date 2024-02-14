@@ -77,10 +77,10 @@ always @(*) begin
     nextstate = FETCH;
     case (state)
         FETCH: begin
-            case (instruction_opcode)
-                JALRI: nextstate = DECODE_JARL;
-                default: nextstate = DECODE;
-            endcase
+            if(instruction_opcode == JALRI)
+                nextstate = DECODE_JARL;
+            else
+                nextstate = DECODE;
         end
         DECODE_JARL: nextstate = JALR;
         DECODE: begin

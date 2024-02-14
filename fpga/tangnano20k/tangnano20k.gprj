@@ -6,7 +6,7 @@
     <Device name="GW2AR-18C" pn="GW2AR-LV18QN88PC8/I7">gw2ar18c-011</Device>
     <FileList>
         <File path="main.v" type="file.verilog" enable="1"/>
-        <File path="reset.v" type="file.verilog" enable="1"/>
+        <File path="../../debug/reset.v" type="file.verilog" enable="1"/>
         <File path="pinout.cst" type="file.cst" enable="1"/>
         <File path="../../debug/clk_divider.v" type="file.verilog" enable="1"/>
         <File path="../../src/core/alu_control.v" type="file.verilog" enable="1"/>
