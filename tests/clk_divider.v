@@ -1,10 +1,12 @@
 module clk_divider_tb ();
 
 parameter COUNTER_BITS = 32;
+parameter PULSE_BITS = 32;
 
 wire clk_o;
-reg option, out_enable, pulse, clk, reset;
+reg option, out_enable, clk, reset, write_pulse;
 reg [COUNTER_BITS - 1 : 0] divider;
+reg [PULSE_BITS - 1 : 0] pulse;
 
 initial begin
     $dumpfile("build/clk_divider.vcd");
@@ -14,14 +16,15 @@ initial begin
     reset = 0;
     option = 1'b1;
     out_enable = 1'b1;
-    pulse = 1'b0;
-    divider = 32'd10;
-    /*
+    pulse = 32'd0;
+    divider = 32'd0;
+    write_pulse = 1'b0;
+
     #2
     reset = 1'b1;
     #2
     reset = 1'b0;
-    */
+
     #30
     
     out_enable = 1'b0;
@@ -29,6 +32,21 @@ initial begin
     #30
 
     out_enable = 1'b1;
+
+    #30
+
+    pulse = 32'd8;
+
+    #16
+
+    write_pulse = 1'b1;
+
+    #2
+
+    write_pulse = 1'b0;
+
+    #2
+
 
     #40
 
@@ -38,11 +56,13 @@ end
 always #1 clk = ~clk;
 
 ClkDivider #(
-    .COUNTER_BITS(COUNTER_BITS)
+    .COUNTER_BITS(COUNTER_BITS),
+    .PULSE_BITS(PULSE_BITS)
 ) ClkDivider(
     .clk(clk),
     .reset(reset),
     .option(option),
+    .write_pulse(write_pulse),
     .out_enable(out_enable),
     .divider(divider),
     .pulse(pulse),
