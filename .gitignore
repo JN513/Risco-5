@@ -12,3 +12,4 @@ fpga/digilent_arty/digilent_arty_timing_synth.rpt
 fpga/digilent_arty/digilent_arty_route.dcp
 fpga/digilent_arty/clockInfo.txt
 fpga/digilent_arty/digilent_arty_place.dcp
+env/

@@ -1,0 +1,8 @@
+site_name: Risco 5
+site_url: https://example.com/
+nav:
+  - Home: index.md
+  - About: about.md
+theme:
+  name: mkdocs
+  nav_style: dark
