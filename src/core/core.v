@@ -11,6 +11,31 @@ module Core #(
     input wire [31:0] read_data,
     output wire [31:0] address,
     output wire [31:0] write_data
+
+    // RISCV FORMAL
+`ifdef RISCV_FORMAL
+    ,output reg 		      rvfi_valid = 1'b0,
+    output reg [63:0] 	      rvfi_order = 64'd0,
+    output reg [31:0] 	      rvfi_insn = 32'd0,
+    output reg 		      rvfi_trap = 1'b0,
+    output reg 		      rvfi_halt = 1'b0,
+    output reg 		      rvfi_intr = 1'b0,
+    output reg [1:0] 	      rvfi_mode = 2'b11,
+    output reg [1:0] 	      rvfi_ixl = 2'b01,
+    output reg [4:0] 	      rvfi_rs1_addr,
+    output reg [4:0] 	      rvfi_rs2_addr,
+    output reg [31:0] 	      rvfi_rs1_rdata,
+    output reg [31:0] 	      rvfi_rs2_rdata,
+    output reg [4:0] 	      rvfi_rd_addr,
+    output reg [31:0] 	      rvfi_rd_wdata,
+    output reg [31:0] 	      rvfi_pc_rdata,
+    output reg [31:0] 	      rvfi_pc_wdata,
+    output reg [31:0] 	      rvfi_mem_addr,
+    output reg [3:0] 	      rvfi_mem_rmask,
+    output reg [3:0] 	      rvfi_mem_wmask,
+    output reg [31:0] 	      rvfi_mem_rdata,
+    output reg [31:0] 	      rvfi_mem_wdata,
+`endif
 );
 
 wire lorD, IRWrite, zero, reg_write, pc_load, and_zero_out,
