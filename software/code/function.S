@@ -2,7 +2,7 @@
 .global _start
 
 _start:
-    jal x2, main
+    jal main
 
 # Função que recebe um valor em a0 e retorna o dobro em a0
 # O nome da função é "dobro"

@@ -32,7 +32,7 @@ parameter BEQ = 4'b1010;
 parameter JALR = 4'b1011;
 parameter AUIPC = 4'b1100;
 parameter LUI = 4'b1101;
-parameter DECODE_JARL = 4'b1110;
+parameter JALR_PC = 4'b1110;
 
 // Instruction Opcodes
 parameter LW = 7'b0000011;
@@ -76,13 +76,8 @@ end
 always @(*) begin
     nextstate = FETCH;
     case (state)
-        FETCH: begin
-            if(instruction_opcode == JALRI)
-                nextstate = DECODE_JARL;
-            else
-                nextstate = DECODE;
-        end
-        DECODE_JARL: nextstate = JALR;
+        FETCH:
+            nextstate = DECODE;
         DECODE: begin
             case (instruction_opcode)
                 LW: nextstate = MEMADR;
@@ -93,6 +88,7 @@ always @(*) begin
                 BEQI: nextstate = BEQ;
                 AUIPCI: nextstate = AUIPC;
                 LUII: nextstate = LUI;
+                JALRI: nextstate = JALR_PC;
             endcase
         end
         MEMADR: begin
@@ -109,6 +105,7 @@ always @(*) begin
         EXECUTEI: nextstate = ALUWB;
         JAL: nextstate = ALUWB;
         BEQ: nextstate = FETCH;
+        JALR_PC: nextstate = JALR;
         JALR: nextstate = ALUWB;
         AUIPC: nextstate = ALUWB;
         LUI: nextstate = ALUWB;
@@ -137,11 +134,6 @@ always @(*) begin
             ir_write = 1'b1;
             alu_src_b = 2'b01;
             pc_write = 1'b1;
-        end
-
-        DECODE_JARL: begin
-            alu_src_a = 2'b01;
-            alu_src_b = 2'b10;
         end
 
         DECODE: begin
@@ -186,7 +178,7 @@ always @(*) begin
 
         JAL: begin
             alu_src_a = 2'b00;
-            alu_src_b = 2'b01; // 01
+            alu_src_b = 2'b11; // 01
             pc_write = 1'b1;
             pc_source = 1'b1;
         end
@@ -198,9 +190,14 @@ always @(*) begin
             pc_source = 1'b1;
         end
 
+        JALR_PC: begin // Ciclo intermediario para calcular o endereço a ser gravado no PC
+            alu_src_a = 2'b01;
+            alu_src_b = 2'b10;
+        end
+
         JALR: begin
             alu_src_a = 2'b00;
-            alu_src_b = 2'b01; // 01
+            alu_src_b = 2'b11; // 01
             pc_write = 1'b1;
             pc_source = 1'b1;
             is_immediate = 1'b1;
