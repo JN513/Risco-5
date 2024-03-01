@@ -32,7 +32,7 @@ always @(*) begin
         2'b10: begin
             case (func3)
                 3'b000: // addi, add e sub
-                    if(is_immediate == 1'b0 && func7 == 7'b0100000)
+                    if(is_immediate == 1'b0 && func7[5] == 1'b1)
                         aluop_out = 4'b0110;
                     else
                         aluop_out = 4'b0010;
