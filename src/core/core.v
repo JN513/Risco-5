@@ -44,11 +44,25 @@ wire [1:0] alu_src_a, alu_src_b, aluop;
 wire [3:0] aluop_out;
 wire [31:0] pc_output, pc_input, register_input,
     alu_input_a, alu_input_b, alu_out, immediate, 
-    register_data_1_out, register_data_2_out;
+    register_data_1_out, register_data_2_out, read_data_out;
 reg [31:0] instruction_register, memory_register, alu_out_register,
     register_data_1, register_data_2;
 
-assign write_data = register_data_2_out;
+MUX Write_memory_mux(
+    .option(instruction_register[13:12]),
+    .A({24'h000000, register_data_2_out[7:0]}),
+    .B({16'h0000, register_data_2_out[15:0]}),
+    .C(register_data_2_out),
+    .S(write_data)
+);
+
+MUX Read_memory_mux(
+    .option(instruction_register[13:12]),
+    .A({24'h000000, read_data[7:0]}),
+    .B({16'h0000, read_data[15:0]}),
+    .C(read_data),
+    .S(read_data_out)
+);
 
 initial begin
     instruction_register = 32'h00000000;
@@ -170,7 +184,7 @@ always @(posedge clk ) begin
         if(IRWrite == 1'b1)begin
             instruction_register <= read_data;
         end
-        memory_register <= read_data;
+        memory_register <= read_data_out;
         register_data_1 <= register_data_1_out;
         register_data_2 <= register_data_2_out;
         alu_out_register <= alu_out;
