@@ -6,15 +6,17 @@ module Memory #(
     input wire reset,
     input wire memory_read,
     input wire memory_write,
+    input wire [1:0] option,
     input wire [31:0] address,
     input wire [31:0] write_data,
-    output wire [31:0] read_data
+    output reg [31:0] read_data
 );
 
 reg [31:0] memory [(MEMORY_SIZE/4)-1: 0];
+wire [31:0] buffer;
 integer i;
 
-assign read_data = (memory_read == 1'b1) ? memory[{2'b00, address[31:2]}] : 32'h00000000;
+assign buffer = (memory_read == 1'b1) ? memory[{2'b00, address[31:2]}] : 32'h00000000;
 
 initial begin
     `ifdef __ICARUS__
@@ -30,8 +32,24 @@ end
 
 always @(posedge clk) begin
     if(memory_write == 1'b1) begin
-        memory[{2'b00, address[31:2]}] <= write_data;
+        //memory[{2'b00, address[31:2]}] <= write_data;
+        if(option[0] == 1'b1) begin
+            memory[{2'b00, address[31:2]}][15:0] <= write_data[15:0];
+        end else if(option[1] == 1'b1) begin
+            memory[{2'b00, address[31:2]}] <= write_data;
+        end else begin
+            memory[{2'b00, address[31:2]}][7:0] <= write_data[7:0];
+        end
     end
+end
+
+always @(*) begin
+    case (option)
+        2'b00: read_data = {24'h000000 ,buffer[7:0]};
+        2'b01: read_data = {16'h0000 ,buffer[15:0]};
+        2'b10: read_data = buffer;
+        default: read_data = buffer;
+    endcase
 end
     
 endmodule
