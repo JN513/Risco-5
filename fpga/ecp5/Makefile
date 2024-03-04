@@ -12,7 +12,6 @@ all: ./build/out.bit
 ./build/out.json: main.v pinout.lpf buildFolder
 	yosys -p " \
 		read_verilog main.v; \
-		read_verilog ../../debug/clk_divider.v; \
 		read_verilog ../../debug/reset.v; \
 		read_verilog ../../src/core/*.v; \
 		read_verilog ../../src/peripheral/*.v; \
