@@ -137,6 +137,7 @@ always @(*) begin
         end
 
         DECODE: begin
+            alu_src_a = 2'b10;
             alu_src_b = 2'b10;
         end
 
@@ -177,8 +178,8 @@ always @(*) begin
         end
 
         JAL: begin
-            alu_src_a = 2'b00;
-            alu_src_b = 2'b11; // 01
+            alu_src_a = 2'b10;
+            alu_src_b = 2'b01; // 01
             pc_write = 1'b1;
             pc_source = 1'b1;
         end
@@ -196,8 +197,8 @@ always @(*) begin
         end
 
         JALR: begin
-            alu_src_a = 2'b00;
-            alu_src_b = 2'b11; // 01
+            alu_src_a = 2'b10;
+            alu_src_b = 2'b01; // 01
             pc_write = 1'b1;
             pc_source = 1'b1;
             is_immediate = 1'b1;

@@ -14,7 +14,7 @@ end
 
 always @(posedge clk) begin
     if(reset == 1'b1) begin
-        Output = BOOT_ADDRESS;
+        Output <= BOOT_ADDRESS;
     end else begin
         if(load == 1'b1) begin
             Output <= Input;

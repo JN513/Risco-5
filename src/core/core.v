@@ -47,7 +47,7 @@ wire [31:0] pc_output, pc_input, register_input,
     alu_input_a, alu_input_b, alu_out, immediate, 
     register_data_1_out, register_data_2_out;
 reg [31:0] instruction_register, memory_register, alu_out_register,
-    register_data_1, register_data_2;
+    register_data_1, register_data_2, pc_old;
 
 assign write_data = register_data_2_out;
 assign option = (lorD == 1'b0) ? 2'b10 : instruction_register[13:12];
@@ -55,9 +55,10 @@ assign option = (lorD == 1'b0) ? 2'b10 : instruction_register[13:12];
 initial begin
     instruction_register = 32'h00000000;
     memory_register = 32'h00000000;
-    register_data_1 <= 32'h00000000;
+    register_data_1 = 32'h00000000;
     register_data_2 = 32'h00000000;
     alu_out_register = 32'h00000000;
+    pc_old = 32'h00000000;
 end
 
 PC Pc(
@@ -86,7 +87,7 @@ MUX AluInputAMUX(
     .option(alu_src_a),
     .A(pc_output),
     .B(register_data_1),
-    .C(32'd0),
+    .C(pc_old),
     .S(alu_input_a)
 );
 
@@ -168,9 +169,11 @@ always @(posedge clk ) begin
         register_data_1 <= 32'h00000000;
         register_data_2 <= 32'h00000000;
         alu_out_register <= 32'h00000000;
+        pc_old <= 32'h00000000;
     end else begin
         if(IRWrite == 1'b1)begin
             instruction_register <= read_data;
+            pc_old <= pc_output;
         end
         memory_register <= read_data;
         register_data_1 <= register_data_1_out;
