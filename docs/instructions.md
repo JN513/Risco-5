@@ -16,6 +16,8 @@
 ### I
 
 - lw
+- lh
+- lb
 - addi
 - slli
 - slti
@@ -30,6 +32,8 @@
 ### S
 
 - sw
+- sh
+- sb
 
 ### SB
 
