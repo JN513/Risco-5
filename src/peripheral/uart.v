@@ -39,7 +39,7 @@ initial begin
 end
 
 always @(posedge clk ) begin
-    uart_tx_en <= 1'b1;
+    uart_tx_en <= 1'b0;
     tx_fifo_read <= 1'b0;
     tx_fifo_write <= 1'b0;
     rx_fifo_read <= 1'b0;
