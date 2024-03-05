@@ -2,6 +2,7 @@
 
 _start:
     li a5, 63;
+    li t1, 74;
 
     call gera_endereco;
     call gera_endereco_uart;
@@ -20,13 +21,13 @@ _start:
     j reset;
 
 check_uart_data:
-    lw t2, 3(a2);
+    lw t2, 0(a2);
     beq t2, zero, read_uart_data; # if t2 == 0 then target
 
     ret;
     
 read_uart_data:
-    lw t2, 0(a2);
+    lw t2, 3(a2);
     mv t1, t2;
 
     ret;
@@ -49,7 +50,6 @@ gera_endereco_uart:
     
 send_uart_data:
     # Envia dados pela uart
-    li t1, 74;
     sw t1, 0(a2)
 
     ret;
