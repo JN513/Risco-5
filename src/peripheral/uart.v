@@ -46,7 +46,6 @@ always @(posedge clk ) begin
     rx_fifo_write <= 1'b0;
 
     if(reset == 1'b1) begin
-        uart_tx_en <= 1'b0;
         uart_tx_data <= 8'h00;
         tx_fifo_write_data <= 8'h00;
         rx_fifo_write_data <= 8'h00;
@@ -57,6 +56,7 @@ always @(posedge clk ) begin
         end
 
         if(uart_tx_busy == 1'b0 && tx_fifo_empty == 1'b0) begin
+            uart_tx_en <= 1'b1;
             uart_tx_data <= tx_fifo_read_data;
             tx_fifo_read <= 1'b1;
         end
