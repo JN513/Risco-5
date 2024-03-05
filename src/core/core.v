@@ -149,7 +149,7 @@ ALU_Control ALU_Control(
     .aluop_out(aluop_out)
 );
 
-ALU Alu(
+Alu Alu(
     .operation(aluop_out),
     .ALU_in_X(alu_input_a),
     .ALU_in_Y(alu_input_b),

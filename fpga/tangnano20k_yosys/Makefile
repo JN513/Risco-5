@@ -1,10 +1,10 @@
 
 all: ./build/out.fs
 
-./build/out.fs: ./build/out.config
+./build/out.fs: ./build/out_pnr.json
 	gowin_pack -d GW2AR-LV18QN88C8/I7 ./build/out_pnr.json  -o ./build/out.fs
 
-./build/out.config: ./build/out.json
+./build/out_pnr.json: ./build/out.json
 	nextpnr-ecp5 --json ./build/out.json --write ./build/out_pnr.json \
 		--cst pinout.cst --device GW2AR-LV18QN88C8/I7 --lpf-allow-unconstrained
 
@@ -14,7 +14,7 @@ all: ./build/out.fs
 		read_verilog ../../debug/reset.v; \
 		read_verilog ../../src/core/*.v; \
 		read_verilog ../../src/peripheral/*.v; \
-		synth_gowin -json ./build/out.json \
+		synth_gowin -json ./build/out.json -abc9 \
 	"
 
 buildFolder:

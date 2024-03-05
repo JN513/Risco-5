@@ -1,4 +1,4 @@
-module ALU (
+module Alu (
     input wire [3:0] operation,
     input wire [31:0] ALU_in_X,
     input wire [31:0] ALU_in_Y,
