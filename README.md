@@ -2,7 +2,7 @@
 
 <center>
 
-![Logo do processador](docs/docs/imgs/risco5.jpeg)
+<img src="docs/docs/imgs/risco5.jpeg" alt="Logo do processador" width="300px">
 
 </center>
 
