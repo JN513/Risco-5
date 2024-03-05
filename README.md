@@ -1,10 +1,8 @@
 # RISCO 5
 
-<center>
-
+<p align="center">
 <img src="docs/docs/imgs/risco5.jpeg" alt="Logo do processador" width="300px">
-
-</center>
+</p>
 
 Processador [RISC-V](https://riscv.org/) de multi ciclo com implementação RV32I construído em alguns dias de folga.
 
