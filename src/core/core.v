@@ -97,7 +97,6 @@ MUX AluInputBMUX(
     .A(register_data_2),
     .B(32'd4),
     .C(immediate),
-    .D(32'd0),
     .S(alu_input_b)
 );
 
@@ -183,4 +182,20 @@ always @(posedge clk ) begin
     end
 end
     
+`ifdef RISCV_FORMAL
+    assign rvfi_rs1_addr = instruction_register[19:15]
+    assign rvfi_rs2_addr = instruction_register[24:20]
+    assign rvfi_rs1_rdata = register_data_1_out;
+    assign rvfi_rs2_rdata = register_data_2_out;
+    assign rvfi_rd_addr = instruction_register[11:7];
+    assign rvfi_rd_wdata = register_input;
+    assign rvfi_pc_rdata = pc_output;
+    assign rvfi_pc_wdata = pc_input;
+    assign rvfi_mem_addr = address;
+    assign rvfi_mem_rmask = {1'b0, option};
+    assign rvfi_mem_wmask = {1'b0, option};
+    assign rvfi_mem_rdata = read_data;
+    assign rvfi_mem_wdata = write_data;
+`endif
+
 endmodule
