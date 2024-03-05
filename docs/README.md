@@ -1,8 +1,14 @@
 # Documentação Risco 5
 
+<p align="center">
+<img src="docs/imgs/risco5.jpeg" alt="Logo do processador" width="300px">
+</p>
+
 Autor: Julio Nunes Avelar
 
-Licença: MIT
+Licença Hardware: [CERN-OHL-P-2.0](https://github.com/JN513/Risco-5/blob/main/LICENSE)
+
+Licença Software: [MIT](https://github.com/JN513/Risco-5/blob/main/software/LICENSE-MIT)
 
 Sinais e pinagem dos módulos: [signals.md](signals.md)
 
