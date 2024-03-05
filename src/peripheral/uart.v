@@ -14,7 +14,7 @@ module UART #(
     input wire write,
     input wire [31:0] address,
     input wire [31:0] write_data,
-    output wire [31:0] read_data
+    output reg [31:0] read_data
 );
 
 wire [PAYLOAD_BITS-1:0]  uart_rx_data, tx_fifo_read_data, 
@@ -25,7 +25,7 @@ reg uart_tx_en, tx_fifo_read, tx_fifo_write, rx_fifo_read, rx_fifo_write;
 reg [PAYLOAD_BITS-1:0] uart_tx_data, tx_fifo_write_data, 
     rx_fifo_write_data;
 
-assign read_data = (read == 1'b1) ? {24'h000000 , uart_rx_data} : 32'h00000000;
+//assign read_data = (read == 1'b1) ? {24'h000000 , uart_rx_data} : 32'h00000000;
 
 initial begin
     uart_tx_en = 1'b0;
@@ -59,6 +59,36 @@ always @(posedge clk ) begin
             uart_tx_en <= 1'b1;
             uart_tx_data <= tx_fifo_read_data;
             tx_fifo_read <= 1'b1;
+        end
+
+        if(rx_fifo_full == 1'b0 && uart_rx_valid == 1'b1) begin
+            rx_fifo_write_data <= uart_rx_data;
+            rx_fifo_write <= 1'b1;
+        end
+
+        if (read == 1'b1) begin
+            case (address[3:0])
+                3'b100: begin
+                    read_data <= {31'h00000000, rx_fifo_full};
+                end
+                3'b001: begin
+                    read_data <= {31'h00000000, tx_fifo_empty};
+                end
+                3'b010: begin
+                    read_data <= {31'h00000000, tx_fifo_full};
+                end
+                3'b010: begin
+                    read_data <= {24'h000000, rx_fifo_read_data};
+                    rx_fifo_read <= 1'b1;
+                end
+                3'b011: begin
+                    read_data <= {31'h00000000, rx_fifo_empty};
+                end
+                default: begin
+                    read_data <= {24'h000000, rx_fifo_read_data};
+                    rx_fifo_read <= 1'b1;
+                end
+            endcase
         end
     end
 end
