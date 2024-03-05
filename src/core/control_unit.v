@@ -205,11 +205,12 @@ always @(*) begin
         end
 
         AUIPC: begin
+            alu_src_a = 2'b10;
             alu_src_b = 2'b10;
         end
 
         LUI: begin
-            alu_src_a = 2'b10;
+            alu_src_a = 2'b11;
             alu_src_b = 2'b10;
         end
     endcase

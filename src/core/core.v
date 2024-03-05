@@ -88,6 +88,7 @@ MUX AluInputAMUX(
     .A(pc_output),
     .B(register_data_1),
     .C(pc_old),
+    .D(32'd0),
     .S(alu_input_a)
 );
 
