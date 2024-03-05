@@ -3,7 +3,8 @@ module UART #(
     parameter BIT_RATE =   9600,
     parameter PAYLOAD_BITS = 8,
     parameter DEVICE_START_ADDRESS = 32'h00001003,
-    parameter DEVICE_FINAL_ADDRESS = 32'h00001005
+    parameter DEVICE_FINAL_ADDRESS = 32'h00001005,
+    parameter BUFFER_SIZE = 8
 ) (
     input wire clk,
     input wire reset,
@@ -16,22 +17,79 @@ module UART #(
     output wire [31:0] read_data
 );
 
-wire [PAYLOAD_BITS-1:0]  uart_rx_data;
-wire uart_rx_valid, uart_rx_break, uart_tx_busy;
-reg uart_tx_en;
-reg [PAYLOAD_BITS-1:0] uart_tx_data;
+wire [PAYLOAD_BITS-1:0]  uart_rx_data, tx_fifo_read_data, 
+    rx_fifo_read_data;
+wire uart_rx_valid, uart_rx_break, uart_tx_busy, tx_fifo_empty,
+    rx_fifo_empty, tx_fifo_full, rx_fifo_full;
+reg uart_tx_en, tx_fifo_read, tx_fifo_write, rx_fifo_read, rx_fifo_write;
+reg [PAYLOAD_BITS-1:0] uart_tx_data, tx_fifo_write_data, 
+    rx_fifo_write_data;
 
 assign read_data = (read == 1'b1) ? {24'h000000 , uart_rx_data} : 32'h00000000;
 
 initial begin
     uart_tx_en = 1'b0;
+    tx_fifo_read = 1'b0;
+    tx_fifo_write = 1'b0;
+    rx_fifo_read = 1'b0;
+    rx_fifo_write = 1'b0;
     uart_tx_data = 8'h00;
+    tx_fifo_write_data = 8'h00;
+    rx_fifo_write_data = 8'h00;
 end
 
 always @(posedge clk ) begin
-    uart_tx_en <= write;
-    uart_tx_data <= write_data[7:0];
+    uart_tx_en <= 1'b1;
+    tx_fifo_read <= 1'b0;
+    tx_fifo_write <= 1'b0;
+    rx_fifo_read <= 1'b0;
+    rx_fifo_write <= 1'b0;
+
+    if(reset == 1'b1) begin
+        uart_tx_en <= 1'b0;
+        uart_tx_data <= 8'h00;
+        tx_fifo_write_data <= 8'h00;
+        rx_fifo_write_data <= 8'h00;
+    end else begin
+        if(write == 1'b1 && tx_fifo_full == 1'b0) begin
+            tx_fifo_write_data <= write_data[7:0];
+            tx_fifo_write <= 1'b1;
+        end
+
+        if(uart_tx_busy == 1'b0 && tx_fifo_empty == 1'b0) begin
+            uart_tx_data <= tx_fifo_read_data;
+            tx_fifo_read <= 1'b1;
+        end
+    end
 end
+
+FIFO #(
+    .DEPTH(BUFFER_SIZE),
+    .WIDTH(PAYLOAD_BITS)
+) TX_FIFO (
+    .clk(clk),
+    .reset(reset),
+    .write(tx_fifo_write),
+    .read(tx_fifo_read),
+    .write_data(tx_fifo_write_data),
+    .full(tx_fifo_full),
+    .empty(tx_fifo_empty),
+    .read_data(tx_fifo_read_data)
+);
+
+FIFO #(
+    .DEPTH(BUFFER_SIZE),
+    .WIDTH(PAYLOAD_BITS)
+) RX_FIFO (
+    .clk(clk),
+    .reset(reset),
+    .write(rx_fifo_write),
+    .read(rx_fifo_read),
+    .write_data(rx_fifo_write_data),
+    .full(rx_fifo_full),
+    .empty(rx_fifo_empty),
+    .read_data(rx_fifo_read_data)
+);
 
 // UART RX
 uart_tool_rx #(
