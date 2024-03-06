@@ -35,3 +35,5 @@ Em caso de dúvida ou sugestão fique a vontade para utilizar a seção [ISSUES]
 ## Licença
 
 A licença utilizada no projeto é a [MIT](https://opensource.org/license/mit/) que concede total liberdade para utilização do mesmo.
+
+Autor da logo: [Mateus luck](https://www.instagram.com/mateusluck/)

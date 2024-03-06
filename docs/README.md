@@ -6,6 +6,8 @@
 
 Autor: Julio Nunes Avelar
 
+Autor da logo: [Mateus luck](https://www.instagram.com/mateusluck/)
+
 Licença Hardware: [CERN-OHL-P-2.0](https://github.com/JN513/Risco-5/blob/main/LICENSE)
 
 Licença Software: [MIT](https://github.com/JN513/Risco-5/blob/main/software/LICENSE-MIT)
