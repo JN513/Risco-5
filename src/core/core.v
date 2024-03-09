@@ -9,7 +9,7 @@ module Core #(
     output wire memory_read,
     output wire memory_write,
     output wire [1:0] option,
-    input wire [31:0] read_data,
+    input  wire [31:0] read_data,
     output wire [31:0] address,
     output wire [31:0] write_data
 

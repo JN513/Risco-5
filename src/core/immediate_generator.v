@@ -4,23 +4,34 @@ module Immediate_Generator (
 );
 
 
+localparam LW_OPCODE        = 7'b0000011;
+localparam SW_OPCODE        = 7'b0100011;
+localparam JAL_OPCODE       = 7'b1101111;
+localparam LUI_OPCODE       = 7'b0110111;
+localparam CSR_OPCODE       = 7'b1110011;
+localparam JALR_OPCODE      = 7'b1100111;
+localparam AUIPC_OPCODE     = 7'b0010111;
+localparam BRANCH_OPCODE    = 7'b1100011;
+localparam IMMEDIATE_OPCODE = 7'b0010011;
+
+
 always @(*) begin
     case (instruction[6:0])
-        7'b1100011: // SB type
+        BRANCH_OPCODE: // SB type
             case (instruction[14:12])
                 3'b110: immediate = {19'h00000, instruction[31], instruction[7], instruction[30:25], instruction[11:8], 1'b0};
                 3'b111: immediate = {19'h00000, instruction[31], instruction[7], instruction[30:25], instruction[11:8], 1'b0};
                 default: immediate = {{19{instruction[31]}}, instruction[31], instruction[7], instruction[30:25], instruction[11:8], 1'b0};
             endcase
-        7'b1101111: // UJ type JAL
+        JAL_OPCODE: // UJ type JAL
             immediate = {{11{instruction[31]}}, instruction[31], instruction[19:12], instruction[20], instruction[30:21], 1'b0};
-        7'b0010111: // AUIPC U type
+        AUIPC_OPCODE: // AUIPC U type
             immediate = {instruction[31:12], 12'h000};
-        7'b0110111: // LUI U type
+        LUI_OPCODE: // LUI U type
             immediate = {instruction[31:12], 12'h000};
-        7'b0000011: // lw instruction 
+        LW_OPCODE: // lw instruction 
             immediate = {{20{instruction[31]}}, instruction[31:20]};
-        7'b0010011: // I type instruction
+        IMMEDIATE_OPCODE: // I type instruction
             case (instruction[14:12])
                 3'b001: immediate = {{27{instruction[24]}}, instruction[24:20]};
                 3'b011: immediate = {20'h00000, instruction[31:20]};
@@ -32,11 +43,11 @@ always @(*) begin
                 end
                 default: immediate = {{20{instruction[31]}}, instruction[31:20]};
             endcase
-        7'b1100111: // I type instruction JAL
+        JALR_OPCODE: // I type instruction JALR
             immediate = {{20{instruction[31]}}, instruction[31:20]};
-        7'b1110011: // I type instruction  CSR
+        CSR_OPCODE: // I type instruction  CSR
             immediate = {{20{instruction[31]}}, instruction[31:20]};
-        7'b0100011: // sw instruction  (S type)
+        SW_OPCODE: // sw instruction  (S type)
             immediate = {{20{instruction[31]}}, instruction[31:25], instruction[11:7]};
         default: immediate = 32'h00000000;
     endcase
