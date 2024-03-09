@@ -27,6 +27,8 @@ check_uart_data:
     ret;
     
 read_uart_data:
+    li 73
+    sw t3, 0(a2)
     lw t2, 3(a2);
     mv t1, t2;
 
