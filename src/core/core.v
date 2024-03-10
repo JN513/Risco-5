@@ -40,12 +40,13 @@ module Core #(
 );
 
 wire lorD, IRWrite, zero, reg_write, pc_load, and_zero_out,
-    pc_write_cond, pc_write, memory_to_reg, is_immediate;
-wire [1:0] alu_src_a, alu_src_b, aluop;
+    pc_write_cond, pc_write, is_immediate, csr_write_enable;
+wire [1:0] alu_src_a, alu_src_b, aluop, memory_to_reg;
 wire [3:0] aluop_out;
 wire [31:0] pc_output, pc_input, register_input,
     alu_input_a, alu_input_b, alu_out, immediate, 
-    register_data_1_out, register_data_2_out;
+    register_data_1_out, register_data_2_out,
+    csr_data_out;
 reg [31:0] instruction_register, memory_register, alu_out_register,
     register_data_1, register_data_2, pc_old;
 
@@ -77,9 +78,10 @@ MUX MemoryAddressMUX(
 );
 
 MUX MemoryDataMUX(
-    .option({1'b0, memory_to_reg}),
+    .option(memory_to_reg),
     .A(alu_out_register),
     .B(memory_register),
+    .C(csr_data_out),
     .S(register_input)
 );
 
@@ -138,7 +140,8 @@ Control_Unit Control_Unit(
     .alu_src_b(alu_src_b),
     .alu_src_a(alu_src_a),
     .reg_write(reg_write),
-    .is_immediate(is_immediate)
+    .is_immediate(is_immediate),
+    .csr_write_enable(csr_write_enable)
 );
 
 ALU_Control ALU_Control(
@@ -160,6 +163,17 @@ Alu Alu(
 Immediate_Generator Immediate_Generator(
     .instruction(instruction_register),
     .immediate(immediate)
+);
+
+CSR_Unit CSR_Unit(
+    .clk(clk),
+    .reset(reset),
+    .func3(instruction_register[14:12]),
+    .csr_immediate(instruction_register[19:15]),
+    .csr_write_enable(csr_write_enable),
+    .csr_address(immediate[11:0]),
+    .csr_data_in(register_data_1),
+    .csr_data_out(csr_data_out)
 );
 
 always @(posedge clk ) begin

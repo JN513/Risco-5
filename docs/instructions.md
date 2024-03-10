@@ -28,6 +28,13 @@
 - ori
 - andi
 - jalr
+- CSRR
+- CSRRW
+- CSRRS
+- CSRRC
+- CSRRWI
+- CSRRSI
+- CSRRCI
 
 ### S
 

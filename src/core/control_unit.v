@@ -10,29 +10,31 @@ module Control_Unit (
     output reg memory_read,
     output reg is_immediate,
     output reg memory_write,
-    output reg memory_to_reg,
     output reg pc_write_cond,
+    output reg csr_write_enable,
     output reg [1:0] aluop,
     output reg [1:0] alu_src_a,
-    output reg [1:0] alu_src_b
+    output reg [1:0] alu_src_b,
+    output reg [1:0] memory_to_reg
 );
 
 // machine states
-localparam FETCH    = 4'b0000;
-localparam DECODE   = 4'b0001;
-localparam MEMADR   = 4'b0010;
-localparam MEMREAD  = 4'b0011;
-localparam MEMWB    = 4'b0100;
-localparam MEMWRITE = 4'b0101;
-localparam EXECUTER = 4'b0110;
-localparam ALUWB    = 4'b0111;
-localparam EXECUTEI = 4'b1000;
-localparam JAL      = 4'b1001;
-localparam BEQ      = 4'b1010;
-localparam JALR     = 4'b1011;
-localparam AUIPC    = 4'b1100;
-localparam LUI      = 4'b1101;
-localparam JALR_PC  = 4'b1110;
+localparam FETCH      = 4'b0000;
+localparam DECODE     = 4'b0001;
+localparam MEMADR     = 4'b0010;
+localparam MEMREAD    = 4'b0011;
+localparam MEMWB      = 4'b0100;
+localparam MEMWRITE   = 4'b0101;
+localparam EXECUTER   = 4'b0110;
+localparam ALUWB      = 4'b0111;
+localparam EXECUTEI   = 4'b1000;
+localparam JAL        = 4'b1001;
+localparam BEQ        = 4'b1010;
+localparam JALR       = 4'b1011;
+localparam AUIPC      = 4'b1100;
+localparam LUI        = 4'b1101;
+localparam JALR_PC    = 4'b1110;
+localparam EXECUTECSR = 4'b1111;
 
 // Instruction Opcodes
 localparam LW     = 7'b0000011;
@@ -44,6 +46,7 @@ localparam BEQI   = 7'b1100011;
 localparam JALRI  = 7'b1100111;
 localparam AUIPCI = 7'b0010111;
 localparam LUII   = 7'b0110111;
+localparam CSR    = 7'b1110011;
 
 reg [3:0] state, nextstate;
 
@@ -55,7 +58,7 @@ initial begin
     lorD = 1'b0;
     memory_read = 1'b0;
     memory_write = 1'b0;
-    memory_to_reg = 1'b0;
+    memory_to_reg = 2'b00;
     ir_write = 1'b0;
     pc_source = 1'b0;
     aluop = 2'b00;
@@ -89,6 +92,7 @@ always @(*) begin
                 AUIPCI: nextstate = AUIPC;
                 LUII: nextstate = LUI;
                 JALRI: nextstate = JALR_PC;
+                CSR: nextstate = EXECUTECSR;
             endcase
         end
         MEMADR: begin
@@ -109,6 +113,7 @@ always @(*) begin
         JALR: nextstate = ALUWB;
         AUIPC: nextstate = ALUWB;
         LUI: nextstate = ALUWB;
+        EXECUTECSR: nextstate = FETCH;
         default: nextstate = FETCH;
     endcase
 end
@@ -119,7 +124,7 @@ always @(*) begin
     lorD = 1'b0;
     memory_read = 1'b0;
     memory_write = 1'b0;
-    memory_to_reg = 1'b0;
+    memory_to_reg = 2'b00;
     ir_write = 1'b0;
     pc_source = 1'b0;
     aluop = 2'b00;
@@ -127,6 +132,7 @@ always @(*) begin
     alu_src_a = 2'b00;
     reg_write = 1'b0;
     is_immediate = 1'b0;
+    csr_write_enable = 1'b0;
 
     case (state)
         FETCH: begin
@@ -153,7 +159,7 @@ always @(*) begin
 
         MEMWB: begin
             reg_write = 1'b1;
-            memory_to_reg = 1'b1;
+            memory_to_reg = 2'b01;
         end
 
         MEMWRITE: begin
@@ -212,6 +218,12 @@ always @(*) begin
         LUI: begin
             alu_src_a = 2'b11;
             alu_src_b = 2'b10;
+        end
+
+        EXECUTECSR: begin
+            reg_write = 1'b1;
+            memory_to_reg = 2'b10;
+            csr_write_enable = 1'b1;
         end
     endcase
 end
