@@ -16,6 +16,7 @@
         <File path="../../src/core/mux.v" type="file.verilog" enable="1"/>
         <File path="../../src/core/pc.v" type="file.verilog" enable="1"/>
         <File path="../../src/core/registers.v" type="file.verilog" enable="1"/>
+        <File path="../../src/core/csr_unit.v" type="file.verilog" enable="1"/>
         <File path="../../src/peripheral/fifo.v" type="file.verilog" enable="1"/>
         <File path="../../src/peripheral/bus.v" type="file.verilog" enable="1"/>
         <File path="../../src/peripheral/gpio.v" type="file.verilog" enable="1"/>

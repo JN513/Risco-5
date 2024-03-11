@@ -11,9 +11,9 @@ assign resetn_o = ~reset_o;
 reg [1:0] state;
 reg [5:0] counter;
 
-parameter INIT = 2'b00;
-parameter RESET_COUNTER = 2'b01;
-parameter IDLE = 2'b10;
+localparam INIT = 2'b00;
+localparam RESET_COUNTER = 2'b01;
+localparam IDLE = 2'b10;
 
 initial begin
     state = 2'b01;

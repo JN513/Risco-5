@@ -33,11 +33,11 @@ end
 always @(posedge clk) begin
     if(memory_write == 1'b1) begin
         if(option[0] == 1'b1) begin
-            memory[{2'b00, address[31:2]}][15:0] <= write_data[15:0];
+            memory[{2'b00, address[31:2]}] <= {buffer[31:16], write_data[15:0]};
         end else if(option[1] == 1'b1) begin
             memory[{2'b00, address[31:2]}] <= write_data;
         end else begin
-            memory[{2'b00, address[31:2]}][7:0] <= write_data[7:0];
+            memory[{2'b00, address[31:2]}] <= {buffer[31:8], write_data[7:0]};;
         end
     end
 end
