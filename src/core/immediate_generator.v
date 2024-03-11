@@ -46,7 +46,7 @@ always @(*) begin
         JALR_OPCODE: // I type instruction JALR
             immediate = {{20{instruction[31]}}, instruction[31:20]};
         CSR_OPCODE: // I type instruction  CSR
-            immediate = {{20{instruction[31]}}, instruction[31:20]};
+            immediate = {20'h00000, instruction[31:20]};
         SW_OPCODE: // sw instruction  (S type)
             immediate = {{20{instruction[31]}}, instruction[31:25], instruction[11:7]};
         default: immediate = 32'h00000000;
