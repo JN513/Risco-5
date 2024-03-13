@@ -9,7 +9,7 @@ module FIFO #(
     input wire [WIDTH-1:0] write_data,
     output wire full,
     output wire empty,
-    output reg [WIDTH-1:0] read_data
+    output wire [WIDTH-1:0] read_data
 );
 
 reg [WIDTH-1:0] memory[DEPTH-1:0];
