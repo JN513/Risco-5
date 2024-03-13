@@ -19,6 +19,7 @@ reg [5:0] write_ptr;
 assign empty = (write_ptr == read_ptr) ? 1'b1 : 1'b0;
 assign full = (write_ptr == read_ptr + 1'b1 || 
     (write_ptr == 6'd0 && read_ptr == (DEPTH - 1'b1))) ? 1'b1 : 1'b0;
+assign read_data = memory[read_ptr];
 
 always @(posedge clk) begin
     if(reset == 1'b1) begin
@@ -30,7 +31,7 @@ always @(posedge clk) begin
             write_ptr <= (write_ptr == DEPTH-1) ? 6'd0 : write_ptr + 1'b1;
         end
         if (read && empty == 1'b0) begin
-            read_data <= memory[read_ptr];
+            //read_data <= memory[read_ptr];
             read_ptr <= (read_ptr == DEPTH-1) ? 'd0 : read_ptr + 1'b1;
         end
     end

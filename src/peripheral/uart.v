@@ -24,7 +24,7 @@ wire uart_rx_valid, uart_rx_break, uart_tx_busy, tx_fifo_empty,
 reg uart_tx_en, tx_fifo_read, tx_fifo_write, rx_fifo_read, 
     rx_fifo_write, buffer_full;
 reg [PAYLOAD_BITS-1:0] uart_tx_data, tx_fifo_write_data, 
-    rx_fifo_write_data, read_buffer;
+    rx_fifo_write_data;
 
 initial begin
     buffer_full = 1'b0;
@@ -36,7 +36,6 @@ initial begin
     uart_tx_data = 8'h00;
     tx_fifo_write_data = 8'h00;
     rx_fifo_write_data = 8'h00;
-    read_buffer = 8'h00;
 end
 
 always @(posedge clk ) begin
@@ -47,7 +46,6 @@ always @(posedge clk ) begin
     rx_fifo_write <= 1'b0;
 
     if(reset == 1'b1) begin
-        read_buffer <= 8'h00;
         buffer_full <= 1'b0;
         uart_tx_data <= 8'h00;
         tx_fifo_write_data <= 8'h00;
@@ -69,20 +67,14 @@ always @(posedge clk ) begin
             rx_fifo_write <= 1'b1;
         end
 
-        if(rx_fifo_empty == 1'b0 && buffer_full == 1'b0) begin
-            buffer_full <= 1'b1;
+        if(read == 1'b1 && rx_fifo_empty == 1'b0) begin
             rx_fifo_read <= 1'b1;
-            read_buffer <= rx_fifo_read_data;
-        end
-
-        if(read == 1'b1 && buffer_full == 1'b0) begin
-            buffer_full <= 1'b0;
         end
     end
 end
 
 always @(*) begin
-    case (address[3:0])
+    case (address[4:2])
         3'b100: begin
             read_data = {31'h00000000, rx_fifo_full};
         end
@@ -90,13 +82,13 @@ always @(*) begin
             read_data = {31'h00000000, tx_fifo_empty};
         end
         3'b110: begin
-            read_data = {24'h000000, read_buffer};
+            read_data = {24'h000000, rx_fifo_read_data};
         end
         3'b011: begin
             read_data = {31'h00000000, rx_fifo_empty};
         end
         default: begin
-            read_data = {24'h000000, read_buffer};
+            read_data = {24'h000000, rx_fifo_read_data};
         end
     endcase
 end
