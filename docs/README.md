@@ -53,9 +53,13 @@ Os exemplos estão disponíveis no diretório FPGA. Para FPGAs sipeed (Tangnano 
 
 ## Maquina de estados da unidade de controle e Esquemático
 
+**Versão PDF dos diagramas**
+[Maquina de estados da unidade de controle](docs/documents/risco5_state_machine.jpg)
+[Esquemático do processador](docs/documents/risco5_datapath.pdf)
+
 #### Maquina de estados da unidade de controle
 
-![Maquina de estados da unidade de controle](docs/imgs/risco5_state_machine.jpg)
+![Maquina de estados da unidade de controle](docs/imgs/risco5_state_machine.pdf)
 
 #### Esquemático do processador
 
