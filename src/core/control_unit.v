@@ -66,6 +66,7 @@ initial begin
     alu_src_a = 1'b0;
     reg_write = 1'b0;
     is_immediate = 1'b0;
+    csr_write_enable = 1'b0;
 end
 
 always @(posedge clk ) begin

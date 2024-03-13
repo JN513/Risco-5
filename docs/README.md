@@ -59,6 +59,10 @@ Os exemplos estão disponíveis no diretório FPGA. Para FPGAs sipeed (Tangnano 
 
 #### Esquemático do processador
 
-![Esquemático do processador](docs/imgs/esquematico.png)
+**Esquemático atual**
+![Esquemático atual do processador](docs/imgs/risco5_datapath.png)
+
+**Esquemático Inicial**
+![Esquemático antigo do processador](docs/imgs/esquematico.png)
 
 ## Debug

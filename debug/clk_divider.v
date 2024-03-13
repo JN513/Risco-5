@@ -38,7 +38,7 @@ always @(posedge clk ) begin
         if(clk_counter == 0) begin // Gera a parte alta do ciclo de clock de saida
             clk_o_auto <= 1'b1;
             clk_counter <= clk_counter + 1'b1;
-        end else if(clk_counter == divider /2) begin // Inverte a saida do clock para a parte baixa
+        end else if(clk_counter == {1'b0, divider[COUNTER_BITS-1:1]}) begin // Inverte a saida do clock para a parte baixa
             clk_o_auto <= 1'b0;
             clk_counter <= clk_counter + 1'b1;
         end else begin
