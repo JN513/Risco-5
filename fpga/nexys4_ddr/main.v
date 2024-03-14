@@ -1,16 +1,13 @@
 module top (
     input wire clk,
-    input wire reset,
+    input wire CPU_RESETN,
     input wire rx,
     output wire tx,
-    output wire [3:0]led,
-    inout [5:0]gpios
+    output wire [7:0]LED,
+    inout [7:0]gpio
 );
 
 wire reset_o;
-wire [7:0] leds;
-
-assign led = leds[3:0];
 
 ResetBootSystem #(
     .CYCLES(20)
@@ -24,14 +21,14 @@ Risco_5_SOC #(
     .BIT_RATE(115200),
     .MEMORY_SIZE(2048),
     .MEMORY_FILE("../../software/memory/fpga_test_3.hex"),
-    .GPIO_WIDHT(6)
+    .GPIO_WIDHT(8)
 ) SOC(
     .clk(clk),
     .reset(reset_o),
-    .leds(leds),
+    .leds(LED),
     .rx(rx),
     .tx(tx),
-    .gpios(gpios)
+    .gpios(gpio)
 );
 
 

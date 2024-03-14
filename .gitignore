@@ -13,3 +13,5 @@ fpga/digilent_arty/digilent_arty_route.dcp
 fpga/digilent_arty/clockInfo.txt
 fpga/digilent_arty/digilent_arty_place.dcp
 env/
+fpga/digilent_arty/tight_setup_hold_pins.txt
+fpga/nexys4_ddr/clockInfo.txt

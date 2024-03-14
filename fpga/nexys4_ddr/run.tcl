@@ -20,7 +20,8 @@ read_verilog ../../src/peripheral/uart_tx.v
 read_verilog ../../src/peripheral/uart.v
 read_verilog ../../src/peripheral/fifo.v
 
-read_xdc "digilent_arty.xdc"
+read_xdc "digilent_nexys4_ddr.xdc"
+set_property PROCESSING_ORDER EARLY [get_files digilent_nexys4_ddr.xdc]
 
 # synth
 synth_design -top "top" -part "xc7a100tcsg324-1"

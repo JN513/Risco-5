@@ -8,7 +8,7 @@ always #1 clk = ~clk;
 
 Risco_5_SOC #(
     .CLOCK_FREQ(25000000),
-    .BIT_RATE(9600),
+    .BIT_RATE(115200),
     .MEMORY_SIZE(4096),
     .MEMORY_FILE("software/memory/generic.hex")
 ) SOC(
@@ -27,7 +27,9 @@ initial begin
     reset = 1'b1;
     #6
     reset = 1'b0;
-    #560
+    //#560
+
+    #1200
 
     $finish;
 end
