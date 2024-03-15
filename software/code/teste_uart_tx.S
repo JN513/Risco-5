@@ -7,12 +7,14 @@ _start:
     add a3, a1, a2       # Soma a1 e a2, armazena o resultado em a3
     addi a4, x0, 2047
     add a4, a4, a4
-    addi a4, a4, 6
+    addi a4, a4, 5
+
+    li t1, 74;
     
     sw a3, 68(x0)
     sw a2, 72(x0)
     sw a1, 76(x0)
-    sw a3, 0(a4)
+    sw t1, 0(a4)
 
     lw a1, 68(x0)
     lw a3, 72(x0)

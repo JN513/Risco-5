@@ -21,13 +21,15 @@ _start:
     j reset;
 
 check_uart_data:
+    li t3, 73;
+    sw t3, 0(a2)
     lw t2, 0(a2);
     beq t2, zero, read_uart_data; # if t2 == 0 then target
 
     ret;
     
 read_uart_data:
-    li 73
+    li t3, 73;
     sw t3, 0(a2)
     lw t2, 3(a2);
     mv t1, t2;

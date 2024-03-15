@@ -15,3 +15,12 @@ fpga/digilent_arty/digilent_arty_place.dcp
 env/
 fpga/digilent_arty/tight_setup_hold_pins.txt
 fpga/nexys4_ddr/clockInfo.txt
+fpga/nexys4_ddr/digilent_nexys4ddr_utilization_place.rpt
+fpga/nexys4_ddr/digilent_nexys4ddr_utilization_hierarchical_place.rpt
+fpga/nexys4_ddr/digilent_nexys4ddr_io.rpt
+fpga/nexys4_ddr/digilent_nexys4ddr_control_sets.rpt
+fpga/nexys4_ddr/digilent_nexys4ddr_clock_utilization.rpt
+fpga/nexys4_ddr/digilent_nexys4ddr_drc.rpt
+fpga/nexys4_ddr/digilent_nexys4ddr_power.rpt
+fpga/nexys4_ddr/digilent_nexys4ddr_route_status.rpt
+fpga/nexys4_ddr/digilent_nexys4ddr_timing.rpt

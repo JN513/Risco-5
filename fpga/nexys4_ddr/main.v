@@ -8,6 +8,9 @@ module top (
 );
 
 wire reset_o;
+wire [7:0] led;
+
+assign LED = ~led;
 
 ResetBootSystem #(
     .CYCLES(20)
@@ -25,7 +28,7 @@ Risco_5_SOC #(
 ) SOC(
     .clk(clk),
     .reset(reset_o),
-    .leds(LED),
+    .leds(led),
     .rx(rx),
     .tx(tx),
     .gpios(gpio)
