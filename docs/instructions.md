@@ -8,7 +8,7 @@
 - slt
 - sltu
 - xor
-- slr
+- srl
 - sra
 - or
 - and
@@ -23,7 +23,7 @@
 - slti
 - sltiu
 - xori
-- slri
+- srli
 - srai
 - ori
 - andi
