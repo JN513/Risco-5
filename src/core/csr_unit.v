@@ -9,10 +9,15 @@ module CSR_Unit (
     output reg [31:0] csr_data_out,
 
     // Interrupções
-    input wire irq_external,
-    input wire irq_timer,
-    input wire irq_software,
-    input wire [15:0] irq_fast
+    input wire instruction_request_external,
+    input wire instruction_request_timer,
+    input wire instruction_request_software,
+    input wire [15:0] instruction_request_fast,
+
+    input wire save_pc,
+    input wire [31:0] pc_value,
+
+    output reg interrupt_on_hold
 );
 
 // Address of Machine Information CSRs
@@ -155,6 +160,7 @@ end
 // verificar mcause, mepc
 // Interruption
 
+
 always @(posedge clk ) begin
     if(reset == 1'b1) begin
         csr_mip_mfip <= 16'b0;
@@ -162,10 +168,10 @@ always @(posedge clk ) begin
         csr_mip_mtip <= 1'b0;
         csr_mip_msip <= 1'b0;
     end else begin
-        csr_mip_mfip <= irq_fast;
-        csr_mip_meip <= irq_external;
-        csr_mip_mtip <= irq_timer;
-        csr_mip_msip <= irq_software;
+        csr_mip_mfip <= instruction_request_fast;
+        csr_mip_meip <= instruction_request_external;
+        csr_mip_mtip <= instruction_request_timer;
+        csr_mip_msip <= instruction_request_software;
     end
 end
 
@@ -216,6 +222,11 @@ assign csr_mstatus = {
     3'b000
 };
 
+// assign interrupt_on_hold = (csr_mie_meie & csr_mip_meip) |
+//     (csr_mie_mtie & csr_mip_mtip) |
+//     (csr_mie_msie & csr_mip_msip) |
+//     (|(csr_mie_mfie & csr_mip_mfip));
+
 assign csr_mie = {
     csr_mie_mfie,   // M-mode Designated for platform use (irq fast)
     4'b0,
@@ -226,6 +237,20 @@ assign csr_mie = {
     csr_mie_msie,   // M-mode Software Interrupt Enable
     3'b0
 };
+
+/*
+always @(posedge clk ) begin
+    if(csr_mie_mfie && csr_mip_mfip) begin
+        interrupt_on_hold <= 1'b1;
+    end else if(csr_mie_meie && csr_mip_meip) begin
+        interrupt_on_hold <= 1'b1;
+    end else if(csr_mie_mtie && csr_mip_mtip) begin
+        interrupt_on_hold <= 1'b1;
+    end else if(csr_mie_msie && csr_mip_msip) begin
+        interrupt_on_hold <= 1'b1;
+    end
+end
+*/
 
 assign csr_mip = {csr_mip_mfip, 4'b0, csr_mip_meip, 3'b0, csr_mip_mtip, 3'b0, csr_mip_msip, 3'b0};
 
