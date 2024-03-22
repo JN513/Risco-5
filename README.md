@@ -23,7 +23,7 @@ O diretório tests possui alguns testes construídos utilizando o [Iverilog](htt
 - Baby Risco 5 - RV16I: Ainda especulativo
 - Pequeno Risco 5 - RV32I: [https://github.com/JN513/Pequeno-Risco-5/](https://github.com/JN513/Pequeno-Risco-5/)
 - Risco 5 - RV32I: [https://github.com/JN513/Risco-5](https://github.com/JN513/Risco-5)
-- Grande Risco 5 - RV32I: Ainda especulativo
+- Grande Risco 5 - RV32I: [https://github.com/JN513/Grande-Risco-5](https://github.com/JN513/Grande-Risco-5)
 - Risco 5 bodybuilder - RV64I: Ainda especulativo
 
 ## Dúvidas e sugestões
