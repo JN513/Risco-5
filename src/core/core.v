@@ -8,7 +8,7 @@ module Core #(
     // Memory BUS
     output wire memory_read,
     output wire memory_write,
-    output wire [1:0] option,
+    output wire [2:0] option,
     input  wire [31:0] read_data,
     output wire [31:0] address,
     output wire [31:0] write_data,
@@ -57,7 +57,7 @@ reg [31:0] instruction_register, memory_register, alu_out_register,
     register_data_1, register_data_2, pc_old;
 
 assign write_data = register_data_2_out;
-assign option = (lorD == 1'b0) ? 2'b10 : instruction_register[13:12];
+assign option = (lorD == 1'b0) ? 3'b010 : instruction_register[14:12];
 
 initial begin
     instruction_register = 32'h00000000;

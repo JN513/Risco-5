@@ -17,7 +17,7 @@ module Risco_5_SOC #(
 wire memory_read, memory_write, slave_read, slave_write,
     slave1_read, slave1_write, slave2_read, slave2_write,
     slave3_read, slave3_write;
-wire [1:0] option;
+wire [2:0] option;
 wire [31:0] address, write_data, read_data,
     slave_address, slave_write_data, slave_read_data,
     slave1_address, slave1_write_data, slave1_read_data,

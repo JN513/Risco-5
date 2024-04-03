@@ -6,7 +6,7 @@ module Memory #(
     input wire reset,
     input wire memory_read,
     input wire memory_write,
-    input wire [1:0] option,
+    input wire [2:0] option,
     input wire [31:0] address,
     input wire [31:0] write_data,
     output reg [31:0] read_data
@@ -44,9 +44,11 @@ end
 
 always @(*) begin
     case (option)
-        2'b00: read_data = {24'h000000 ,buffer[7:0]};
-        2'b01: read_data = {16'h0000 ,buffer[15:0]};
-        2'b10: read_data = buffer;
+        3'b000: read_data = {24'h000000 ,buffer[7:0]};
+        3'b001: read_data = {16'h0000 ,buffer[15:0]};
+        3'b010: read_data = buffer;
+        3'b100: read_data = {{24{buffer[7]}}, buffer[7:0]};
+        3'b101: read_data = {{16{buffer[15]}}, buffer[15:0]};
         default: read_data = buffer;
     endcase
 end

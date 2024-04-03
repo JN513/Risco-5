@@ -23,9 +23,9 @@ assign ZR = ~( |ALU_out_S );
 always @(*) begin
     case(operation)
         AND: // AND
-            ALU_out_S = ALU_in_X & ALU_in_Y ; 
+            ALU_out_S = ALU_in_X & ALU_in_Y; 
         OR: // OR
-            ALU_out_S = ALU_in_X | ALU_in_Y ;
+            ALU_out_S = ALU_in_X | ALU_in_Y;
         SUM: // Adição
             ALU_out_S = ALU_in_X + ALU_in_Y;
         SUB: // Subtração

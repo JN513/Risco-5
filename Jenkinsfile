@@ -66,7 +66,7 @@ pipeline {
                     steps {
                         sh 'rm -rf Risco-5/impl/pnr'
                         sh 'mkdir -p Risco-5/impl/pnr'
-                        //sh 'cd Risco-5 && /eda/gowin/IDE/bin/gw_sh fpga/tangnano20k/run.tcl'
+                        sh 'cd Risco-5/fpga/tangnano20k/ && /eda/gowin/IDE/bin/gw_sh run.tcl'
                     }
                 }
 
@@ -107,7 +107,7 @@ pipeline {
                         script {
                             lock('nexys4'){
                                 echo 'FPGA Nexys 4 Broqueada'
-                                sh 'cd Risco-5/fpga/nexys4_ddr && /eda/oss-cad-suite/bin/openFPGALoader -b nexys_a7_100 --busdev-num 002:012 ./build/out.bit'
+                                sh 'cd Risco-5/fpga/nexys4_ddr && /eda/oss-cad-suite/bin/openFPGALoader -b nexys_a7_100 ./build/out.bit'
                             }
                         }
                     }
