@@ -44,11 +44,11 @@ end
 
 always @(*) begin
     case (option)
-        3'b000: read_data = {24'h000000 ,buffer[7:0]};
-        3'b001: read_data = {16'h0000 ,buffer[15:0]};
+        3'b000: read_data = {{24{buffer[7]}}, buffer[7:0]};
+        3'b001: read_data = {{16{buffer[15]}}, buffer[15:0]};
+        3'b100: read_data = {24'h000000 ,buffer[7:0]};
+        3'b101: read_data = {16'h0000 ,buffer[15:0]};
         3'b010: read_data = buffer;
-        3'b100: read_data = {{24{buffer[7]}}, buffer[7:0]};
-        3'b101: read_data = {{16{buffer[15]}}, buffer[15:0]};
         default: read_data = buffer;
     endcase
 end
