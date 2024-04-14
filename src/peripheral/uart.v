@@ -2,8 +2,8 @@ module UART #(
     parameter CLOCK_FREQ = 25000000,
     parameter BIT_RATE =   9600,
     parameter PAYLOAD_BITS = 8,
-    parameter DEVICE_START_ADDRESS = 32'h00001003,
-    parameter DEVICE_FINAL_ADDRESS = 32'h00001005,
+    parameter DEVICE_START_ADDRESS = 32'h00002003,
+    parameter DEVICE_FINAL_ADDRESS = 32'h000023BA,
     parameter BUFFER_SIZE = 8
 ) (
     input wire clk,

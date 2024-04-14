@@ -20,10 +20,7 @@ _start:
 
 gera_endereco:
     # Calcula o endereço dos leds
-    li a4, 2047;
-    add a4, a4, a4;
-    addi a4, a4, 2;
-
+    li a4, 0x2001;
     ret;
     
 show_all:
