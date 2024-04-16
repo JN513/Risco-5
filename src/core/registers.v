@@ -7,7 +7,8 @@ module Registers (
     input wire [4:0] writeRegister,
     input wire [31:0] writeData,
     output wire [31:0] readData1,
-    output wire [31:0] readData2
+    output wire [31:0] readData2,
+    output wire [31:0] readDataRD
 );
 
 reg [31:0] registers[0:31];
@@ -16,8 +17,9 @@ initial begin
     registers[0] = 32'h00000000;
 end
 
-assign readData1 = registers[readRegister1];
-assign readData2 = registers[readRegister2];
+assign readData1  = registers[readRegister1];
+assign readData2  = registers[readRegister2];
+assign readDataRD = registers[writeRegister];
 
 always @(posedge clk) begin
     if(reset == 1'b1) begin
@@ -30,15 +32,15 @@ always @(posedge clk) begin
 end
 
 `ifdef __ICARUS__
-wire [31:0] register1 = registers[1];
-wire [31:0] register2 = registers[2];
-wire [31:0] register3 = registers[3];
-wire [31:0] register4 = registers[4];
-wire [31:0] register5 = registers[5];
-wire [31:0] register6 = registers[6];
-wire [31:0] register7 = registers[7];
-wire [31:0] register8 = registers[8];
-wire [31:0] register9 = registers[9];
+wire [31:0] register1  = registers[1];
+wire [31:0] register2  = registers[2];
+wire [31:0] register3  = registers[3];
+wire [31:0] register4  = registers[4];
+wire [31:0] register5  = registers[5];
+wire [31:0] register6  = registers[6];
+wire [31:0] register7  = registers[7];
+wire [31:0] register8  = registers[8];
+wire [31:0] register9  = registers[9];
 wire [31:0] register10 = registers[10];
 wire [31:0] register11 = registers[11];
 wire [31:0] register12 = registers[12];

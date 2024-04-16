@@ -21,12 +21,12 @@ _start:
 
 gera_endereco:
     # Calcula o endereço dos leds
-    li a4, 0x2001;
+    li a4, 0x2004;
     ret;
 
 gera_endereco_uart:
     # Calcula o endereço da UART
-    li a2, 0x2005;
+    li a2, 0x2008;
     ret;
     
 send_uart_data:
