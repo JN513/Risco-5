@@ -3,9 +3,11 @@ module Core #(
 ) (
     // Control signal
     input wire clk,
+    input wire halt,
     input wire reset,
 
     // Memory BUS
+    input wire memory_response,
     output wire memory_read,
     output wire memory_write,
     output wire [2:0] option,
@@ -48,7 +50,7 @@ module Core #(
 wire IRWrite, zero, reg_write, pc_load, and_zero_out,
     pc_write_cond, pc_write, is_immediate, csr_write_enable,
     alu_input_selector, save_address, control_memory_op,
-    save_value, save_value_2, write_data_in;
+    save_value, save_value_2, write_data_in, save_write_value;
 wire [1:0] aluop, lorD;
 wire [2:0] alu_src_a, alu_src_b, memory_to_reg, control_unit_memory_op;
 wire [3:0] aluop_out, control_unit_aluop;
@@ -57,10 +59,10 @@ wire [31:0] pc_output, pc_input, register_input,
     register_data_1_out, register_data_2_out,
     csr_data_out, register_data_RD_out;
 reg [31:0] instruction_register, memory_register, alu_out_register,
-    register_data_1, register_data_2, pc_old, temp_reg1, temp_reg2,
-    temp_reg3;
+    register_data_1, register_data_2, pc_old, temp_address, temp_reg2,
+    temp_reg3, temp_write_value;
 
-assign write_data = (write_data_in == 1'b1)  ? alu_out_register : register_data_2_out;
+assign write_data = (write_data_in == 1'b1)  ? temp_write_value : register_data_2_out;
 assign option = (lorD == 2'b00 | control_memory_op == 1'b1) 
     ? control_unit_memory_op : instruction_register[14:12];
 
@@ -71,8 +73,9 @@ initial begin
     register_data_2      = 32'h00000000;
     alu_out_register     = 32'h00000000;
     pc_old               = 32'h00000000;
-    temp_reg1            = 32'h00000000;
+    temp_address         = 32'h00000000;
     temp_reg2            = 32'h00000000;
+    temp_write_value     = 32'h00000000;
 end
 
 PC Pc(
@@ -87,7 +90,7 @@ MUX MemoryAddressMUX(
     .option({1'b0, lorD}),
     .A(pc_output),
     .B(alu_out_register),
-    .C(temp_reg1),
+    .C(temp_address),
     .D(0),
     .E(0),
     .F(0),
@@ -117,7 +120,7 @@ MUX AluInputAMUX(
     .D(32'd0),
     .E(memory_register),
     .F(alu_out_register),
-    .G(temp_reg1),
+    .G(temp_address),
     .H(temp_reg2),
     .S(alu_input_a)
 );
@@ -128,10 +131,10 @@ MUX AluInputBMUX(
     .B(32'd4),
     .C(immediate),
     .D(register_data_RD_out),
-    .E({27'h00000, temp_reg1[1:0], 3'h0}),
-    .F({26'h00000, 3'b100 - temp_reg1[1:0], 3'h0}),
+    .E({27'h00000, temp_address[1:0], 3'h0}),
+    .F({26'h00000, 3'b100 - temp_address[1:0], 3'h0}),
     .G(temp_reg3),
-    .H({27'h00000, temp_reg1[1:0] + 1'b1, 3'h0}),
+    .H({27'h00000, temp_address[1:0] + 1'b1, 3'h0}),
     .S(alu_input_b)
 );
 
@@ -168,7 +171,7 @@ Control_Unit Control_Unit(
     .clk(clk),
     .reset(reset),
     .last_bits(alu_out[1:0]),
-    .last_bits_saved_address(temp_reg1[1:0]),
+    .last_bits_saved_address(temp_address[1:0]),
     .func3(instruction_register[14:12]),
     .instruction_opcode(instruction_register[6:0]),
     .pc_write_cond(pc_write_cond),
@@ -192,7 +195,9 @@ Control_Unit Control_Unit(
     .control_memory_op(control_memory_op),
     .save_value(save_value),
     .save_value_2(save_value_2),
-    .write_data_in(write_data_in)
+    .write_data_in(write_data_in),
+    .memory_response(memory_response),
+    .save_write_value(save_write_value)
 );
 
 ALU_Control ALU_Control(
@@ -244,15 +249,17 @@ always @(posedge clk ) begin
         register_data_2 <= 32'h00000000;
         alu_out_register <= 32'h00000000;
         pc_old <= 32'h00000000;
-        temp_reg1 <= 32'h00000000;
+        temp_address <= 32'h00000000;
         temp_reg2 <= 32'h00000000;
+        temp_reg3 <= 32'h00000000;
+        temp_write_value <= 32'h00000000;
     end else begin
         if(IRWrite == 1'b1)begin
             instruction_register <= read_data;
             pc_old <= pc_output;
         end
         if(save_address == 1'b1) begin
-           temp_reg1 <= alu_out_register; 
+            temp_address <= alu_out;
         end
         if(save_value == 1'b1) begin
             temp_reg2 <= memory_register;
@@ -260,6 +267,10 @@ always @(posedge clk ) begin
         if(save_value_2 == 1'b1) begin
             temp_reg3 <= alu_out_register;
         end
+        if(save_write_value) begin
+            temp_write_value <= alu_out;
+        end
+        
         memory_register <= read_data;
         register_data_1 <= register_data_1_out;
         register_data_2 <= register_data_2_out;

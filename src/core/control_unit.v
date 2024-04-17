@@ -1,7 +1,7 @@
 module Control_Unit (
     input wire clk,
     input wire reset,
-    input wire response,
+    input wire memory_response,
     input wire [1:0] last_bits,
     input wire [1:0] last_bits_saved_address,
     input wire [2:0] func3,
@@ -19,6 +19,7 @@ module Control_Unit (
     output reg save_address,
     output reg save_value,
     output reg save_value_2,
+    output reg save_write_value,
     output reg control_memory_op,
     output reg write_data_in,
     output reg [1:0] lorD,
@@ -126,6 +127,7 @@ initial begin
     write_data_in = 1'b0;
     clear_hal_byte_one_block_option = 1'b0;
     clear_hal_byte_one_block_option_2 = 1'b0;
+    save_write_value = 1'b0;
 end
 
 always @(posedge clk ) begin
@@ -138,9 +140,18 @@ end
 
 always @(*) begin
     nextstate = FETCH;
+    pc_write  = 1'b0;
+    ir_write  = 1'b0;
     case (state)
-        FETCH:
-            nextstate = DECODE;
+        FETCH: begin
+            if(memory_response) begin
+                pc_write  = 1'b1;
+                ir_write  = 1'b1;
+                nextstate = DECODE;
+            end else begin
+                nextstate = FETCH;
+            end
+        end
         DECODE: begin
             case (instruction_opcode)
                 LW: nextstate = MEMADR;
@@ -169,10 +180,26 @@ always @(*) begin
                     nextstate = MEMWRITE;
                 end
         end
-        MEMREAD: nextstate = MEMWB;
-        MEMREAD_UNALIGNED: nextstate = LOAD_FIRST_BLOCK;
+        MEMREAD: begin
+            if(memory_response)
+                nextstate = MEMWB;
+            else
+                nextstate = MEMREAD;
+        end
+        MEMREAD_UNALIGNED: begin
+            if(memory_response) begin
+                nextstate = LOAD_FIRST_BLOCK;
+            end else begin
+                nextstate = MEMREAD_UNALIGNED;
+            end
+        end
         MEMWB: nextstate = FETCH;
-        MEMWRITE: nextstate = FETCH;
+        MEMWRITE: begin
+            if(memory_response)
+                nextstate = FETCH;
+            else
+                nextstate = MEMWRITE;
+        end
         EXECUTER: nextstate = ALUWB;
         ALUWB: nextstate = FETCH;
         EXECUTEI: nextstate = ALUWB;
@@ -193,10 +220,22 @@ always @(*) begin
         end
         FILTER_ALU_WB: nextstate = FETCH;
         CALC_NEXT_ADDRESS: nextstate = READ_SECOND_BLOCK;
-        READ_SECOND_BLOCK: nextstate = LOAD_SECOND_BLOCK;
+        READ_SECOND_BLOCK: begin
+            if(memory_response) begin
+                nextstate = LOAD_SECOND_BLOCK;
+            end else begin
+                nextstate = READ_SECOND_BLOCK;
+            end
+        end
         LOAD_SECOND_BLOCK: nextstate = MERGE_BLOCKS;
         MERGE_BLOCKS: nextstate = FILTER_ALU_WB;
-        MEMWRITE_UNALIGNED: nextstate = GEN_FIRST_BLOCK_PART_1;
+        MEMWRITE_UNALIGNED: begin
+            if(memory_response) begin
+                nextstate = GEN_FIRST_BLOCK_PART_1;
+            end else begin
+                nextstate = MEMWRITE_UNALIGNED;
+            end
+        end
         GEN_FIRST_BLOCK_PART_1: nextstate = GEN_FIRST_BLOCK_PART_2;
         GEN_FIRST_BLOCK_PART_2: begin
             if((func3 == 3'b000 && ~(&last_bits_saved_address)) || 
@@ -230,33 +269,49 @@ always @(*) begin
         CLEAR_VALUE_HALF_BYTE_ONE_BLOCK_3: nextstate = MERGE_WRITE_VALUE_1;
         MERGE_WRITE_VALUE_1: nextstate = WRITE_VALUE_1;
         WRITE_VALUE_1: begin
-            if(func3 == 3'b010 || (func3 == 3'b001 && last_bits_saved_address == 2'b11)) begin
-                nextstate = CALC_SECOND_BLOCK_ADDRESS_TO_WRITE;
+            if(memory_response) begin
+                if(func3 == 3'b010 || (func3 == 3'b001 && last_bits_saved_address == 2'b11)) begin
+                    nextstate = CALC_SECOND_BLOCK_ADDRESS_TO_WRITE;
+                end else begin
+                    nextstate = FETCH;
+                end
             end else begin
-                nextstate = FETCH;
+                nextstate = WRITE_VALUE_1;
             end
         end
         CALC_SECOND_BLOCK_ADDRESS_TO_WRITE: nextstate = READ_SECOND_BLOCK_TO_WRITE;
-        READ_SECOND_BLOCK_TO_WRITE: nextstate = LOAD_SECOND_BLOCK_TO_WRITE;
+        READ_SECOND_BLOCK_TO_WRITE: begin
+            if(memory_response) begin
+                nextstate = LOAD_SECOND_BLOCK_TO_WRITE;
+            end else begin
+                nextstate = READ_SECOND_BLOCK_TO_WRITE;
+            end
+        end
         LOAD_SECOND_BLOCK_TO_WRITE: nextstate = LOAD_SECOND_BLOCK_TO_WRITE_2;
         LOAD_SECOND_BLOCK_TO_WRITE_2: nextstate = SWAP_VALUE_DIRECTION_2;
         SWAP_VALUE_DIRECTION_2: nextstate = CLEAR_VALUE_PART_2;
         CLEAR_VALUE_PART_2: nextstate = CLEAR_VALUE_PART_2_1;
         CLEAR_VALUE_PART_2_1: nextstate = MERGE_WRITE_VALUE_2;
         MERGE_WRITE_VALUE_2: nextstate = WRITE_VALUE_2;
-        WRITE_VALUE_2: nextstate = FETCH;
+        WRITE_VALUE_2: begin
+            if(memory_response) begin
+                nextstate = FETCH;
+            end else begin
+                nextstate = WRITE_VALUE_2;
+            end
+        end
         default: nextstate = FETCH;
     endcase
 end
 
 always @(*) begin
     pc_write_cond       <= 1'b0;
-    pc_write            <= 1'b0;
+    //pc_write            <= 1'b0;
+    //ir_write            <= 1'b0;
     lorD                <= 2'b00;
     memory_read         <= 1'b0;
     memory_write        <= 1'b0;
     memory_to_reg       <= 3'b000;
-    ir_write            <= 1'b0;
     pc_source           <= 1'b0;
     aluop               <= 2'b00;
     alu_src_b           <= 3'b000;
@@ -272,13 +327,14 @@ always @(*) begin
     save_value <= 1'b0;
     save_value_2 <= 1'b0;
     write_data_in <= 1'b0;
+    save_write_value <= 1'b0;
 
     case (state)
         FETCH: begin
             memory_read <= 1'b1;
-            ir_write    <= 1'b1;
             alu_src_b   <= 3'b001;
-            pc_write    <= 1'b1;
+            //ir_write    <= 1'b1;
+            //pc_write    <= 1'b1;
         end
 
         DECODE: begin
@@ -289,18 +345,18 @@ always @(*) begin
         MEMADR: begin
             alu_src_a <= 3'b001;
             alu_src_b <= 3'b010;
+            save_address <= 1'b1;
         end
         
         MEMREAD: begin
             memory_read <= 1'b1;
-            lorD        <= 2'b01;
+            lorD        <= 2'b10;
         end
 
         MEMREAD_UNALIGNED: begin
             control_memory_op <= 1'b1;
             memory_read       <= 1'b1;
-            lorD              <= 2'b01;
-            save_address      <= 1'b1;
+            lorD              <= 2'b10;
         end
 
         MEMWB: begin
@@ -321,13 +377,14 @@ always @(*) begin
         end
 
         CALC_NEXT_ADDRESS: begin
+            save_address <= 1'b1;
             alu_src_a <= 3'b110;
             alu_src_b <= 3'b001;
         end
 
         READ_SECOND_BLOCK: begin
             memory_read <= 1'b1;
-            lorD        <= 2'b01;
+            lorD        <= 2'b10;
             control_memory_op <= 1'b1;
         end
 
@@ -345,14 +402,13 @@ always @(*) begin
 
         MEMWRITE: begin
             memory_write <= 1'b1;
-            lorD         <= 2'b01;
+            lorD         <= 2'b10;
         end
 
         MEMWRITE_UNALIGNED: begin
             control_memory_op <= 1'b1;
             memory_read       <= 1'b1;
-            lorD              <= 2'b01;
-            save_address      <= 1'b1;
+            lorD              <= 2'b10;
         end
 
         GEN_FIRST_BLOCK_PART_1: begin
@@ -428,6 +484,7 @@ always @(*) begin
         MERGE_WRITE_VALUE_1: begin
             alu_src_a <= 3'b101;
             alu_src_b <= 3'b110;
+            save_write_value <= 1'b1;
         end
 
         WRITE_VALUE_1: begin
@@ -440,12 +497,12 @@ always @(*) begin
         CALC_SECOND_BLOCK_ADDRESS_TO_WRITE: begin
             alu_src_a <= 3'b110;
             alu_src_b <= 3'b001;
+            save_address <= 1'b1;
         end
 
         READ_SECOND_BLOCK_TO_WRITE: begin
-            save_address <= 1'b1;
             memory_read <= 1'b1;
-            lorD        <= 2'b01;
+            lorD        <= 2'b10;
             control_memory_op <= 1'b1;
         end
 
@@ -484,6 +541,7 @@ always @(*) begin
         end
 
         MERGE_WRITE_VALUE_2: begin
+            save_write_value <= 1'b1;
             alu_src_a <= 3'b101;
             alu_src_b <= 3'b110;
         end

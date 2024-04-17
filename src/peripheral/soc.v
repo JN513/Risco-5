@@ -24,12 +24,30 @@ wire [31:0] address, write_data, read_data,
     slave2_address, slave2_write_data, slave2_read_data,
     slave3_address, slave3_write_data, slave3_read_data;
 
+wire memory_response;
+
+assign memory_response = memory_read | memory_write;
+
+/*reg memory_response;
+
+initial begin
+    memory_response = 1'b0;
+end
+
+always @(negedge clk) begin
+    memory_response <= 1'b0;
+
+    if(memory_read || memory_write)
+        memory_response <= 1'b1;
+end*/
+
 Core #(
     .BOOT_ADDRESS(BOOT_ADDRESS)
 ) Core(
     .clk(clk),
     .reset(reset),
     .option(option),
+    .memory_response(memory_response),
     .memory_read(memory_read),
     .memory_write(memory_write),
     .write_data(write_data),
