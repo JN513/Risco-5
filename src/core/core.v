@@ -81,7 +81,7 @@ end
 PC Pc(
     .clk(clk),
     .reset(reset),
-    .load(pc_load),
+    .load(pc_load & memory_response),
     .Input(pc_input),
     .Output(pc_output)
 );
@@ -254,7 +254,7 @@ always @(posedge clk ) begin
         temp_reg3 <= 32'h00000000;
         temp_write_value <= 32'h00000000;
     end else begin
-        if(IRWrite == 1'b1)begin
+        if(IRWrite == 1'b1 && memory_response == 1'b1)begin
             instruction_register <= read_data;
             pc_old <= pc_output;
         end

@@ -26,8 +26,6 @@ wire [31:0] address, write_data, read_data,
 
 wire memory_response;
 
-assign memory_response = memory_read | memory_write;
-
 /*reg memory_response;
 
 initial begin
@@ -66,7 +64,8 @@ Memory #(
     .memory_write(slave_write),
     .write_data(slave_write_data),
     .read_data(slave_read_data),
-    .address(slave_address)
+    .address(slave_address),
+    .memory_response(memory_response)
 );
 
 BUS Bus(

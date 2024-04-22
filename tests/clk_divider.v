@@ -14,7 +14,7 @@ initial begin
 
     clk = 0;
     reset = 0;
-    option = 1'b1;
+    option = 1'b0;
     out_enable = 1'b1;
     pulse = 32'd0;
     divider = 32'd0;
@@ -25,15 +25,15 @@ initial begin
     #2
     reset = 1'b0;
 
-    #30
+    #2
     
     out_enable = 1'b0;
 
-    #30
+    #2
 
     out_enable = 1'b1;
 
-    #30
+    #2
 
     pulse = 32'd8;
 

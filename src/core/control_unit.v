@@ -140,13 +140,9 @@ end
 
 always @(*) begin
     nextstate = FETCH;
-    pc_write  = 1'b0;
-    ir_write  = 1'b0;
     case (state)
         FETCH: begin
             if(memory_response) begin
-                pc_write  = 1'b1;
-                ir_write  = 1'b1;
                 nextstate = DECODE;
             end else begin
                 nextstate = FETCH;
@@ -306,8 +302,8 @@ end
 
 always @(*) begin
     pc_write_cond       <= 1'b0;
-    //pc_write            <= 1'b0;
-    //ir_write            <= 1'b0;
+    pc_write            <= 1'b0;
+    ir_write            <= 1'b0;
     lorD                <= 2'b00;
     memory_read         <= 1'b0;
     memory_write        <= 1'b0;
@@ -333,8 +329,8 @@ always @(*) begin
         FETCH: begin
             memory_read <= 1'b1;
             alu_src_b   <= 3'b001;
-            //ir_write    <= 1'b1;
-            //pc_write    <= 1'b1;
+            ir_write    <= 1'b1;
+            pc_write    <= 1'b1;
         end
 
         DECODE: begin
