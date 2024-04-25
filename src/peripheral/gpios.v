@@ -8,9 +8,11 @@ module GPIOS #(
     input wire [31:0] address,
     input wire [31:0] write_data,
     output wire [31:0] read_data,
+    output wire response,
     inout [WIDHT - 1:0] gpios
 );
 
+assign response = read | write;
 reg [WIDHT - 1:0] gpio_direction, gpio_value;
 wire [WIDHT -1:0] gpio_out;
 

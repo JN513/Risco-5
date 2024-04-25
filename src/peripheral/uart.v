@@ -14,8 +14,11 @@ module UART #(
     input wire write,
     input wire [31:0] address,
     input wire [31:0] write_data,
+    output wire response,
     output reg [31:0] read_data
 );
+
+assign response = read | write;
 
 wire [PAYLOAD_BITS-1:0]  uart_rx_data, tx_fifo_read_data, 
     rx_fifo_read_data;

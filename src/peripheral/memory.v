@@ -9,7 +9,7 @@ module Memory #(
     input wire [2:0] option,
     input wire [31:0] address,
     input wire [31:0] write_data,
-    output reg memory_response,
+    output wire memory_response,
     output reg [31:0] read_data
 );
 
@@ -19,12 +19,12 @@ wire [31:0] buffer;
 integer i;
 `endif
 
-//  assign memory_response = memory_read | memory_write;
+assign memory_response = memory_read | memory_write;
 
 assign buffer = (memory_read == 1'b1) ? memory[{2'b00, address[31:2]}] : 32'h00000000;
 
 initial begin
-    memory_response = 1'b0;
+    //memory_response = 1'b0;
     `ifdef __ICARUS__
         for (i = 0; i < (MEMORY_SIZE/4)-1; i = i + 1) begin
             memory[i] = 32'h00000000; 
@@ -35,7 +35,7 @@ initial begin
         $readmemh(MEMORY_FILE, memory, 0, (MEMORY_SIZE/4) - 1);
     end
 end
-
+/*
 always @(posedge clk ) begin
     memory_response <= 1'b0;
 
@@ -43,7 +43,7 @@ always @(posedge clk ) begin
         memory_response <= 1'b1;
     end
 end
-
+*/
 always @(posedge clk) begin
     if(memory_write == 1'b1) begin
         if(option[0] == 1'b1) begin

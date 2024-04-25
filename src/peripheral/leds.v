@@ -1,7 +1,4 @@
-module LEDs #(
-    parameter DEVICE_START_ADDRESS = 32'h00001000,
-    parameter DEVICE_FINAL_ADDRESS = 32'h00001002
-) (
+module LEDs (
     input wire clk,
     input wire reset,
     input wire read,
@@ -9,8 +6,11 @@ module LEDs #(
     input wire [31:0] address,
     input wire [31:0] write_data,
     output wire [31:0] read_data,
+    output wire response,
     output wire [7:0] leds
 );
+
+assign response = read | write;
 
 reg [32:0] data;
 
