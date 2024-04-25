@@ -5,9 +5,7 @@ _start:
     addi a2, x0, 20      # Carrega o segundo número (20) em a2
 
     add a3, a1, a2       # Soma a1 e a2, armazena o resultado em a3
-    addi a4, x0, 2047
-    add a4, a4, a4
-    addi a4, a4, 5
+    li a4, 0x80000000
 
     li t1, 74;
     
