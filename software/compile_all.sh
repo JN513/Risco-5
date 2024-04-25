@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 diretorio="code"
-march="rv32i"
+march="rv32izicsr"
 
 # Verifica se o diretório existe
 if [ -d "$diretorio" ]; then
