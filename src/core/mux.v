@@ -8,21 +8,17 @@ module MUX (
     input wire [31:0] F,
     input wire [31:0] G,
     input wire [31:0] H,
-    output reg [31:0] S
+    output wire [31:0] S
 );
 
-always @(*) begin
-    case (option)
-        3'b000: S = A; 
-        3'b001: S = B; 
-        3'b010: S = C; 
-        3'b011: S = D; 
-        3'b100: S = E; 
-        3'b101: S = F; 
-        3'b110: S = G; 
-        3'b111: S = H; 
-        default: S = A;
-    endcase
-end
-    
+assign S = (option == 3'b000) ? A :
+           (option == 3'b001) ? B :
+           (option == 3'b010) ? C :
+           (option == 3'b011) ? D :
+           (option == 3'b100) ? E :
+           (option == 3'b101) ? F :
+           (option == 3'b110) ? G :
+           (option == 3'b111) ? H :
+           A;  // Default case
+
 endmodule
