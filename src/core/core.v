@@ -16,10 +16,10 @@ module Core #(
     output wire [31:0] write_data,
 
     // Interrupções
-    input wire instruction_request_external,
-    input wire instruction_request_timer,
-    input wire instruction_request_software,
-    input wire [15:0] instruction_request_fast
+    input wire interruption_request_external,
+    input wire interruption_request_timer,
+    input wire interruption_request_software,
+    input wire [15:0] interruption_request_fast
 
     // RISCV FORMAL
 `ifdef RISCV_FORMAL
@@ -234,10 +234,10 @@ CSR_Unit CSR_Unit(
     .csr_address(immediate[11:0]),
     .csr_data_in(register_data_1),
     .csr_data_out(csr_data_out),
-    .instruction_request_external(instruction_request_external),
-    .instruction_request_timer(instruction_request_timer),
-    .instruction_request_software(instruction_request_software),
-    .instruction_request_fast(instruction_request_fast),
+    .interruption_request_external(interruption_request_external),
+    .interruption_request_timer(interruption_request_timer),
+    .interruption_request_software(interruption_request_software),
+    .interruption_request_fast(interruption_request_fast),
     .pc_value(pc_old)
 );
 

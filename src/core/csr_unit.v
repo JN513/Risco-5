@@ -9,10 +9,10 @@ module CSR_Unit (
     output reg [31:0] csr_data_out,
 
     // Interrupções
-    input wire instruction_request_external,
-    input wire instruction_request_timer,
-    input wire instruction_request_software,
-    input wire [15:0] instruction_request_fast,
+    input wire interruption_request_external,
+    input wire interruption_request_timer,
+    input wire interruption_request_software,
+    input wire [15:0] interruption_request_fast,
 
     input wire save_pc,
     input wire [31:0] pc_value,
@@ -168,10 +168,10 @@ always @(posedge clk ) begin
         csr_mip_mtip <= 1'b0;
         csr_mip_msip <= 1'b0;
     end else begin
-        csr_mip_mfip <= instruction_request_fast;
-        csr_mip_meip <= instruction_request_external;
-        csr_mip_mtip <= instruction_request_timer;
-        csr_mip_msip <= instruction_request_software;
+        csr_mip_mfip <= interruption_request_fast;
+        csr_mip_meip <= interruption_request_external;
+        csr_mip_mtip <= interruption_request_timer;
+        csr_mip_msip <= interruption_request_timer;
     end
 end
 
