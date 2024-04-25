@@ -25,15 +25,6 @@ module CSR_Unit (
 localparam MARCHID              = 12'hF12;
 localparam MIMPID               = 12'hF13;
 
-// Address of Performance Counters CSRs
-
-localparam CYCLE                = 12'hC00;
-localparam TIME                 = 12'hC01;
-localparam INSTRET              = 12'hC02;
-localparam CYCLEH               = 12'hC80;
-localparam TIMEH                = 12'hC81;
-localparam INSTRETH             = 12'hC82;
-
 // Address of Machine Trap Setup CSRs
 
 localparam MSTATUS              = 12'h300;
@@ -49,19 +40,12 @@ localparam MEPC                 = 12'h341;
 localparam MCAUSE               = 12'h342;
 localparam MTVAL                = 12'h343;
 localparam MIP                  = 12'h344;
+//mpie ver esse cara
 
-// Address of Machine Performance Counters CSRs
 
-localparam MCYCLE               = 12'hB00;
-localparam MINSTRET             = 12'hB02;
-localparam MCYCLEH              = 12'hB80;
-localparam MINSTRETH            = 12'hB82;
-
-wire [31:0] csr_data_mask;
 reg [31:0] csr_mcause;
 reg [4:0 ] csr_mcause_code;
 reg csr_mcause_interrupt_flag;
-reg [63:0] csr_mcycle;
 reg [31:0] csr_mepc;
 wire [31:0] csr_mie;
 reg [15:0] csr_mie_mfie;
@@ -73,17 +57,22 @@ reg [15:0] csr_mip_mfip;
 reg csr_mip_meip;
 reg csr_mip_mtip;
 reg csr_mip_msip;
-reg [63:0] csr_minstret;
 reg [31:0] csr_mscratch;
 wire [31:0] csr_mstatus;
 reg csr_mstatus_mie;
 reg csr_mstatus_mpie;
 reg [31:0] csr_mtvec;
 reg [31:0] csr_mtval;
-reg [63:0] csr_utime;
 
 reg [31:0] csr_write_data;
 wire [31:0] csr_input;
+wire [31:0] interruption_address;
+
+wire interrupt_pending;
+
+//assign interruption_address = (csr_mtvec[1:0] == 2'b01 && csr_mcause_interrupt_flag) ?
+//    {csr_mtvec[31:2], 2'b00} + interrupt_address_offset :
+//    {csr_mtvec[31:2], 2'b00};
 
 assign csr_input = (func3[2] == 1'b1) ? {27'h0000000, csr_immediate} : csr_data_in;
 
@@ -93,7 +82,6 @@ initial begin
     csr_mcause = 32'h00000000;
     csr_mcause_code = 5'h00;
     csr_mcause_interrupt_flag = 1'b0;
-    csr_mcycle = 64'h0000000000000000;
     csr_mepc = 32'h00000000;
     csr_mie_mfie = 16'h0000;
     csr_mie_meie = 1'b0;
@@ -103,13 +91,11 @@ initial begin
     csr_mip_meip = 1'b0;
     csr_mip_mtip = 1'b0;
     csr_mip_msip = 1'b0;
-    csr_minstret = 64'h0000000000000000;
     csr_mscratch = 32'h00000000;
     csr_mstatus_mie = 1'b0;
     csr_mstatus_mpie = 1'b0;
     csr_mtvec = 32'h00000000;
     csr_mtval = 32'h00000000;
-    csr_utime = 64'h0000000000000000;
     csr_write_data = 32'h00000000;
 end
 
@@ -124,10 +110,10 @@ always @(posedge clk) begin
         csr_mstatus_mie   <= 1'b0;
         csr_mstatus_mpie  <= 1'b1;
         csr_mscratch <= 32'h00000000;
-        csr_mcycle <= 64'h0000000000000000;
-        csr_minstret <= 64'h0000000000000000;
         csr_mcause <= 32'h00000000;
         csr_mtval <= 32'h00000000;
+    end else if(interrupt_pending == 1'b1) begin 
+        csr_mcause <= {csr_mcause_interrupt_flag, 26'b0, csr_mcause_code};
     end else if(csr_write_enable) begin
         case (csr_address)
             MIE: begin
@@ -143,18 +129,11 @@ always @(posedge clk) begin
             end
 
             MSCRATCH: csr_mscratch <= csr_write_data;
-            MCYCLE: csr_mcycle <= {csr_mcycle[63:32], csr_write_data} + 1'b1;
-            MCYCLEH: csr_mcycle <= {csr_write_data, csr_mcycle[31:0]} + 1'b1;
-            MINSTRET: csr_minstret <= {csr_minstret[63:32], csr_write_data} + 1;
-            MINSTRETH: csr_minstret <= {csr_write_data, csr_minstret[31:0]} + 1;
             MCAUSE: csr_mcause <= csr_write_data;
             MTVAL: csr_mtval <= csr_write_data;
             MTVEC: csr_mtvec <= {csr_write_data[31:2], 1'b0, csr_write_data[0]};
             MEPC: csr_mepc <= {csr_write_data[31:2], 2'b00};
         endcase
-    end else begin
-        csr_mcycle <= csr_mcycle + 1'b1;
-        csr_minstret <= csr_minstret + 1;
     end
 end
 // verificar mcause, mepc
@@ -163,7 +142,7 @@ end
 
 always @(posedge clk ) begin
     if(reset == 1'b1) begin
-        csr_mip_mfip <= 16'b0;
+        csr_mip_mfip <= 16'h0000;
         csr_mip_meip <= 1'b0;
         csr_mip_mtip <= 1'b0;
         csr_mip_msip <= 1'b0;
@@ -171,10 +150,33 @@ always @(posedge clk ) begin
         csr_mip_mfip <= interruption_request_fast;
         csr_mip_meip <= interruption_request_external;
         csr_mip_mtip <= interruption_request_timer;
-        csr_mip_msip <= interruption_request_timer;
+        csr_mip_msip <= interruption_request_software;
     end
 end
+/*
+// mcause
+always @(posedge clk ) begin
+    if(reset == 1'b1) begin
+        csr_mcause_code           <= 5'b00000;
+        csr_mcause_interrupt_flag <= 1'b0;
+    end else begin
+        if(interrupt_pending == 1'b1) begin
+            
+        end
 
+        if(csr_mstatus_mie & csr_mie_meie & csr_mip_meip) begin
+            csr_mcause_code           <= 5'b1011;
+            csr_mcause_interrupt_flag <= 1'b1;
+        end else if(csr_mstatus_mie & csr_mie_msie & csr_mip_msip) begin
+            csr_mcause_code           <= 5'b0011;
+            csr_mcause_interrupt_flag <= 1'b1;
+        end else if(csr_mstatus_mie & csr_mie_mtie & csr_mip_mtip) begin
+            csr_mcause_code           <= 5'b0111;
+            csr_mcause_interrupt_flag <= 1'b1;
+        end
+    end
+end
+*/
 always @(*) begin
     case (func3[1:0])
         2'b01: csr_write_data = csr_input;
@@ -188,12 +190,6 @@ always @(*) begin
     case (csr_address)
         MARCHID:      csr_data_out = 32'h00000018; // RISC-V Steel microarchitecture ID
         MIMPID:       csr_data_out = 32'h00000006; // Version 6
-        CYCLE:      csr_data_out = csr_mcycle    [31:0 ];
-        CYCLEH:       csr_data_out = csr_mcycle    [63:32];
-        TIME:  csr_data_out = csr_utime     [31:0 ];
-        TIMEH: csr_data_out = csr_utime     [63:32];
-        INSTRET:      csr_data_out = csr_minstret  [31:0 ];
-        INSTRETH:     csr_data_out = csr_minstret  [63:32];
         MSTATUS:      csr_data_out = csr_mstatus;
         MSTATUSH:     csr_data_out = 32'h00000000;
         MISA:  csr_data_out = 32'h40000100; // RV32I base ISA only
@@ -204,10 +200,6 @@ always @(*) begin
         MCAUSE:       csr_data_out = csr_mcause;
         MTVAL: csr_data_out = csr_mtval;
         MIP:   csr_data_out = csr_mip;
-        MCYCLE:       csr_data_out = csr_mcycle    [31:0 ];
-        MCYCLEH:      csr_data_out = csr_mcycle    [63:32];
-        MINSTRET:     csr_data_out = csr_minstret  [31:0 ];
-        MINSTRETH:    csr_data_out = csr_minstret  [63:32];
         default:      csr_data_out = 32'h00000000;
     endcase
 end
@@ -222,11 +214,6 @@ assign csr_mstatus = {
     3'b000
 };
 
-// assign interrupt_on_hold = (csr_mie_meie & csr_mip_meip) |
-//     (csr_mie_mtie & csr_mip_mtip) |
-//     (csr_mie_msie & csr_mip_msip) |
-//     (|(csr_mie_mfie & csr_mip_mfip));
-
 assign csr_mie = {
     csr_mie_mfie,   // M-mode Designated for platform use (irq fast)
     4'b0,
@@ -238,20 +225,11 @@ assign csr_mie = {
     3'b0
 };
 
-/*
-always @(posedge clk ) begin
-    if(csr_mie_mfie && csr_mip_mfip) begin
-        interrupt_on_hold <= 1'b1;
-    end else if(csr_mie_meie && csr_mip_meip) begin
-        interrupt_on_hold <= 1'b1;
-    end else if(csr_mie_mtie && csr_mip_mtip) begin
-        interrupt_on_hold <= 1'b1;
-    end else if(csr_mie_msie && csr_mip_msip) begin
-        interrupt_on_hold <= 1'b1;
-    end
-end
-*/
-
 assign csr_mip = {csr_mip_mfip, 4'b0, csr_mip_meip, 3'b0, csr_mip_mtip, 3'b0, csr_mip_msip, 3'b0};
+assign interrupt_pending =
+    (csr_mie_meie & csr_mip_meip) |
+    (csr_mie_mtie & csr_mip_mtip) |
+    (csr_mie_msie & csr_mip_msip) |
+    (|(csr_mie_mfie & csr_mip_mfip));
 
 endmodule
