@@ -18,11 +18,11 @@ always @(*) begin
                 3'b100: // blt
                     aluop_out = 4'b1011; // precisa arrumar - Maior Igual
                 3'b110: // bltu  
-                    aluop_out = 4'b1011; // precisa arrumar - Maior Igual
+                    aluop_out = 4'b1101; // precisa arrumar - Maior Igual
                 3'b101: // bge
                     aluop_out = 4'b0111; // SLT
                 3'b111: // bgeu
-                    aluop_out = 4'b0111;// precisa verificar se necessita de um slt unsigned - SLT
+                    aluop_out = 4'b1111;
                 3'b001: // bne
                     aluop_out = 4'b1110; // Igualdade
                 default: aluop_out = 4'b0110;
@@ -41,11 +41,14 @@ always @(*) begin
                 3'b010: // slti e slt
                     aluop_out = 4'b0111;
                 3'b011: // sltiu e sltu
-                    aluop_out = 4'b0111;
+                    aluop_out = 4'b1111;
                 3'b100: // xori e xor
                     aluop_out = 4'b1010;
                 3'b101: // srai, srli e sra, srl
-                    aluop_out = 4'b1001;
+                    if(func7[5] == 1'b1)
+                        aluop_out = 4'b0011;
+                    else
+                        aluop_out = 4'b1001;
                 3'b110: // ori e or
                     aluop_out = 4'b0001;
                 3'b111: // andi e and

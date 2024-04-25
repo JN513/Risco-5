@@ -18,11 +18,7 @@ localparam IMMEDIATE_OPCODE = 7'b0010011;
 always @(*) begin
     case (instruction[6:0])
         BRANCH_OPCODE: // SB type
-            case (instruction[14:12])
-                3'b110: immediate = {19'h00000, instruction[31], instruction[7], instruction[30:25], instruction[11:8], 1'b0};
-                3'b111: immediate = {19'h00000, instruction[31], instruction[7], instruction[30:25], instruction[11:8], 1'b0};
-                default: immediate = {{19{instruction[31]}}, instruction[31], instruction[7], instruction[30:25], instruction[11:8], 1'b0};
-            endcase
+            immediate = {{19{instruction[31]}}, instruction[31], instruction[7], instruction[30:25], instruction[11:8], 1'b0};
         JAL_OPCODE: // UJ type JAL
             immediate = {{11{instruction[31]}}, instruction[31], instruction[19:12], instruction[20], instruction[30:21], 1'b0};
         AUIPC_OPCODE: // AUIPC U type
@@ -35,12 +31,7 @@ always @(*) begin
             case (instruction[14:12])
                 3'b001: immediate = {{27{instruction[24]}}, instruction[24:20]};
                 3'b011: immediate = {20'h00000, instruction[31:20]};
-                3'b101: begin
-                    if(instruction[30] == 1'b1) 
-                        immediate = {{27'h0000000}, instruction[24:20]};
-                    else
-                        immediate = {{27{instruction[24]}}, instruction[24:20]};
-                end
+                3'b101: immediate = {{27'h0000000}, instruction[24:20]};
                 default: immediate = {{20{instruction[31]}}, instruction[31:20]};
             endcase
         JALR_OPCODE: // I type instruction JALR
