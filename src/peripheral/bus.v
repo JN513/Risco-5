@@ -71,7 +71,7 @@ assign read_data = (address[31:30] == 2'b00) ? slave_0_read_data :
 
 assign response = (address[31:30] == 2'b00) ? slave_0_response :
     (address[31:30] == 2'b01) ? slave_1_response : (address[31:30] == 2'b10) ?
-    slave_2_read_data : slave_3_response;
+    slave_2_response : slave_3_response;
 
 /*
 
