@@ -1,12 +1,12 @@
 .global _start
 
 _start:
-    addi a3, x0, 3;
+    addi a3, zero, 3;
     
     jal subrotina
 
-    addi a4, x0, 5;
+    addi a4, zero, 5;
 
 
 subrotina:
-    addi a5, x0, 10;
+    addi a5, zero, 10;

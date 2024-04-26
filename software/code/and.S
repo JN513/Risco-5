@@ -1,8 +1,8 @@
 .global _start
 
 _start:
-    addi x10, x0, 5;
-    addi x11, x0, 3;
+    addi x10, zero, 5;
+    addi x11, zero, 3;
     add x12, x10, x11;
 
     and x9, x10, x10;

@@ -1,8 +1,8 @@
 .global _start
 
 _start:
-    addi x2, x0, 10;
-    beq x0, x0, loop;
+    addi x2, zero, 10;
+    beq zero, zero, loop;
 
 loop:
     addi x15, x15, 1;
@@ -12,4 +12,4 @@ loop:
     beq x15, x15, loop;
 
 end:
-    addi x3, x0, 5;
+    addi x3, zero, 5;
