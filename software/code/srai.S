@@ -10,3 +10,10 @@ _start:
     srai a4, a2, 1
 
     addi a5, zero, 5 
+
+    li a6, -2
+
+    srai a7, a6, 1
+    li a6, -4
+
+    srai t0, a6, 1
