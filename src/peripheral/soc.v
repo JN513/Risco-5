@@ -106,7 +106,7 @@ LEDs Leds(
 );
 
 UART #(
-    .CLOCK_FREQ(CLOCK_FREQ),
+    .CLK_FREQ(CLOCK_FREQ),
     .BIT_RATE(BIT_RATE)
 ) Uart(
     .clk(clk),

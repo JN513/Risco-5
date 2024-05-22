@@ -1,99 +1,147 @@
 module UART #(
-    parameter CLOCK_FREQ = 25000000,
-    parameter BIT_RATE =   9600,
+    parameter CLK_FREQ     = 25000000,
+    parameter BIT_RATE     = 9600,
     parameter PAYLOAD_BITS = 8,
+    parameter BUFFER_SIZE  = 8,
+    parameter WORD_SIZE_BY = 1,
     parameter DEVICE_START_ADDRESS = 32'h00002007,
-    parameter DEVICE_FINAL_ADDRESS = 32'h000023BA,
-    parameter BUFFER_SIZE = 8
+    parameter DEVICE_FINAL_ADDRESS = 32'h000023BA
 ) (
     input wire clk,
     input wire reset,
+
     input wire rx,
     output wire tx,
+
     input wire read,
     input wire write,
+    output reg response,
+
     input wire [31:0] address,
     input wire [31:0] write_data,
-    output wire response,
     output reg [31:0] read_data
 );
 
-assign response = read | write;
-
-wire [PAYLOAD_BITS-1:0]  uart_rx_data, tx_fifo_read_data, 
-    rx_fifo_read_data;
 wire uart_rx_valid, uart_rx_break, uart_tx_busy, tx_fifo_empty,
     rx_fifo_empty, tx_fifo_full, rx_fifo_full;
 reg uart_tx_en, tx_fifo_read, tx_fifo_write, rx_fifo_read, 
-    rx_fifo_write, buffer_full;
+    rx_fifo_write;
+wire [PAYLOAD_BITS-1:0]  uart_rx_data, tx_fifo_read_data, 
+    rx_fifo_read_data;
 reg [PAYLOAD_BITS-1:0] uart_tx_data, tx_fifo_write_data, 
     rx_fifo_write_data;
 
+reg [31:0] write_data_buffer;
+
+reg [2:0] state, counter;
+
 initial begin
-    buffer_full = 1'b0;
-    uart_tx_en = 1'b0;
-    tx_fifo_read = 1'b0;
-    tx_fifo_write = 1'b0;
-    rx_fifo_read = 1'b0;
-    rx_fifo_write = 1'b0;
-    uart_tx_data = 8'h00;
+    response           = 1'b0;
+    uart_tx_en         = 1'b0;
+    tx_fifo_read       = 1'b0;
+    tx_fifo_write      = 1'b0;
+    rx_fifo_read       = 1'b0;
+    rx_fifo_write      = 1'b0;
+    counter            = 2'b00;
+    state              = 3'b00;
+    uart_tx_data       = 8'h00;
     tx_fifo_write_data = 8'h00;
     rx_fifo_write_data = 8'h00;
+    read_data          = 32'h00000000;
 end
 
+localparam IDLE              = 3'b000;
+localparam READ              = 3'b001;
+localparam WRITE             = 3'b010;
+localparam FINISH            = 3'b011;
+localparam COPY_WRITE_BUFFER = 3'b100;
+
 always @(posedge clk ) begin
+    response <= 1'b0;
+    rx_fifo_read <= 1'b0;
+    tx_fifo_write <= 1'b0;
+
+    if(reset == 1'b1) begin
+        state              <= IDLE;
+        tx_fifo_write      <= 1'b0;
+        rx_fifo_read       <= 1'b0;
+        state              <= 3'h0;
+        tx_fifo_write_data <= 8'h00;
+        read_data          <= 32'h00000000;
+        write_data_buffer  <= 32'h00000000;
+    end else begin
+        case (state)
+            IDLE: begin
+                counter <= 2'b00;
+                if(write) begin
+                    state <= COPY_WRITE_BUFFER;
+                end else if(read) begin
+                    state <= READ;
+                end else begin
+                    state <= IDLE;
+                end
+            end 
+            READ: begin
+                if(counter != (WORD_SIZE_BY - 1)) begin
+                    if(rx_fifo_empty == 1'b0) begin
+                       counter <= counter + 1'b1;
+                       rx_fifo_read <= 1'b1;
+                       read_data <= {read_data[24:0], rx_fifo_read_data};
+                    end
+                end else begin
+                    state <= FINISH;
+                end
+            end
+            COPY_WRITE_BUFFER: begin
+                write_data_buffer <= write_data;
+                state <= WRITE;
+            end
+
+            WRITE: begin
+                if(counter != (WORD_SIZE_BY - 1)) begin
+                    if(tx_fifo_full == 1'b0) begin
+                       counter <= counter + 1'b1;
+                       tx_fifo_write <= 1'b1;
+                       tx_fifo_write_data <= write_data_buffer[31:25];
+                       write_data_buffer <= {write_data_buffer[24:0], 8'h00};
+                    end
+                end else begin
+                    state <= FINISH;
+                end
+            end
+            FINISH: begin
+                response <= 1'b1;
+                state    <= IDLE;
+            end
+
+            default: state <= IDLE; 
+        endcase
+    end
+end
+
+always @(posedge clk) begin
     uart_tx_en <= 1'b0;
     tx_fifo_read <= 1'b0;
-    tx_fifo_write <= 1'b0;
-    rx_fifo_read <= 1'b0;
     rx_fifo_write <= 1'b0;
 
     if(reset == 1'b1) begin
-        buffer_full <= 1'b0;
-        uart_tx_data <= 8'h00;
-        tx_fifo_write_data <= 8'h00;
+        uart_tx_en         <= 1'b0;
+        tx_fifo_read       <= 1'b0;
+        uart_tx_data       <= 8'h00;
         rx_fifo_write_data <= 8'h00;
+        rx_fifo_write      <= 1'b0;
     end else begin
-        if(write == 1'b1 && tx_fifo_full == 1'b0) begin
-            tx_fifo_write_data <= write_data[7:0];
-            tx_fifo_write <= 1'b1;
-        end
-
         if(uart_tx_busy == 1'b0 && tx_fifo_empty == 1'b0) begin
-            uart_tx_en <= 1'b1;
+            uart_tx_en   <= 1'b1;
             uart_tx_data <= tx_fifo_read_data;
             tx_fifo_read <= 1'b1;
         end
 
         if(rx_fifo_full == 1'b0 && uart_rx_valid == 1'b1) begin
             rx_fifo_write_data <= uart_rx_data;
-            rx_fifo_write <= 1'b1;
+            rx_fifo_write      <= 1'b1;
         end
-
-        if(read == 1'b1 && rx_fifo_empty == 1'b0) begin
-            rx_fifo_read <= 1'b1;
-        end
-    end
-end
-
-always @(*) begin
-    case (address[4:2])
-        3'b100: begin
-            read_data = {31'h00000000, rx_fifo_full};
-        end
-        3'b101: begin
-            read_data = {31'h00000000, tx_fifo_empty};
-        end
-        3'b110: begin
-            read_data = {24'h000000, rx_fifo_read_data};
-        end
-        3'b011: begin
-            read_data = {31'h00000000, rx_fifo_empty};
-        end
-        default: begin
-            read_data = {24'h000000, rx_fifo_read_data};
-        end
-    endcase
+    end 
 end
 
 FIFO #(
@@ -128,7 +176,7 @@ FIFO #(
 uart_tool_rx #(
     .BIT_RATE(BIT_RATE),
     .PAYLOAD_BITS(PAYLOAD_BITS),
-    .CLK_HZ  (CLOCK_FREQ  )
+    .CLK_HZ(CLK_FREQ)
 ) i_uart_rx(
     .clk          (clk          ), // Top level system clock input.
     .resetn       (~reset           ), // Asynchronous active low reset.
@@ -145,7 +193,7 @@ uart_tool_rx #(
 uart_tool_tx #(
     .BIT_RATE(BIT_RATE),
     .PAYLOAD_BITS(PAYLOAD_BITS),
-    .CLK_HZ  (CLOCK_FREQ  )
+    .CLK_HZ(CLK_FREQ)
 ) i_uart_tx(
     .clk          (clk          ),
     .resetn       (~reset             ),
@@ -154,5 +202,5 @@ uart_tool_tx #(
     .uart_tx_busy (uart_tx_busy ),
     .uart_tx_data (uart_tx_data ) 
 );
-
+    
 endmodule
