@@ -42,7 +42,7 @@ initial begin
     tx_fifo_write      = 1'b0;
     rx_fifo_read       = 1'b0;
     rx_fifo_write      = 1'b0;
-    counter            = 2'b00;
+    counter            = 3'b00;
     state              = 3'b00;
     uart_tx_data       = 8'h00;
     tx_fifo_write_data = 8'h00;
@@ -54,7 +54,9 @@ localparam IDLE              = 3'b000;
 localparam READ              = 3'b001;
 localparam WRITE             = 3'b010;
 localparam FINISH            = 3'b011;
-localparam COPY_WRITE_BUFFER = 3'b100;
+localparam WB                = 3'b100;
+localparam COPY_WRITE_BUFFER = 3'b101;
+
 
 always @(posedge clk ) begin
     response <= 1'b0;
@@ -62,6 +64,7 @@ always @(posedge clk ) begin
     tx_fifo_write <= 1'b0;
 
     if(reset == 1'b1) begin
+        counter             <= 3'b00;
         state              <= IDLE;
         tx_fifo_write      <= 1'b0;
         rx_fifo_read       <= 1'b0;
@@ -72,13 +75,12 @@ always @(posedge clk ) begin
     end else begin
         case (state)
             IDLE: begin
+                state <= IDLE;
                 counter <= 2'b00;
                 if(write) begin
                     state <= COPY_WRITE_BUFFER;
                 end else if(read) begin
                     state <= READ;
-                end else begin
-                    state <= IDLE;
                 end
             end 
             READ: begin
@@ -89,7 +91,7 @@ always @(posedge clk ) begin
                        read_data <= {read_data[24:0], rx_fifo_read_data};
                     end
                 end else begin
-                    state <= FINISH;
+                    state <= WB;
                 end
             end
             COPY_WRITE_BUFFER: begin
@@ -98,20 +100,23 @@ always @(posedge clk ) begin
             end
 
             WRITE: begin
-                if(counter != (WORD_SIZE_BY - 1)) begin
+                if(counter != (WORD_SIZE_BY)) begin
                     if(tx_fifo_full == 1'b0) begin
                        counter <= counter + 1'b1;
                        tx_fifo_write <= 1'b1;
-                       tx_fifo_write_data <= write_data_buffer[31:25];
-                       write_data_buffer <= {write_data_buffer[24:0], 8'h00};
+                       tx_fifo_write_data <= write_data_buffer[7:0];
+                       write_data_buffer <= {8'h00, write_data_buffer[31:25]};
                     end
                 end else begin
-                    state <= FINISH;
+                    state <= WB;
                 end
             end
-            FINISH: begin
+            WB: begin
                 response <= 1'b1;
-                state    <= IDLE;
+                state    <= FINISH;
+            end
+            FINISH: begin
+                state <= IDLE;
             end
 
             default: state <= IDLE; 
@@ -131,12 +136,14 @@ always @(posedge clk) begin
         rx_fifo_write_data <= 8'h00;
         rx_fifo_write      <= 1'b0;
     end else begin
+        
+        /*
         if(uart_tx_busy == 1'b0 && tx_fifo_empty == 1'b0) begin
             uart_tx_en   <= 1'b1;
             uart_tx_data <= tx_fifo_read_data;
             tx_fifo_read <= 1'b1;
         end
-
+        */
         if(rx_fifo_full == 1'b0 && uart_rx_valid == 1'b1) begin
             rx_fifo_write_data <= uart_rx_data;
             rx_fifo_write      <= 1'b1;
@@ -204,3 +211,5 @@ uart_tool_tx #(
 );
     
 endmodule
+
+// qual o erro no codigo acima, o tx está entrando em um loop infinito?

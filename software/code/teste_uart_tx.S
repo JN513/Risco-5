@@ -7,7 +7,7 @@ _start:
     add a3, a1, a2       # Soma a1 e a2, armazena o resultado em a3
     li a4, 0x80000000
 
-    li t1, 74;
+    li t1, 73;
     
     sw a3, 68(zero)
     sw a2, 72(zero)
@@ -21,3 +21,6 @@ _start:
     lw a5, 68(zero)
     lw a6, 72(zero)
     lw a7, 76(zero)
+
+loop:
+    j loop;
