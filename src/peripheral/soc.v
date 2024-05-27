@@ -4,7 +4,8 @@ module Risco_5_SOC #(
     parameter BOOT_ADDRESS = 32'h00000000,
     parameter MEMORY_SIZE = 4096,
     parameter MEMORY_FILE = "",
-    parameter GPIO_WIDHT = 5
+    parameter GPIO_WIDHT = 5,
+    parameter UART_BUFFER_SIZE = 8;
 )(
     input wire clk,
     input wire reset,
@@ -107,7 +108,8 @@ LEDs Leds(
 
 UART #(
     .CLK_FREQ(CLOCK_FREQ),
-    .BIT_RATE(BIT_RATE)
+    .BIT_RATE(BIT_RATE),
+    .BUFFER_SIZE(UART_BUFFER_SIZE)
 ) Uart(
     .clk(clk),
     .reset(reset),

@@ -1,5 +1,7 @@
 #!/usr/bin/zsh
 
+mkdir -p build
+
 echo "Digite o nome do teste:"
 read nome_do_teste
 

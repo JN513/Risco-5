@@ -3,6 +3,8 @@
 diretorio="code"
 march="rv32izicsr"
 
+mkdir -p build
+
 # Verifica se o diretório existe
 if [ -d "$diretorio" ]; then
     # Loop pelos arquivos no diretório

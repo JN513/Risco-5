@@ -1,103 +1,72 @@
+
 .global _start
 
 _start:
-    li a5, 63;
-    li t1, 74;
+    li s0, 0x80000000 # endereço da UART
+    li s1, 0x40000000; # endereço dos leds
 
-    call gera_endereco;
-    call gera_endereco_uart;
+    li s2, 74 # 'J'
 
-    #Valor todos os leds acessos
-    li s4, 255;
-    # valor final do loop
-    li s3, 2000;
-    add s3, s3, s3;
-
-    slli s3, s3, 8;
-
-    li a6, 0;
-    li a7, 5;
-
-    j reset;
-
-check_uart_data:
-    li t3, 73;
-    sw t3, 0(a2)
-    lw t2, 0(a2);
-    beq t2, zero, read_uart_data; # if t2 == 0 then target
-
-    ret;
-    
-read_uart_data:
-    li t3, 73;
-    sw t3, 0(a2)
-    lw t2, 3(a2);
-    mv t1, t2;
-
-    ret;
-
-gera_endereco:
-    # Calcula o endereço dos leds
-    li a4, 0x40000000;
-    ret;
-
-gera_endereco_uart:
-    # Calcula o endereço da UART
-    li a2, 0x80000000;
-    ret;
-    
-send_uart_data:
-    # Envia dados pela uart
-    sw t1, 0(a2)
-
-    ret;
-
-show_all:
-    sw s4, 0(a4);
-    li a6, 0;
-
-    call delay;
-    call delay;
-    call delay;
-
-    call loop;
-
-reset:
-    add a3, zero, zero;
-    addi a6, a6, 1;
-
-    call check_uart_data;
-    call send_uart_data;
-
-    beq a6, a7, show_all;
-
-    call loop;
-
-count:
-    addi t0, t0, 1;
-
-    blt t0, s3, count;
-
-    ret;
-
-delay:
-    mv s2, ra;
     li t0, 0;
+    li t1, 0;
+    li t3, 0;
 
-    call count;
-
-    mv ra, s2;
-
-    ret;
+    li s3, 255; # Numero a ser contado nos leds
+    li s4, 2; # numero de vezes que precisa contar para mandar algo na uart
+    li s5, 800000; # delay
 
 loop:
-    addi a3, a3, 1; # a3 = a3 + 1
-    sw a3, 0(a4)
-    call delay
-    
-    beq a3, a5, fim; # if a2 == a3 then fim
-    call loop;
+    addi t0, t0, 5; # incrementa t0
+
+    sw t0, 0(s1)
+
+    call delay; # call delay
+
+    bge t0, s3, reset; # if t0 == s3 reset
+
+    j loop; # jump to loop
+
+delay:
+    li t1, 0;
+delay_loop:
+    addi t1, t1, 1;
+
+    beq t1, s5, fim; # if t1 == s5 fim
+
+    j delay_loop; # jump to delay
 
 fim:
-    call reset;
-    
+    ret
+
+reset:
+    #addi t3, t3, 1;
+    li t0, 0;
+
+    sw s3, 0(s1);
+
+    #beq t3, s4, send_uart; # if t3 == s4 send_uart
+    j send_uart;
+
+    call delay; # call loop
+
+    j loop; # jump to loop
+
+send_uart:
+    li t3, 0;
+
+    sw s2, 0(s0);
+
+    call delay;
+
+    lw t4, 4(s0);
+
+    beqz t4, read_uart;
+
+    j loop;
+
+read_uart:
+    lw s2, 0(s0);
+
+    sw s2, 0(s4);
+
+    j loop;

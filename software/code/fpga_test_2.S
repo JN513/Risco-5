@@ -1,71 +1,42 @@
 .global _start
 
 _start:
-    li a5, 63;
+    addi s0, zero, 255
+    li s1, 0x40000000;
+    li s2, 3000000
 
-    call gera_endereco;
-
-    #Valor todos os leds acessos
-    li s4, 255;
-    # valor final do loop
-    li s3, 2000;
-    add s3, s3, s3;
-
-    slli s3, s3, 8;
-
-    li a6, 0;
-    li a7, 5;
-
-    j reset;
-
-gera_endereco:
-    # Calcula o endereço dos leds
-    li a4, 0x40000000;
-    ret;
-    
-show_all:
-    sw s4, 0(a4);
-    li a6, 0;
-
-    call delay;
-    call delay;
-    call delay;
-
-    call loop;
-
-reset:
-    add a3, zero, zero;
-    addi a6, a6, 1;
-
-    beq a6, a7, show_all;
-
-    call loop;
-
-count:
-    addi t0, t0, 1;
-
-    blt t0, s3, count;
-
-    ret;
-
-delay:
-    mv s2, ra;
-    li t0, 0;
-
-    call count;
-
-    mv ra, s2;
-
-    ret;
+    addi t0, zero, 0
+    addi t1, zero, 0
 
 loop:
-    addi a3, a3, 1; # a3 = a3 + 1
-    sw a3, 0(a4)
-    call delay
-    
-    beq a3, a5, fim; # if t0 == t1 then fim
-    call loop;
+    addi t0, t0, 1
+
+    sw t0, 0(s1)
+
+    call delay; # call delay
+
+    beq t0, s0, reset; # if t0 == s0 reset
+
+    j loop; # jump to loop
+
+delay:
+    li t1, 0;
+delay_loop:
+    addi t1, t1, 1;
+
+    beq t1, s2, fim; # if t1 == s2 fim
+
+    j delay_loop; # jump to delay
 
 fim:
-    call reset;
+    ret
+
+reset:
+    li t0, 0;
+
+    sw s0, 0(s1)
+
+    call delay; # call loop
+
+    j loop; # jump to loop
     

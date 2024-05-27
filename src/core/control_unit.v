@@ -78,6 +78,7 @@ localparam CLEAR_VALUE_PART_2 = 6'b101010;
 localparam CLEAR_VALUE_PART_2_1 = 6'b101011;
 localparam MERGE_WRITE_VALUE_2 = 6'b101100;
 localparam WRITE_VALUE_2 = 6'b101101;
+localparam VALIDATE_FETCH = 6'b101110;
 
 // Instruction Opcodes
 localparam LW     = 7'b0000011;
@@ -143,10 +144,13 @@ always @(*) begin
     case (state)
         FETCH: begin
             if(memory_response) begin
-                nextstate = DECODE;
+                nextstate = VALIDATE_FETCH;
             end else begin
                 nextstate = FETCH;
             end
+        end
+        VALIDATE_FETCH: begin
+            nextstate = DECODE;
         end
         DECODE: begin
             case (instruction_opcode)
@@ -328,9 +332,13 @@ always @(*) begin
     case (state)
         FETCH: begin
             memory_read <= 1'b1;
-            alu_src_b   <= 3'b001;
+        end
+
+        VALIDATE_FETCH: begin
+            memory_read <= 1'b1;
             ir_write    <= 1'b1;
             pc_write    <= 1'b1;
+            alu_src_b   <= 3'b001;
         end
 
         DECODE: begin
