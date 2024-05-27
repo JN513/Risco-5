@@ -5,7 +5,7 @@ module Risco_5_SOC #(
     parameter MEMORY_SIZE = 4096,
     parameter MEMORY_FILE = "",
     parameter GPIO_WIDHT = 5,
-    parameter UART_BUFFER_SIZE = 8;
+    parameter UART_BUFFER_SIZE = 8
 )(
     input wire clk,
     input wire reset,
