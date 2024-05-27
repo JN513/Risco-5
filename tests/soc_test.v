@@ -2,7 +2,12 @@ module soc_tb();
 
 reg clk, reset;
 wire rx, tx;
+wire [7:0] gpios;
 wire [7:0] led;
+
+reg [3:0] data = 4'b1010;
+
+assign gpios[7:4] = data;
 
 always #1 clk = ~clk;
 
@@ -10,13 +15,16 @@ Risco_5_SOC #(
     .CLOCK_FREQ(25000000),
     .BIT_RATE(115200),
     .MEMORY_SIZE(8192),
-    .MEMORY_FILE("software/memory/generic.hex")
+    .MEMORY_FILE("software/memory/generic.hex"),
+    .GPIO_WIDHT(8),
+    .UART_BUFFER_SIZE(16)
 ) SOC(
     .clk(clk),
     .reset(reset),
     .leds(led),
     .rx(rx),
-    .tx(tx)
+    .tx(tx),
+    .gpios(gpios)
 );
 
 initial begin

@@ -73,47 +73,4 @@ assign response = (address[31:30] == 2'b00) ? slave_0_response :
     (address[31:30] == 2'b01) ? slave_1_response : (address[31:30] == 2'b10) ?
     slave_2_response : slave_3_response;
 
-/*
-
-assign slave_0_read = (address >= DEVICE0_START_ADDRESS && 
-    address <= DEVICE0_FINAL_ADDRESS) ? read : 1'b0;
-assign slave_1_read = (address >= DEVICE1_START_ADDRESS && 
-    address <= DEVICE1_FINAL_ADDRESS) ? read : 1'b0;
-assign slave_2_read = (address >= DEVICE2_START_ADDRESS && 
-    address <= DEVICE2_FINAL_ADDRESS) ? read : 1'b0;
-assign slave_3_read = (address >= DEVICE3_START_ADDRESS && 
-    address <= DEVICE3_FINAL_ADDRESS) ? read : 1'b0;
-
-assign slave_0_write = (address >= DEVICE0_START_ADDRESS && 
-    address <= DEVICE0_FINAL_ADDRESS) ? write : 1'b0;
-assign slave_1_write = (address >= DEVICE1_START_ADDRESS && 
-    address <= DEVICE1_FINAL_ADDRESS) ? write : 1'b0;
-assign slave_2_write = (address >= DEVICE2_START_ADDRESS && 
-    address <= DEVICE2_FINAL_ADDRESS) ? write : 1'b0;
-assign slave_3_write = (address >= DEVICE3_START_ADDRESS && 
-    address <= DEVICE3_FINAL_ADDRESS) ? write : 1'b0;
-
-assign slave_0_write_data = (address >= DEVICE0_START_ADDRESS && 
-    address <= DEVICE0_FINAL_ADDRESS) ? write_data : 32'h00000000;
-assign slave_1_write_data = (address >= DEVICE1_START_ADDRESS && 
-    address <= DEVICE1_FINAL_ADDRESS) ? write_data : 32'h00000000;
-assign slave_2_write_data = (address >= DEVICE2_START_ADDRESS && 
-    address <= DEVICE2_FINAL_ADDRESS) ? write_data : 32'h00000000;
-assign slave_3_write_data = (address >= DEVICE3_START_ADDRESS && 
-    address <= DEVICE3_FINAL_ADDRESS) ? write_data : 32'h00000000;
-
-assign slave_0_address = (address >= DEVICE0_START_ADDRESS && 
-    address <= DEVICE0_FINAL_ADDRESS) ? address : 32'h00000000;
-assign slave_1_address = (address >= DEVICE1_START_ADDRESS && 
-    address <= DEVICE1_FINAL_ADDRESS) ? address : 32'h00000000;
-assign slave_2_address = (address >= DEVICE2_START_ADDRESS && 
-    address <= DEVICE2_FINAL_ADDRESS) ? address : 32'h00000000;
-assign slave_3_address = (address >= DEVICE3_START_ADDRESS && 
-    address <= DEVICE3_FINAL_ADDRESS) ? address : 32'h00000000;
-    
-assign read_data = (address >= DEVICE0_START_ADDRESS && 
-    address <= DEVICE0_FINAL_ADDRESS) ? slave_0_read_data : (address >= DEVICE1_START_ADDRESS && 
-    address <= DEVICE1_FINAL_ADDRESS) ? slave_1_read_data : (address >= DEVICE2_START_ADDRESS && 
-    address <= DEVICE2_FINAL_ADDRESS) ? slave_2_read_data : slave_3_read_data;
-*/
 endmodule
