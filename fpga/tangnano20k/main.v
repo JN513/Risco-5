@@ -21,10 +21,11 @@ assign led = leds [5:0];
 
 Risco_5_SOC #(
     .CLOCK_FREQ(27000000),
-    .BIT_RATE(9600),
+    .BIT_RATE(115200),
     .MEMORY_SIZE(2048),
-    .MEMORY_FILE("../../software/memory/fpga_test_3.hex"),
-    .GPIO_WIDHT(5)
+    .MEMORY_FILE("../../software/memory/teste_uart_fpga.hex"),
+    .GPIO_WIDHT(5),
+    .UART_BUFFER_SIZE(16)
 ) SOC(
     .clk(clk),
     .reset(reset_o),
