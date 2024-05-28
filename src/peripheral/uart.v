@@ -3,9 +3,7 @@ module UART #(
     parameter BIT_RATE     = 9600,
     parameter PAYLOAD_BITS = 8,
     parameter BUFFER_SIZE  = 8,
-    parameter WORD_SIZE_BY = 1,
-    parameter DEVICE_START_ADDRESS = 32'h00002007,
-    parameter DEVICE_FINAL_ADDRESS = 32'h000023BA
+    parameter WORD_SIZE_BY = 1
 ) (
     input wire clk,
     input wire reset,
@@ -33,7 +31,8 @@ reg [PAYLOAD_BITS-1:0] uart_tx_data, tx_fifo_write_data,
 
 reg [31:0] write_data_buffer;
 
-reg [2:0] state, counter;
+reg [2:0] counter;
+reg [3:0] state;
 
 initial begin
     response           = 1'b0;
@@ -50,14 +49,16 @@ initial begin
     read_data          = 32'h00000000;
 end
 
-localparam IDLE               = 3'b000;
-localparam READ               = 3'b001;
-localparam WRITE              = 3'b010;
-localparam FINISH             = 3'b011;
-localparam COPY_WRITE_BUFFER  = 3'b100;
-localparam WB                 = 3'b101;
-localparam READ_RX_FIFO_EMPTY = 3'b110;
-localparam READ_TX_FIFO_EMPTY = 3'b111;
+localparam IDLE               = 4'b0000;
+localparam READ               = 4'b0001;
+localparam WRITE              = 4'b0010;
+localparam FINISH             = 4'b0011;
+localparam COPY_WRITE_BUFFER  = 4'b0100;
+localparam WB                 = 4'b0101;
+localparam READ_RX_FIFO_EMPTY = 4'b0110;
+localparam READ_TX_FIFO_EMPTY = 4'b0111;
+localparam READ_RX_FIFO_FULL  = 4'b1000;
+localparam READ_TX_FIFO_FULL  = 4'b1001;
 
 
 always @(posedge clk ) begin
@@ -80,10 +81,12 @@ always @(posedge clk ) begin
                 if(write) begin
                     state <= COPY_WRITE_BUFFER;
                 end else if(read) begin
-                    case (address[3:2])
-                        2'b00: state <= READ;
-                        2'b01: state <= READ_RX_FIFO_EMPTY;
-                        2'b10: state <= READ_TX_FIFO_EMPTY;
+                    case (address[4:2])
+                        3'b000: state <= READ;
+                        3'b001: state <= READ_RX_FIFO_EMPTY;
+                        3'b010: state <= READ_TX_FIFO_EMPTY;
+                        3'b011: state <= READ_RX_FIFO_FULL;
+                        3'b100: state <= READ_TX_FIFO_FULL;
                         default: state <= READ;
                     endcase
                 end else begin
@@ -125,6 +128,16 @@ always @(posedge clk ) begin
 
             READ_TX_FIFO_EMPTY: begin
                 read_data <= {31'h00000000, tx_fifo_empty};
+                state <= WB;
+            end
+
+            READ_RX_FIFO_FULL: begin
+                read_data <= {31'h00000000, rx_fifo_full};
+                state <= WB;
+            end
+
+            READ_TX_FIFO_FULL: begin
+                read_data <= {31'h00000000, tx_fifo_full};
                 state <= WB;
             end
 
