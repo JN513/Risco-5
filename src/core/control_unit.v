@@ -42,7 +42,7 @@ localparam EXECUTER           = 6'b000110;
 localparam ALUWB              = 6'b000111;
 localparam EXECUTEI           = 6'b001000;
 localparam JAL                = 6'b001001;
-localparam BEQ                = 6'b001010;
+localparam BRANCH             = 6'b001010;
 localparam JALR               = 6'b001011;
 localparam AUIPC              = 6'b001100;
 localparam LUI                = 6'b001101;
@@ -81,16 +81,16 @@ localparam WRITE_VALUE_2 = 6'b101101;
 localparam VALIDATE_FETCH = 6'b101110;
 
 // Instruction Opcodes
-localparam LW     = 7'b0000011;
-localparam SW     = 7'b0100011;
-localparam RTYPE  = 7'b0110011;
-localparam ITYPE  = 7'b0010011;
-localparam JALI   = 7'b1101111;
-localparam BEQI   = 7'b1100011;
-localparam JALRI  = 7'b1100111;
-localparam AUIPCI = 7'b0010111;
-localparam LUII   = 7'b0110111;
-localparam CSR    = 7'b1110011;
+localparam LW      = 7'b0000011;
+localparam SW      = 7'b0100011;
+localparam RTYPE   = 7'b0110011;
+localparam ITYPE   = 7'b0010011;
+localparam JALI    = 7'b1101111;
+localparam BRANCHI = 7'b1100011;
+localparam JALRI   = 7'b1100111;
+localparam AUIPCI  = 7'b0010111;
+localparam LUII    = 7'b0110111;
+localparam CSR     = 7'b1110011;
 
 wire unaligned;
 wire [2:0] second_block_write_src_b;
@@ -159,7 +159,7 @@ always @(*) begin
                 RTYPE: nextstate = EXECUTER;
                 ITYPE: nextstate = EXECUTEI;
                 JALI: nextstate = JAL;
-                BEQI: nextstate = BEQ;
+                BRANCHI: nextstate = BRANCH;
                 AUIPCI: nextstate = AUIPC;
                 LUII: nextstate = LUI;
                 JALRI: nextstate = JALR_PC;
@@ -204,7 +204,7 @@ always @(*) begin
         ALUWB: nextstate = FETCH;
         EXECUTEI: nextstate = ALUWB;
         JAL: nextstate = ALUWB;
-        BEQ: nextstate = FETCH;
+        BRANCH: nextstate = FETCH;
         JALR_PC: nextstate = JALR;
         JALR: nextstate = ALUWB;
         AUIPC: nextstate = ALUWB;
@@ -585,7 +585,7 @@ always @(*) begin
             pc_source <= 1'b1;
         end
 
-        BEQ: begin
+        BRANCH: begin
             alu_src_a     <= 3'b001;
             aluop         <= 2'b01;
             pc_write_cond <= 1'b1;
