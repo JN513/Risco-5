@@ -74,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#welcome-to-mkdocs" class="md-skip">
+        <a href="#documentacao-risco-5" class="md-skip">
           Pular para conteúdo
         </a>
       
@@ -344,18 +344,78 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#commands" class="md-nav__link">
+  <a href="#familia-risco-5" class="md-nav__link">
     <span class="md-ellipsis">
-      Commands
+      Familia Risco 5:
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#project-layout" class="md-nav__link">
+  <a href="#testes" class="md-nav__link">
     <span class="md-ellipsis">
-      Project layout
+      Testes
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#software" class="md-nav__link">
+    <span class="md-ellipsis">
+      Software
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fpga" class="md-nav__link">
+    <span class="md-ellipsis">
+      FPGA
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#maquina-de-estados-da-unidade-de-controle-e-esquematico" class="md-nav__link">
+    <span class="md-ellipsis">
+      Maquina de estados da unidade de controle e Esquemático
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Maquina de estados da unidade de controle e Esquemático">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#maquina-de-estados-da-unidade-de-controle" class="md-nav__link">
+    <span class="md-ellipsis">
+      Maquina de estados da unidade de controle
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#esquematico-do-processador" class="md-nav__link">
+    <span class="md-ellipsis">
+      Esquemático do processador
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#debug" class="md-nav__link">
+    <span class="md-ellipsis">
+      Debug
     </span>
   </a>
   
@@ -407,21 +467,56 @@
   
 
 
-<h1 id="welcome-to-mkdocs">Welcome to MkDocs</h1>
-<p>For full documentation visit <a href="https://www.mkdocs.org">mkdocs.org</a>.</p>
-<h2 id="commands">Commands</h2>
+<h1 id="documentacao-risco-5">Documentação Risco 5</h1>
+<p align="center">
+<img src="imgs/risco5.jpeg" alt="Logo do processador" width="300px">
+</p>
+
+<p>Autor: Julio Nunes Avelar</p>
+<p>Autor da logo: <a href="https://www.instagram.com/mateusluck/">Mateus luck</a></p>
+<p>Licença Hardware: <a href="https://github.com/JN513/Risco-5/blob/main/LICENSE">CERN-OHL-P-2.0</a></p>
+<p>Licença Software: <a href="https://github.com/JN513/Risco-5/blob/main/software/LICENSE-MIT">MIT</a></p>
+<p>Sinais e pinagem dos módulos: <a href="signals.md">signals.md</a></p>
+<p>Lista de instruções suportadas: <a href="instructions.md">instructions.md</a></p>
+<h2 id="familia-risco-5">Familia Risco 5:</h2>
 <ul>
-<li><code>mkdocs new [dir-name]</code> - Create a new project.</li>
-<li><code>mkdocs serve</code> - Start the live-reloading docs server.</li>
-<li><code>mkdocs build</code> - Build the documentation site.</li>
-<li><code>mkdocs -h</code> - Print help message and exit.</li>
+<li>Baby Risco 5 - RV16I: Ainda especulativo</li>
+<li>Pequeno Risco 5 - RV32I: <a href="https://github.com/JN513/Pequeno-Risco-5/">https://github.com/JN513/Pequeno-Risco-5/</a></li>
+<li>Risco 5 - RV32I: <a href="https://github.com/JN513/Risco-5">https://github.com/JN513/Risco-5</a></li>
+<li>Grande Risco 5 - RV32I: Ainda especulativo</li>
+<li>Risco 5 bodybuilder - RV64I: Ainda especulativo</li>
 </ul>
-<h2 id="project-layout">Project layout</h2>
-<pre><code>mkdocs.yml    # The configuration file.
-docs/
-    index.md  # The documentation homepage.
-    ...       # Other markdown pages, images and other files.
+<h2 id="testes">Testes</h2>
+<p>O diretório testes possui alguns testes para os módulos do projeto. Os testes foram feitos para serem utilizados para o <a href="https://steveicarus.github.io/iverilog/">Iverilog</a>, para executar os testes basta utilizar o iverilog e o vpp, como no exemplo abaixo:</p>
+<pre><code class="language-bash">iverilog -o build/core_test.o -s core_tb src/core/* src/peripheral/memory.v tests/core_test.v
+vvp build/core_test.o
 </code></pre>
+<h2 id="software">Software</h2>
+<p>O diretório software possui pelo menos um exemplo em assembly para cada instrução suportada, além disso possui um arquivo de memória para cada exemplo. Na raiz do diretório está disponível um script para conversão de assembly em arquivo de memória, o mesmo pode ser utilizado como no exemplo abaixo:</p>
+<pre><code class="language-bash">./generate_mem.sh
+&gt;addi
+</code></pre>
+<h2 id="fpga">FPGA</h2>
+<p>O projeto oferece suporte a teste em algumas FPGAs, sendo elas:</p>
+<ul>
+<li>Colorlight i9 - ECP5 45F</li>
+<li>Digilent Arty A7 100t</li>
+<li>Digilent Nexys A4 DDR</li>
+<li>Tangnano 20k</li>
+</ul>
+<p>Os exemplos estão disponíveis no diretório FPGA. Para FPGAs sipeed (Tangnano 9k e 20k) os exemplos foram feitos utilizando a IDE gowin, e para as FPGA Lattice/ColorLight os exemplos foram feitos utilizando o Yosys + NextPNR e podem ser sintetizados e flashado utilizando o makefile disponível nos diretórios.</p>
+<h2 id="maquina-de-estados-da-unidade-de-controle-e-esquematico">Maquina de estados da unidade de controle e Esquemático</h2>
+<p><strong>Versão PDF dos diagramas</strong>
+<a href="documents/risco5_state_machine.pdf">Maquina de estados da unidade de controle</a>
+<a href="documents/risco5_datapath.pdf">Esquemático do processador</a></p>
+<h4 id="maquina-de-estados-da-unidade-de-controle">Maquina de estados da unidade de controle</h4>
+<p><img alt="Maquina de estados da unidade de controle" src="imgs/risco5_state_machine.png" /></p>
+<h4 id="esquematico-do-processador">Esquemático do processador</h4>
+<p><strong>Esquemático atual</strong>
+<img alt="Esquemático atual do processador" src="imgs/risco5_datapath.png" /></p>
+<p><strong>Esquemático Inicial</strong>
+<img alt="Esquemático antigo do processador" src="imgs/esquematico.png" /></p>
+<h2 id="debug">Debug</h2>
 
 
 
