@@ -1,6 +1,9 @@
 site_name: Risco 5
 site_author: Julio Nunes Avelar
 site_description: Processador RISC-V multi ciclo com implementação RV32I construído em alguns dias de folga.
+repo_name: Risco-5
+repo_url: https://github.com/JN513/Risco-5
+copyright: CC BY-SA 4.0 - Julio Nunes Avelar
 nav:
   - Home: index.md
   - About: about.md

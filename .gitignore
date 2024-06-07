@@ -24,3 +24,4 @@ fpga/nexys4_ddr/digilent_nexys4ddr_drc.rpt
 fpga/nexys4_ddr/digilent_nexys4ddr_power.rpt
 fpga/nexys4_ddr/digilent_nexys4ddr_route_status.rpt
 fpga/nexys4_ddr/digilent_nexys4ddr_timing.rpt
+site/
