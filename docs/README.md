@@ -12,6 +12,8 @@ Licença Hardware: [CERN-OHL-P-2.0](https://github.com/JN513/Risco-5/blob/main/L
 
 Licença Software: [MIT](https://github.com/JN513/Risco-5/blob/main/software/LICENSE-MIT)
 
+Licença Documentação: [CC BY-SA 4.0](https://github.com/JN513/Risco-5/blob/main/LICENSE-CC)
+
 Sinais e pinagem dos módulos: [signals.md](signals.md)
 
 Lista de instruções suportadas: [instructions.md](instructions.md)
