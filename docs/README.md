@@ -47,6 +47,8 @@ O diretório software possui pelo menos um exemplo em assembly para cada instru�
 O projeto oferece suporte a teste em algumas FPGAs, sendo elas:
 
 - Colorlight i9 - ECP5 45F
+- Digilent Arty A7 100t
+- Digilent Nexys A4 DDR
 - Tangnano 20k
 
 Os exemplos estão disponíveis no diretório FPGA. Para FPGAs sipeed (Tangnano 9k e 20k) os exemplos foram feitos utilizando a IDE gowin, e para as FPGA Lattice/ColorLight os exemplos foram feitos utilizando o Yosys + NextPNR e podem ser sintetizados e flashado utilizando o makefile disponível nos diretórios.
