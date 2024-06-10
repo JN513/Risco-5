@@ -14,7 +14,7 @@ module CSR_Unit (
     input wire interruption_request_software,
     input wire [15:0] interruption_request_fast,
 
-    input wire [31:0] pc_value,
+    input wire [31:0] pc_value
 
 );
 
