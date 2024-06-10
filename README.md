@@ -6,6 +6,10 @@
 
 Processador [RISC-V](https://riscv.org/) de multi ciclo com implementação RV32I construído em alguns dias de folga.
 
+## Testes
+
+[![Build Status](https://lampiao.ic.unicamp.br/jenkins/buildStatus/icon?job=Risco_5)](https://lampiao.ic.unicamp.br/jenkins/job/Risco_5/)
+
 ## Implementação
 
 O processador foi implementado utilizando Verilog HDL, e tem uma implementação multiciclo sem Pipeline.
