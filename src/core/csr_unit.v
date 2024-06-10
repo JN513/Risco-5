@@ -67,7 +67,7 @@ initial begin
     mcause     = 32'h00000000;
     mtval      = 32'h00000000;
     mtvec      = 32'h00000000;
-    csr_mcause = 32'h00000000;
+    mcause = 32'h00000000;
     mcycle     = 64'h0000000000000000;
     minstret   = 64'h0000000000000000;
     utime      = 64'h0000000000000000;
