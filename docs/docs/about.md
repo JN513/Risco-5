@@ -1,7 +1,7 @@
 # Sobre o Risco-5
 
 <p align="center">
-<img src="/imgs/risco5.jpeg" alt="Logo do processador" width="300px">
+<img src="../imgs/risco5.jpeg" alt="Logo do processador" width="300px">
 </p>
 
 ## Origem do projeto
