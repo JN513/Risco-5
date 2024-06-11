@@ -25,3 +25,8 @@ fpga/nexys4_ddr/digilent_nexys4ddr_power.rpt
 fpga/nexys4_ddr/digilent_nexys4ddr_route_status.rpt
 fpga/nexys4_ddr/digilent_nexys4ddr_timing.rpt
 site/
+fpga/xilinx_vc709/usage_statistics_webtalk.xml
+fpga/xilinx_vc709/usage_statistics_webtalk.html
+fpga/xilinx_vc709/tight_setup_hold_pins.txt
+fpga/xilinx_vc709/webtalk.log
+fpga/xilinx_vc709/webtalk.jou

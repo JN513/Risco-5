@@ -1,0 +1,10 @@
+digilent_arty.cache/
+digilent_arty.hw/
+digilent_arty.ip_user_files/
+.Xil/
+report/
+vivado_*.backup.*
+virtex_*
+usage_statistics_webtalk.xml
+usage_statistics_webtalk.html
+tight_setup_hold_pins.txt
