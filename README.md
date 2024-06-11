@@ -6,7 +6,7 @@
 
 Processador [RISC-V](https://riscv.org/) de multi ciclo com implementação RV32I construído em alguns dias de folga.
 
-## Testes
+## Jnekins CI
 
 [![Build Status](https://lampiao.ic.unicamp.br/jenkins/buildStatus/icon?job=Risco_5)](https://lampiao.ic.unicamp.br/jenkins/job/Risco_5/)
 

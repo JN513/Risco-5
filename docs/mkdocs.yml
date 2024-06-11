@@ -6,7 +6,11 @@ repo_url: https://github.com/JN513/Risco-5
 copyright: CC BY-SA 4.0 - Julio Nunes Avelar
 nav:
   - Home: index.md
-  - About: about.md
+  - Get Started: get_started.md
+  - Core: core.md
+  - SoC: soc.md
+  - Sobre: about.md
+  - Contribuindo: contributing.md
 theme:
   name: material
   language: pt-BR
@@ -44,7 +48,6 @@ extra:
       link: https://gitlab.com/jn513
     - icon: fontawesome/brands/github 
       link: https://github.com/JN513/Risco-5
-copyright: Copyright &copy; 2024 Julio Nunes Avelar
 markdown_extensions:
   - attr_list
   - md_in_html

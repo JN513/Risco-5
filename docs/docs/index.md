@@ -1,76 +1,23 @@
-# Documentação Risco 5
+# Documentação do Risco 5
 
 <p align="center">
 <img src="imgs/risco5.jpeg" alt="Logo do processador" width="300px">
 </p>
 
-Autor: Julio Nunes Avelar
+## O Risco 5
 
-Autor da logo: [Mateus luck](https://www.instagram.com/mateusluck/)
+O Risco 5 é um núcleo de processador de código aberto que implementa o conjunto de instruções RV32I da arquitetura RISC-V. Foi desenvolvido para uso acadêmico e como o núcleo principal em pequenos SoCs. O projeto tem como foco facilitar a integração e utilização, oferecendo uma arquitetura simplificada e eficiente para diversas aplicações.
 
-Licença Hardware: [CERN-OHL-P-2.0](https://github.com/JN513/Risco-5/blob/main/LICENSE)
+## Recursos Disponíveis
 
-Licença Software: [MIT](https://github.com/JN513/Risco-5/blob/main/software/LICENSE-MIT)
+### Risco-5 Core
 
-Licença Documentação: [CC BY-SA 4.0](https://github.com/JN513/Risco-5/blob/main/LICENSE-CC)
+Um núcleo de processador RISC-V com a implementação RV32I do RISC-V.
 
-Sinais e pinagem dos módulos: [signals.md](signals.md)
+### Risco-5 SoC
 
-Lista de instruções suportadas: [instructions.md](instructions.md)
+Um SoC com o núcleo Risco-5 contendo memória e periféricos como GPIOs e UART.
 
-## Familia Risco 5:
+### Risco-5 Testes
 
-- Baby Risco 5 - RV16I: Ainda especulativo
-- Pequeno Risco 5 - RV32I: [https://github.com/JN513/Pequeno-Risco-5/](https://github.com/JN513/Pequeno-Risco-5/)
-- Risco 5 - RV32I: [https://github.com/JN513/Risco-5](https://github.com/JN513/Risco-5)
-- Grande Risco 5 - RV32I: Ainda especulativo
-- Risco 5 bodybuilder - RV64I: Ainda especulativo
-
-## Testes
-
-O diretório testes possui alguns testes para os módulos do projeto. Os testes foram feitos para serem utilizados para o [Iverilog](https://steveicarus.github.io/iverilog/), para executar os testes basta utilizar o iverilog e o vpp, como no exemplo abaixo:
-
-```bash
-iverilog -o build/core_test.o -s core_tb src/core/* src/peripheral/memory.v tests/core_test.v
-vvp build/core_test.o
-```
-
-## Software
-
-O diretório software possui pelo menos um exemplo em assembly para cada instrução suportada, além disso possui um arquivo de memória para cada exemplo. Na raiz do diretório está disponível um script para conversão de assembly em arquivo de memória, o mesmo pode ser utilizado como no exemplo abaixo:
-
-```bash
-./generate_mem.sh
->addi
-```
-
-## FPGA
-
-O projeto oferece suporte a teste em algumas FPGAs, sendo elas:
-
-- Colorlight i9 - ECP5 45F
-- Digilent Arty A7 100t
-- Digilent Nexys A4 DDR
-- Tangnano 20k
-
-Os exemplos estão disponíveis no diretório FPGA. Para FPGAs sipeed (Tangnano 9k e 20k) os exemplos foram feitos utilizando a IDE gowin, e para as FPGA Lattice/ColorLight os exemplos foram feitos utilizando o Yosys + NextPNR e podem ser sintetizados e flashado utilizando o makefile disponível nos diretórios.
-
-## Maquina de estados da unidade de controle e Esquemático
-
-**Versão PDF dos diagramas**
-[Maquina de estados da unidade de controle](documents/risco5_state_machine.pdf)
-[Esquemático do processador](documents/risco5_datapath.pdf)
-
-#### Maquina de estados da unidade de controle
-
-![Maquina de estados da unidade de controle](imgs/risco5_state_machine.png)
-
-#### Esquemático do processador
-
-**Esquemático atual**
-![Esquemático atual do processador](imgs/risco5_datapath.png)
-
-**Esquemático Inicial**
-![Esquemático antigo do processador](imgs/esquematico.png)
-
-## Debug
+Testes escritos em assembly RISC-V para validação do Risco 5.

@@ -41,7 +41,7 @@ Risco_5_SOC #(
     .CLOCK_FREQ(100000000),
     .BIT_RATE(115200),
     .MEMORY_SIZE(2048),
-    .MEMORY_FILE("../../software/memory/teste_uart_fpga.hex"),
+    .MEMORY_FILE("../../software/memory/fpga_test_4.hex"),
     .GPIO_WIDHT(8),
     .UART_BUFFER_SIZE(16)
 ) SOC(

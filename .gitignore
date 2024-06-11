@@ -30,3 +30,5 @@ fpga/xilinx_vc709/usage_statistics_webtalk.html
 fpga/xilinx_vc709/tight_setup_hold_pins.txt
 fpga/xilinx_vc709/webtalk.log
 fpga/xilinx_vc709/webtalk.jou
+*.backup.log
+*.backup.jou

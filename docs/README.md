@@ -23,7 +23,7 @@ Lista de instruções suportadas: [instructions.md](instructions.md)
 - Baby Risco 5 - RV16I: Ainda especulativo
 - Pequeno Risco 5 - RV32I: [https://github.com/JN513/Pequeno-Risco-5/](https://github.com/JN513/Pequeno-Risco-5/)
 - Risco 5 - RV32I: [https://github.com/JN513/Risco-5](https://github.com/JN513/Risco-5)
-- Grande Risco 5 - RV32I: Ainda especulativo
+- Grande Risco 5 - [https://github.com/JN513/Grande-Risco-5](https://github.com/JN513/Grande-Risco-5)
 - Risco 5 bodybuilder - RV64I: Ainda especulativo
 
 ## Testes
@@ -50,10 +50,11 @@ O projeto oferece suporte a teste em algumas FPGAs, sendo elas:
 
 - Colorlight i9 - ECP5 45F
 - Digilent Arty A7 100t
-- Digilent Nexys A4 DDR
+- Digilent Nexys 4 DDR
 - Tangnano 20k
+- AMD/Xilinx VC709 Connectivity Kit
 
-Os exemplos estão disponíveis no diretório FPGA. Para FPGAs sipeed (Tangnano 9k e 20k) os exemplos foram feitos utilizando a IDE gowin, e para as FPGA Lattice/ColorLight os exemplos foram feitos utilizando o Yosys + NextPNR e podem ser sintetizados e flashado utilizando o makefile disponível nos diretórios.
+Os exemplos estão disponíveis no diretório FPGA. Para FPGAs sipeed (Tangnano 9k e 20k) os exemplos foram feitos utilizando a IDE gowin, e para as FPGA Lattice/ColorLight os exemplos foram feitos utilizando o Yosys + NextPNR e podem ser sintetizados e flashado utilizando o makefile disponível nos diretórios, para as FPGAs Xilinx foi utilizado o Vivado e os exemplos podem ser utilizados também usando o Makefile disponível no diretório.
 
 ## Maquina de estados da unidade de controle e Esquemático
 
