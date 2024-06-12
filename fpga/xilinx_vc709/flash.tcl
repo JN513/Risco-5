@@ -1,6 +1,9 @@
 # Inicializar o hardware
 open_hw
 connect_hw_server
+
+#current_hw_target [get_hw_targets */210203A7C2EE*]
+
 open_hw_target
 
 # Programar a FPGA com o bitstream
