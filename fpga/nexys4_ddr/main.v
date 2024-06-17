@@ -7,14 +7,16 @@ module top (
     inout [7:0]gpio
 );
 
-wire reset_o;
+wire reset_o, reset_in;
 wire [7:0] led;
-reg clk_o;
+reg clk_o, reset_bousing;
 
 assign LED = ~led;
+assign reset_in = reset_o | reset_bousing;
 
 initial begin
     clk_o = 1'b0;
+    reset_bousing = 1'b0;
 end
 
 ResetBootSystem #(
@@ -33,7 +35,7 @@ Risco_5_SOC #(
     .UART_BUFFER_SIZE(16)
 ) SOC(
     .clk(clk_o),
-    .reset(reset_o),
+    .reset(reset_in),
     .leds(led),
     .rx(rx),
     .tx(tx),
@@ -42,6 +44,7 @@ Risco_5_SOC #(
 
 always @(posedge clk) begin
     clk_o = ~clk_o;
+    reset_bousing <= CPU_RESETN;
 end
 
 endmodule

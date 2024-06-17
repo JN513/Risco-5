@@ -11,6 +11,7 @@ int main(){
             continue;
         }
         uart_write(buffer[i]);
+        delay_ms(1);
     }
 
     while (1)
@@ -19,6 +20,7 @@ int main(){
         
         char c = uart_read();
         uart_write(c);
+        set_led_value(c);
     }
 
     return 0;

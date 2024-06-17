@@ -3,7 +3,6 @@ impl/
 x.*
 build/
 rascunho.v
-utils/
 fpga/digilent_arty/vivado_131673.backup.jou
 fpga/digilent_arty/vivado_131673.backup.log
 fpga/digilent_arty/vivado.jou

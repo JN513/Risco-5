@@ -10,10 +10,14 @@ module top(
     output wire [7:0]led
 );
     
-reg clk_o;
+wire reset_o, reset_in;
+reg clk_o, reset_bousing;
+
+assign reset_in = reset_o | reset_bousing;
 
 initial begin
     clk_o = 1'b0;
+    reset_bousing = 1'b0;
 end
 
 
@@ -41,12 +45,12 @@ Risco_5_SOC #(
     .CLOCK_FREQ(100000000),
     .BIT_RATE(115200),
     .MEMORY_SIZE(2048),
-    .MEMORY_FILE("../../software/memory/fpga_test_4.hex"),
+    .MEMORY_FILE("program.hex"),
     .GPIO_WIDHT(8),
     .UART_BUFFER_SIZE(16)
 ) SOC(
     .clk(clk_o),
-    .reset(reset_o),
+    .reset(reset_in),
     .leds(led),
     .rx(RxD),
     .tx(TxD),
@@ -55,6 +59,7 @@ Risco_5_SOC #(
 
 always @(posedge clk_ref) begin
     clk_o = ~clk_o;
+    reset_bousing <= button_center;
 end
 
 endmodule

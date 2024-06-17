@@ -7,14 +7,16 @@ module top (
     inout [5:0]gpios
 );
 
-wire reset_o;
+wire reset_o, reset_in;
 wire [7:0] leds;
-reg clk_o;
+reg clk_o, reset_bousing;
 
-assign led = leds[3:0];
+assign led = ~leds[3:0];
+assign reset_in = reset_o | reset_bousing;
 
 initial begin
     clk_o = 1'b0;
+    reset_bousing = 1'b0;
 end
 
 
@@ -34,7 +36,7 @@ Risco_5_SOC #(
     .UART_BUFFER_SIZE(16)
 ) SOC(
     .clk(clk_o),
-    .reset(reset_o),
+    .reset(reset_in),
     .leds(leds),
     .rx(rx),
     .tx(tx),
@@ -43,6 +45,7 @@ Risco_5_SOC #(
 
 always @(posedge clk) begin
     clk_o = ~clk_o;
+    reset_bousing <= reset;
 end
 
 
