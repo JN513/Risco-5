@@ -16,11 +16,11 @@ O nome Risco-5 vem de uma piada com o nome RISC-V, a arquitetura que ele impleme
 
 ## Família Risco-5:
 
-- Baby Risco-5 - RV16I: Ainda especulativo
-- Pequeno Risco-5 - RV32I: [https://github.com/JN513/Pequeno-Risco-5/](https://github.com/JN513/Pequeno-Risco-5/)
-- Risco-5 - RV32I: [https://github.com/JN513/Risco-5](https://github.com/JN513/Risco-5)
-- Grande Risco-5 - [https://github.com/JN513/Grande-Risco-5](https://github.com/JN513/Grande-Risco-5)
-- Risco-5 Bodybuilder - RV64I: Ainda especulativo
+- Baby Risco 5 - RV16EC: Ainda em fase especulativa
+- Pequeno Risco 5 - RV32I: [https://github.com/JN513/Pequeno-Risco-5/](https://github.com/JN513/Pequeno-Risco-5/)
+- Risco 5 - RV32I: [https://github.com/JN513/Risco-5](https://github.com/JN513/Risco-5)
+- Grande Risco 5 - RV32I: [https://github.com/JN513/Grande-Risco-5](https://github.com/JN513/Grande-Risco-5)
+- Risco 5 Bodybuilder - RV64IMA: Ainda em fase especulativa
 
 ## Desenvolvedor
 
