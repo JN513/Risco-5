@@ -32,16 +32,21 @@ build/program.bin: build/program.s
 build/program.s: build/program.elf
 	$(OBJDUMP) -d build/program.elf > build/program.s
 
-build/program.elf: build/main.o build/risco5.o
-	$(LD) -o build/program.elf build/risco5.o build/main.o -T src/link.ld
+build/program.elf: build/main.o build/risco5_lib.o build/uart.o build/gpio.o
+	$(LD) -o build/program.elf build/risco5_lib.o build/uart.o build/gpio.o build/main.o -T utils/link.ld
 
 build/main.o: main.c
-	$(CC) -march=rv32id -std=gnu99 -mabi=ilp32 -Wall -c main.c -o build/main.o \
+	$(CC) -march=rv32id -mabi=ilp32 -Wall -c main.c -o build/main.o \
     -nostartfiles -nostdinc -nostdlib -mstrict-align
 
-build/risco5.o: src/risco5.c
-	$(CC) -march=rv32id -std=gnu99 -mabi=ilp32 -Wall -c src/risco5.c -o build/risco5.o \
-    -nostartfiles -nostdinc -nostdlib -mstrict-align
+build/risco5_lib.o: src/risco5_lib.s
+	$(AS) -march=rv32izicsr -mabi=ilp32 src/risco5_lib.s -o build/risco5_lib.o
+
+build/uart.o: src/uart.s
+	$(AS) -march=rv32izicsr -mabi=ilp32 src/uart.s -o build/uart.o
+
+build/gpio.o: src/gpio.s
+	$(AS) -march=rv32izicsr -mabi=ilp32 src/gpio.s -o build/gpio.o
 
 clean:
 	rm -f build/*.o build/*.elf build/*.bin build/*.hex build/*.s
