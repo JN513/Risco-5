@@ -21,7 +21,7 @@ int gpio_read_data();
 void set_led_value(int value);
 
 int get_pwm_period(int freq);
-int get_pwm_duty_cycle(int period, int duty_cycle);
+int get_pwm_duty_cycle(int period, int duty);
 
 void set_pwm_period(int period, int id);
 void set_pwm_duty_cycle(int duty_cycle, int id);

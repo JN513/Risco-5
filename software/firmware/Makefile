@@ -34,7 +34,7 @@ build/program.s: build/program.elf
 	$(OBJDUMP) -d build/program.elf > build/program.s
 
 build/program.elf: build/main.o build/risco5_lib.o build/uart.o build/gpio.o build/conversion.o build/pwm.o
-	$(LD) -o build/program.elf build/risco5_lib.o build/uart.o build/gpio.o build/conversion.o build/main.o -T utils/link.ld
+	$(LD) -o build/program.elf build/risco5_lib.o build/uart.o build/gpio.o build/conversion.o build/pwm.o build/main.o -T utils/link.ld
 
 build/main.o: main.c
 	$(CC) -march=$(MARCH) -mabi=ilp32 -Wall -c main.c -o build/main.o \

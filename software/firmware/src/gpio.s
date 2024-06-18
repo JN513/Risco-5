@@ -5,6 +5,10 @@
 
 .globl set_led_value
 
+.globl set_pwm_period
+.globl set_pwm_duty_cycle
+.globl config_gpio_as_pwm
+
 # Função para configurar a direção GPIO
 config_gpio_direction:
     li t1, 0xC0000000   # Carrega o endereço do registrador de direção GPIO em t1
@@ -52,7 +56,7 @@ set_pwm_duty_cycle:
     ret                 # Retorna da função
 
 # Função para habilitar/desabilitar o PWM
-set_pwm_enable:
+config_gpio_as_pwm:
     li t1, 0x40000008   # Carrega o endereço do registrador de controle de habilitação do PWM em t1
     sw a0, 0(t1)        # Armazena o valor de a0 (argumento) no endereço t1 (controle de habilitação do PWM)
 
