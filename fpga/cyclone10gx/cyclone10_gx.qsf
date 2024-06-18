@@ -1,0 +1,61 @@
+# -------------------------------------------------------------------------- #
+#
+# Copyright (C) 2024  Intel Corporation. All rights reserved.
+# Your use of Intel Corporation's design tools, logic functions 
+# and other software and tools, and any partner logic 
+# functions, and any output files from any of the foregoing 
+# (including device programming or simulation files), and any 
+# associated documentation or information are expressly subject 
+# to the terms and conditions of the Intel Program License 
+# Subscription Agreement, the Intel Quartus Prime License Agreement,
+# the Intel FPGA IP License Agreement, or other applicable license
+# agreement, including, without limitation, that your use is for
+# the sole purpose of programming logic devices manufactured by
+# Intel and sold by Intel or its authorized distributors.  Please
+# refer to the Intel FPGA Software License Subscription Agreements 
+# on the Quartus Prime software download page.
+#
+# -------------------------------------------------------------------------- #
+#
+# Quartus Prime
+# Version 24.1.0 Build 115 03/21/2024 SC Pro Edition
+# Date created = 11:07:47  June 18, 2024
+#
+# -------------------------------------------------------------------------- #
+set_global_assignment -name TOP_LEVEL_ENTITY top
+set_global_assignment -name ORIGINAL_QUARTUS_VERSION 23.1.0
+set_global_assignment -name PROJECT_CREATION_TIME_DATE "11:07:47  JUNE 18, 2024"
+set_global_assignment -name LAST_QUARTUS_VERSION "23.1.0 Pro Edition"
+set_global_assignment -name FAMILY "Cyclone 10 GX"
+set_global_assignment -name PROJECT_OUTPUT_DIRECTORY build
+set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
+set_global_assignment -name MAX_CORE_JUNCTION_TEMP 100
+set_global_assignment -name DEVICE 10CX220YF780E5G
+set_global_assignment -name ERROR_CHECK_FREQUENCY_DIVISOR 1
+set_global_assignment -name VERILOG_FILE main.v
+set_global_assignment -name VERILOG_FILE ../../src/core/core.v
+set_global_assignment -name VERILOG_FILE ../../src/core/alu_control.v
+set_global_assignment -name VERILOG_FILE ../../src/core/alu.v
+set_global_assignment -name VERILOG_FILE ../../src/core/control_unit.v
+set_global_assignment -name VERILOG_FILE ../../src/core/csr_unit.v
+set_global_assignment -name VERILOG_FILE ../../src/core/immediate_generator.v
+set_global_assignment -name VERILOG_FILE ../../src/core/mdu.v
+set_global_assignment -name VERILOG_FILE ../../src/core/mux.v
+set_global_assignment -name VERILOG_FILE ../../src/core/pc.v
+set_global_assignment -name VERILOG_FILE ../../src/core/registers.v
+set_global_assignment -name VERILOG_FILE ../../src/peripheral/bus.v
+set_global_assignment -name VERILOG_FILE ../../src/peripheral/fifo.v
+set_global_assignment -name VERILOG_FILE ../../src/peripheral/gpio.v
+set_global_assignment -name VERILOG_FILE ../../src/peripheral/gpios.v
+set_global_assignment -name VERILOG_FILE ../../src/peripheral/leds.v
+set_global_assignment -name VERILOG_FILE ../../src/peripheral/memory.v
+set_global_assignment -name VERILOG_FILE ../../src/peripheral/soc.v
+set_global_assignment -name VERILOG_FILE ../../src/peripheral/uart_rx.v
+set_global_assignment -name VERILOG_FILE ../../src/peripheral/uart_tx.v
+set_global_assignment -name VERILOG_FILE ../../src/peripheral/uart.v
+set_global_assignment -name VERILOG_FILE ../../debug/reset.v
+set_location_assignment PIN_J23 -to clk
+set_location_assignment PIN_AF6 -to led
+set_instance_assignment -name IO_STANDARD "1.8 V" -to led -entity top
+set_instance_assignment -name IO_STANDARD "1.8 V" -to clk -entity top
+set_global_assignment -name SDC_FILE pinout.sdc
