@@ -1,3 +1,5 @@
+`include "config.vh"
+
 module Core #(
     parameter BOOT_ADDRESS=32'h00000000
 ) (
@@ -62,6 +64,11 @@ reg [31:0] instruction_register, memory_register, alu_out_register,
     register_data_1, register_data_2, pc_old, temp_address, temp_reg2,
     temp_reg3, temp_write_value;
 
+`ifdef MDU_ENABLE
+wire [31:0] mdu_out;
+reg [31:0] mdu_out_reg;
+`endif
+
 assign write_data = (write_data_in == 1'b1)  ? temp_write_value : register_data_2_out;
 assign option = (lorD == 2'b00 | control_memory_op == 1'b1) 
     ? control_unit_memory_op : instruction_register[14:12];
@@ -108,7 +115,13 @@ MUX MemoryDataMUX(
     .E({24'h000000, alu_out_register[7:0]}),
     .F({{16{alu_out_register[15]}}, alu_out_register[15:0]}),
     .G({{24{alu_out_register[7]}}, alu_out_register[7:0]}),
-    .H(0),
+
+    `ifdef MDU_ENABLE
+        .H(mdu_out_reg),
+    `else
+        .H(0),
+    `endif
+
     .S(register_input)
 );
 
@@ -137,6 +150,17 @@ MUX AluInputBMUX(
     .H({27'h00000, temp_address[1:0] + 1'b1, 3'h0}),
     .S(alu_input_b)
 );
+
+`ifdef MDU_ENABLE
+MDU Mdu(
+    .clk(clk),
+    .reset(reset),
+    .operation(instruction_register[14:12]),
+    .MDU_in_X(register_data_1),
+    .MDU_in_Y(register_data_2),
+    .MDU_out_S(mdu_out)
+);
+`endif
 
 MUX PCSourceMUX(
     .option({2'b0, pc_source}),
@@ -270,6 +294,10 @@ always @(posedge clk ) begin
         if(save_write_value) begin
             temp_write_value <= alu_out;
         end
+
+        `ifdef MDU_ENABLE
+        mdu_out_reg <= mdu_out;
+        `endif
         
         memory_register <= read_data;
         register_data_1 <= register_data_1_out;

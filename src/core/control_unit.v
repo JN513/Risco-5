@@ -79,6 +79,10 @@ localparam CLEAR_VALUE_PART_2_1 = 6'b101011;
 localparam MERGE_WRITE_VALUE_2 = 6'b101100;
 localparam WRITE_VALUE_2 = 6'b101101;
 localparam VALIDATE_FETCH = 6'b101110;
+`ifdef MPU_ENABLE
+localparam EXECUTE_MDU = 6'b101111;
+localparam MDU_WB = 6'b110000;
+`endif
 
 // Instruction Opcodes
 localparam LW      = 7'b0000011;
@@ -91,6 +95,7 @@ localparam JALRI   = 7'b1100111;
 localparam AUIPCI  = 7'b0010111;
 localparam LUII    = 7'b0110111;
 localparam CSR     = 7'b1110011;
+localparam MUL     = 7'b0110011;
 
 wire unaligned;
 wire [2:0] second_block_write_src_b;
@@ -164,6 +169,9 @@ always @(*) begin
                 LUII: nextstate = LUI;
                 JALRI: nextstate = JALR_PC;
                 CSR: nextstate = EXECUTECSR;
+                `ifdef MPU_ENABLE
+                MUL: nextstate = EXECUTE_MDU;
+                `endif
             endcase
         end
         MEMADR: begin
@@ -300,6 +308,11 @@ always @(*) begin
                 nextstate = WRITE_VALUE_2;
             end
         end
+
+        `ifdef MPU_ENABLE
+        EXECUTE_MDU: nextstate = MDU_WB;
+        MDU_WB: nextstate = FETCH;
+        `endif
         default: nextstate = FETCH;
     endcase
 end
@@ -620,6 +633,17 @@ always @(*) begin
             memory_to_reg    <= 3'b010;
             csr_write_enable <= 1'b1;
         end
+
+        `ifdef MPU_ENABLE
+        EXECUTE_MDU: begin
+            alu_src_a <= 3'b001;
+        end
+
+        MDU_WB: begin
+            reg_write     <= 1'b1;
+            memory_to_reg <= 3'b111;
+        end
+        `endif
     endcase
 end
 
