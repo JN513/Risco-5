@@ -1,4 +1,6 @@
 #include "lib/risco5.h"
+#include "lib/uart.h"
+#include "lib/gpio.h"
 
 int main(){
     char *buffer = "Hello World! Risco 5\n\0";
