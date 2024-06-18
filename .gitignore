@@ -32,3 +32,4 @@ fpga/xilinx_vc709/webtalk.jou
 *.backup.log
 *.backup.jou
 rascunho/
+.vscode/settings.json

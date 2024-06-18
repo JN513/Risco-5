@@ -23,6 +23,8 @@ add_file ../../src/peripheral/uart_rx.v
 add_file ../../src/peripheral/uart_tx.v
 add_file ../../src/peripheral/uart.v
 add_file ../../src/peripheral/fifo.v
+add_file ../../src/peripheral/pwm.v
+
 set_option -use_mspi_as_gpio 1
 set_option -use_sspi_as_gpio 1
 set_option -use_ready_as_gpio 1

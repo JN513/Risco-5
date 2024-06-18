@@ -1,4 +1,4 @@
-`include "config.vh"
+`define MDU_ENABLE
 
 module Core #(
     parameter BOOT_ADDRESS=32'h00000000

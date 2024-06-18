@@ -98,7 +98,7 @@ always @(posedge clk ) begin
                     if(rx_fifo_empty == 1'b0) begin
                        counter <= counter + 1'b1;
                        rx_fifo_read <= 1'b1;
-                       read_data <= {read_data[24:0], rx_fifo_read_data};
+                       read_data <= {read_data[23:0], rx_fifo_read_data};
                     end
                 end else begin
                     state <= WB;

@@ -10,6 +10,7 @@ read_verilog ../../src/core/pc.v
 read_verilog ../../src/core/registers.v
 read_verilog ../../src/core/csr_unit.v
 read_verilog ../../src/core/mdu.v
+read_verilog ../../src/peripheral/pwm.v
 read_verilog ../../src/peripheral/bus.v
 read_verilog ../../src/peripheral/gpio.v
 read_verilog ../../src/peripheral/gpios.v

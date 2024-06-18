@@ -53,6 +53,7 @@ set_global_assignment -name VERILOG_FILE ../../src/peripheral/soc.v
 set_global_assignment -name VERILOG_FILE ../../src/peripheral/uart_rx.v
 set_global_assignment -name VERILOG_FILE ../../src/peripheral/uart_tx.v
 set_global_assignment -name VERILOG_FILE ../../src/peripheral/uart.v
+set_global_assignment -name VERILOG_FILE ../../src/peripheral/pwm.v
 set_global_assignment -name VERILOG_FILE ../../debug/reset.v
 set_location_assignment PIN_J23 -to clk
 set_location_assignment PIN_AF6 -to led

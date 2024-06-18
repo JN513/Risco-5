@@ -12,7 +12,7 @@ module LEDs (
 
 assign response = read | write;
 
-reg [32:0] data;
+reg [31:0] data;
 
 initial begin
     data = 0;

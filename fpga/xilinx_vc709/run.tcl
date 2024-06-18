@@ -20,6 +20,7 @@ read_verilog ../../src/peripheral/uart_rx.v
 read_verilog ../../src/peripheral/uart_tx.v
 read_verilog ../../src/peripheral/uart.v
 read_verilog ../../src/peripheral/fifo.v
+read_verilog ../../src/peripheral/pwm.v
 
 read_xdc "pinout.xdc"
 set_property PROCESSING_ORDER EARLY [get_files pinout.xdc]
