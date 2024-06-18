@@ -12,6 +12,7 @@ add_file ../../src/core/mux.v
 add_file ../../src/core/pc.v
 add_file ../../src/core/registers.v
 add_file ../../src/core/csr_unit.v
+add_file ../../src/core/mdu.v
 add_file ../../src/peripheral/bus.v
 add_file ../../src/peripheral/gpio.v
 add_file ../../src/peripheral/gpios.v
