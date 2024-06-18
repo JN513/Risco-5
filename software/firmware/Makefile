@@ -20,11 +20,11 @@ LD=$(COMPILER)ld
 OBJCOPY=$(COMPILER)objcopy
 HEXDUMP=hexdump
 OBJDUMP=$(COMPILER)objdump
-MARCH=rv32izicsr
+MARCH=rv32imzicsr
 
 all: build/program.hex
 
-build/program.hex: build/program.bin
+build/program.hex: build/program.bin buildFolder
 	$(HEXDUMP) -v -e '1/4 "%08x\n"' build/program.bin > build/program.hex
 
 build/program.bin: build/program.s
@@ -33,8 +33,8 @@ build/program.bin: build/program.s
 build/program.s: build/program.elf
 	$(OBJDUMP) -d build/program.elf > build/program.s
 
-build/program.elf: build/main.o build/risco5_lib.o build/uart.o build/gpio.o
-	$(LD) -o build/program.elf build/risco5_lib.o build/uart.o build/gpio.o build/main.o -T utils/link.ld
+build/program.elf: build/main.o build/risco5_lib.o build/uart.o build/gpio.o build/conversion.o
+	$(LD) -o build/program.elf build/risco5_lib.o build/uart.o build/gpio.o build/conversion.o build/main.o -T utils/link.ld
 
 build/main.o: main.c
 	$(CC) -march=$(MARCH) -mabi=ilp32 -Wall -c main.c -o build/main.o \
@@ -48,6 +48,12 @@ build/uart.o: src/uart.s
 
 build/gpio.o: src/gpio.s
 	$(AS) -march=$(MARCH) -mabi=ilp32 src/gpio.s -o build/gpio.o
+
+build/conversion.o: src/conversion.s
+	$(AS) -march=$(MARCH) -mabi=ilp32 src/conversion.s -o build/conversion.o
+
+buildFolder:
+	mkdir -p build
 
 clean:
 	rm -f build/*.o build/*.elf build/*.bin build/*.hex build/*.s

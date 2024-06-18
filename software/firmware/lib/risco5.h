@@ -1,9 +1,9 @@
 #ifndef __RISCO_5_H__
 #define __RISCO_5_H__
 
-#define MEM_SIZE       0x00004000
+#define MEM_SIZE       0x00008004
 #define STACK_INIT     MEM_SIZE - 4
-#define FRAME_POINTER  0X00002000
+#define FRAME_POINTER  0X00004000
 
 #define NOP_TIME 5 // 4 cycles
 #define CLK_FREQ 50000000 // 50 MHz
