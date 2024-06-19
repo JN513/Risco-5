@@ -14,7 +14,7 @@ always #1 clk = ~clk;
 Risco_5_SOC #(
     .CLOCK_FREQ(25000000),
     .BIT_RATE(115200),
-    .MEMORY_SIZE(8192),
+    .MEMORY_SIZE(32772),
     .MEMORY_FILE("software/memory/generic.hex"),
     .GPIO_WIDHT(8),
     .UART_BUFFER_SIZE(16)

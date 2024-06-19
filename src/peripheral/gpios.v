@@ -63,11 +63,6 @@ always @(posedge clk) begin
         gpio_direction <= 32'h00000000;
         gpio_value <= 32'h00000000;
     end else if(write) begin
-        if(address[2] == SET_DIRECTION) // 1 -> SET DIRECTION 0 -> SET VALUE
-            gpio_direction <= write_data[WIDHT - 1: 0];
-        else
-            gpio_value <= write_data[WIDHT - 1: 0];
-
         case (address[7:0])
             SET_DIRECTION: gpio_direction <= write_data[WIDHT - 1: 0];
             WRITE_DATA: gpio_value <= write_data[WIDHT - 1: 0];

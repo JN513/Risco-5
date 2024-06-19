@@ -39,7 +39,7 @@ set_led_value:
 
 # Função para definir o período do PWM
 set_pwm_period:
-    li t1, 0x4000000C   # Carrega o endereço do registrador de período do PWM em t1
+    li t1, 0xC000000C   # Carrega o endereço do registrador de período do PWM em t1
     slli a1, a1, 16     # Desloca o valor de a1 (argumento) 16 bits para a esquerda
     or a0, a0, a1       # Combina os valores de a0 e a1
     sw a0, 0(t1)        # Armazena o valor de a0 (argumento) no endereço t1 (configuração do período do PWM)
@@ -48,7 +48,7 @@ set_pwm_period:
 
 # Função para definir o ciclo de trabalho (duty cycle) do PWM
 set_pwm_duty_cycle:
-    li t1, 0x40000010   # Carrega o endereço do registrador de ciclo de trabalho do PWM em t1
+    li t1, 0xC0000010   # Carrega o endereço do registrador de ciclo de trabalho do PWM em t1
     slli a1, a1, 16     # Desloca o valor de a1 (argumento) 16 bits para a esquerda
     or a0, a0, a1       # Combina os valores de a0 e a1
     sw a0, 0(t1)        # Armazena o valor de a0 (argumento) no endereço t1 (configuração do ciclo de trabalho do PWM)
@@ -57,7 +57,7 @@ set_pwm_duty_cycle:
 
 # Função para habilitar/desabilitar o PWM
 config_gpio_as_pwm:
-    li t1, 0x40000008   # Carrega o endereço do registrador de controle de habilitação do PWM em t1
+    li t1, 0xC0000008   # Carrega o endereço do registrador de controle de habilitação do PWM em t1
     sw a0, 0(t1)        # Armazena o valor de a0 (argumento) no endereço t1 (controle de habilitação do PWM)
 
     ret                 # Retorna da função
