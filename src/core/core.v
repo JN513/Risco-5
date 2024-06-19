@@ -1,5 +1,3 @@
-`define MDU_ENABLE
-
 module Core #(
     parameter BOOT_ADDRESS=32'h00000000
 ) (
@@ -221,7 +219,8 @@ Control_Unit Control_Unit(
     .save_value_2(save_value_2),
     .write_data_in(write_data_in),
     .memory_response(memory_response),
-    .save_write_value(save_write_value)
+    .save_write_value(save_write_value),
+    .func7_lsb_bit(instruction_register[25])
 );
 
 ALU_Control ALU_Control(

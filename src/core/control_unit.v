@@ -1,6 +1,7 @@
 module Control_Unit (
     input wire clk,
     input wire reset,
+    input wire func7_lsb_bit,
     input wire memory_response,
     input wire [1:0] last_bits,
     input wire [1:0] last_bits_saved_address,
@@ -79,7 +80,7 @@ localparam CLEAR_VALUE_PART_2_1 = 6'b101011;
 localparam MERGE_WRITE_VALUE_2 = 6'b101100;
 localparam WRITE_VALUE_2 = 6'b101101;
 localparam VALIDATE_FETCH = 6'b101110;
-`ifdef MPU_ENABLE
+`ifdef MDU_ENABLE
 localparam EXECUTE_MDU = 6'b101111;
 localparam MDU_WB = 6'b110000;
 `endif
@@ -95,7 +96,6 @@ localparam JALRI   = 7'b1100111;
 localparam AUIPCI  = 7'b0010111;
 localparam LUII    = 7'b0110111;
 localparam CSR     = 7'b1110011;
-localparam MUL     = 7'b0110011;
 
 wire unaligned;
 wire [2:0] second_block_write_src_b;
@@ -161,7 +161,18 @@ always @(*) begin
             case (instruction_opcode)
                 LW: nextstate = MEMADR;
                 SW: nextstate = MEMADR;
+                `ifdef MDU_ENABLE
+                RTYPE: begin
+                    if(func7_lsb_bit == 1'b0) begin
+                       nextstate = EXECUTER; 
+                    end
+                    else begin
+                       nextstate = EXECUTE_MDU; 
+                    end
+                end
+                `else
                 RTYPE: nextstate = EXECUTER;
+                `endif
                 ITYPE: nextstate = EXECUTEI;
                 JALI: nextstate = JAL;
                 BRANCHI: nextstate = BRANCH;
@@ -169,9 +180,6 @@ always @(*) begin
                 LUII: nextstate = LUI;
                 JALRI: nextstate = JALR_PC;
                 CSR: nextstate = EXECUTECSR;
-                `ifdef MPU_ENABLE
-                MUL: nextstate = EXECUTE_MDU;
-                `endif
             endcase
         end
         MEMADR: begin
@@ -309,7 +317,7 @@ always @(*) begin
             end
         end
 
-        `ifdef MPU_ENABLE
+        `ifdef MDU_ENABLE
         EXECUTE_MDU: nextstate = MDU_WB;
         MDU_WB: nextstate = FETCH;
         `endif
@@ -634,7 +642,7 @@ always @(*) begin
             csr_write_enable <= 1'b1;
         end
 
-        `ifdef MPU_ENABLE
+        `ifdef MDU_ENABLE
         EXECUTE_MDU: begin
             alu_src_a <= 3'b001;
         end
