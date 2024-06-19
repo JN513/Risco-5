@@ -4,7 +4,8 @@ module top (
     input wire rx,
     output wire tx,
     output wire [3:0]led,
-    inout [5:0]gpios
+    //inout [5:0]gpios
+    inout [13:0]ck_io
 );
 
 wire reset_o, reset_in;
@@ -32,7 +33,7 @@ Risco_5_SOC #(
     .BIT_RATE(115200),
     .MEMORY_SIZE(32772),
     .MEMORY_FILE("program.hex"),
-    .GPIO_WIDHT(6),
+    .GPIO_WIDHT(8),
     .UART_BUFFER_SIZE(16)
 ) SOC(
     .clk(clk_o),
@@ -40,7 +41,7 @@ Risco_5_SOC #(
     .leds(leds),
     .rx(rx),
     .tx(tx),
-    .gpios(gpios)
+    .gpios(ck_io)
 );
 
 always @(posedge clk) begin

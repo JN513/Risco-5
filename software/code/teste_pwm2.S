@@ -6,7 +6,7 @@ _start:
 
     sw a1, 0(a0)
 
-    li a1, 0x0000000F
+    li a1, 0x00000000
     sw a1, 8(a0)
 
     li a1, 25000
