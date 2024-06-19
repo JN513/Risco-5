@@ -22,9 +22,9 @@ HEXDUMP=hexdump
 OBJDUMP=$(COMPILER)objdump
 MARCH=rv32imzicsr
 
-all: build/program.hex
+all: buildFolder build/program.hex
 
-build/program.hex: build/program.bin buildFolder
+build/program.hex: build/program.bin 
 	$(HEXDUMP) -v -e '1/4 "%08x\n"' build/program.bin > build/program.hex
 
 build/program.bin: build/program.s
@@ -34,7 +34,7 @@ build/program.s: build/program.elf
 	$(OBJDUMP) -d build/program.elf > build/program.s
 
 build/program.elf: build/main.o build/risco5_lib.o build/uart.o build/gpio.o build/conversion.o build/pwm.o
-	$(LD) -o build/program.elf build/risco5_lib.o build/uart.o build/gpio.o build/conversion.o build/pwm.o build/main.o -T utils/link.ld
+	$(LD) -o build/program.elf build/risco5_lib.o build/uart.o build/conversion.o build/pwm.o build/gpio.o build/main.o -T utils/link.ld
 
 build/main.o: main.c
 	$(CC) -march=$(MARCH) -mabi=ilp32 -Wall -c main.c -o build/main.o \

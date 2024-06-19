@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 diretorio="code"
-march="rv32izicsr"
+march="rv32imzicsr"
 
 mkdir -p build
 

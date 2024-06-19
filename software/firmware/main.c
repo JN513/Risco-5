@@ -3,27 +3,17 @@
 #include "lib/gpio.h"
 
 int main(){
-    char *buffer = "Hello World! Risco 5\n\0";
+    //config_gpio_direction(0x00000000);
+    set_led_value(0x000000CC);
+    config_gpio_as_pwm(0x00000003);
 
-    int n = strlen(buffer);
+    int periodo = get_pwm_period(1000);
 
-    for(int i = 0; i < n; i++){
-        if(uart_rx_full()) {
-            i--;
-            continue;
-        }
-        uart_write(buffer[i]);
-        delay_ms(1);
-    }
+    set_pwm_period(periodo, 0x00000000);
 
-    while (1)
-    {
-        if(uart_rx_empty()) continue;
-        
-        char c = uart_read();
-        uart_write(c);
-        set_led_value(c);
-    }
+    int duty_cicle = get_pwm_duty_cycle(periodo, 40000);
+
+    set_pwm_duty_cycle(duty_cicle, 0x00000000);
 
     return 0;
 }
