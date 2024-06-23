@@ -1,3 +1,4 @@
+//`define MDU_ENABLE 1
 module Core #(
     parameter BOOT_ADDRESS=32'h00000000
 ) (
@@ -50,7 +51,8 @@ module Core #(
 wire IRWrite, zero, reg_write, pc_load, and_zero_out,
     pc_write_cond, pc_write, is_immediate, csr_write_enable,
     alu_input_selector, save_address, control_memory_op,
-    save_value, save_value_2, write_data_in, save_write_value;
+    save_value, save_value_2, write_data_in, save_write_value,
+    mdu_done, mdu_start;
 wire [1:0] aluop, lorD;
 wire [2:0] alu_src_a, alu_src_b, memory_to_reg, control_unit_memory_op;
 wire [3:0] aluop_out, control_unit_aluop;
@@ -153,6 +155,8 @@ MUX AluInputBMUX(
 MDU Mdu(
     .clk(clk),
     .reset(reset),
+    .start(mdu_start),
+    .done(mdu_done),
     .operation(instruction_register[14:12]),
     .MDU_in_X(register_data_1),
     .MDU_in_Y(register_data_2),
@@ -220,7 +224,9 @@ Control_Unit Control_Unit(
     .write_data_in(write_data_in),
     .memory_response(memory_response),
     .save_write_value(save_write_value),
-    .func7_lsb_bit(instruction_register[25])
+    .func7_lsb_bit(instruction_register[25]),
+    .mdu_done(mdu_done),
+    .mdu_start(mdu_start)
 );
 
 ALU_Control ALU_Control(

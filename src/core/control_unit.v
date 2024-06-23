@@ -1,6 +1,8 @@
+//`define MDU_ENABLE 1
 module Control_Unit (
     input wire clk,
     input wire reset,
+    input wire mdu_done,
     input wire func7_lsb_bit,
     input wire memory_response,
     input wire [1:0] last_bits,
@@ -23,6 +25,7 @@ module Control_Unit (
     output reg save_write_value,
     output reg control_memory_op,
     output reg write_data_in,
+    output reg mdu_start,
     output reg [1:0] lorD,
     output reg [1:0] aluop,
     output reg [2:0] alu_src_a,
@@ -82,7 +85,8 @@ localparam WRITE_VALUE_2 = 6'b101101;
 localparam VALIDATE_FETCH = 6'b101110;
 `ifdef MDU_ENABLE
 localparam EXECUTE_MDU = 6'b101111;
-localparam MDU_WB = 6'b110000;
+localparam MDU_WAIT = 6'b110000;
+localparam MDU_WB = 6'b110001;
 `endif
 
 // Instruction Opcodes
@@ -134,6 +138,7 @@ initial begin
     clear_hal_byte_one_block_option = 1'b0;
     clear_hal_byte_one_block_option_2 = 1'b0;
     save_write_value = 1'b0;
+    mdu_start = 1'b0;
 end
 
 always @(posedge clk ) begin
@@ -318,7 +323,11 @@ always @(*) begin
         end
 
         `ifdef MDU_ENABLE
-        EXECUTE_MDU: nextstate = MDU_WB;
+        EXECUTE_MDU: nextstate = MDU_WAIT;
+        MDU_WAIT: begin
+            if(mdu_done) nextstate = MDU_WB;
+            else nextstate = MDU_WAIT;
+        end
         MDU_WB: nextstate = FETCH;
         `endif
         default: nextstate = FETCH;
@@ -349,6 +358,7 @@ always @(*) begin
     save_value_2 <= 1'b0;
     write_data_in <= 1'b0;
     save_write_value <= 1'b0;
+    mdu_start = 1'b0;
 
     case (state)
         FETCH: begin
@@ -644,6 +654,11 @@ always @(*) begin
 
         `ifdef MDU_ENABLE
         EXECUTE_MDU: begin
+            alu_src_a <= 3'b001;
+            mdu_start <= 1'b1;
+        end
+
+        MDU_WAIT: begin
             alu_src_a <= 3'b001;
         end
 
