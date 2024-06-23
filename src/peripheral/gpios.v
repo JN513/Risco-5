@@ -18,12 +18,11 @@ wire [WIDHT -1:0] gpio_out;
 wire [1:0] pwm_out;
 reg [1:0] is_pwm;
 
-reg [15:0] duty_cycle[1:0], period[1:0];
+reg [15:0] duty_cycle[1:0];
+reg [15:0] period[1:0];
 
 initial begin
-    is_pwm <= 2'b00;
-    period[0] <= 16'h0000;
-    duty_cycle[0] <= 16'h0000;
+    is_pwm = 2'b00;
 end
 
 localparam SET_DIRECTION = 8'h00;
