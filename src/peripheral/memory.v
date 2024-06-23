@@ -21,7 +21,7 @@ integer i;
 
 //assign memory_response = memory_read | memory_write;
 
-assign buffer = (memory_read == 1'b1) ? memory[{2'b00, address[31:2]}] : 32'h00000000;
+assign buffer = memory[{2'b00, address[31:2]}];
 
 initial begin
     memory_response = 1'b0;

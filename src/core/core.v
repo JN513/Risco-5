@@ -1,4 +1,4 @@
-//`define MDU_ENABLE 1
+`define MDU_ENABLE 1
 module Core #(
     parameter BOOT_ADDRESS=32'h00000000
 ) (

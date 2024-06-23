@@ -1,4 +1,4 @@
-//`define MDU_ENABLE 1
+`define MDU_ENABLE 1
 module Control_Unit (
     input wire clk,
     input wire reset,

@@ -1,7 +1,7 @@
 // Brief: Multiplier and Divider Unit
 // Baseado no projeto: https://github.com/zeeshanrafique23/mdu
 
-//`define MDU_ENABLE 1
+`define MDU_ENABLE 1
 `ifdef MDU_ENABLE
 module MDU (
     input wire clk,
