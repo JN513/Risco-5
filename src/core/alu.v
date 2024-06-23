@@ -44,11 +44,11 @@ always @(*) begin
         EQUAL: // Igualdade
             ALU_out_S = ALU_in_X == ALU_in_Y;
         SHIFT_LEFT: // Shift Left (deslocamento à esquerda)
-            ALU_out_S = ALU_in_X << ALU_in_Y;
+            ALU_out_S = ALU_in_X << ALU_in_Y[4:0];
         SHIFT_RIGHT: // Shift Right (deslocamento à direita)
-            ALU_out_S = ALU_in_X >> ALU_in_Y;
-        SHIFT_RIGHT_A: // Shift Rightmetic Arith (deslocamento à direita)
-            ALU_out_S = ALU_in_X >>> ALU_in_Y;
+            ALU_out_S = ALU_in_X >> ALU_in_Y[4:0];
+        SHIFT_RIGHT_A: // Shift Right Arithmetic (deslocamento à direita)
+            ALU_out_S = ALU_in_X >>> ALU_in_Y[4:0];
         GREATER_EQUAL: // Maior igual
             ALU_out_S = (ALU_in_X >= ALU_in_Y) ? 32'h1 : 32'h0;
         GREATER_EQUAL_U: // Maior igual
