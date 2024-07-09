@@ -8,15 +8,15 @@ Thank you for considering contributing to the Project! We are happy to welcome c
 
 2. **Clone the Repository**: Clone the forked repository to your local development environment.
 
-   ```bash
-   git clone https://github.com/JN513/Risco-5.git
-   ```
+```bash
+git clone https://github.com/JN513/Risco-5.git
+```
 
 3. **Create a Branch**: Create a branch for your contribution. Be sure to choose a descriptive name.
 
-   ```bash
-   git checkout -b my-contribution
-   ```
+```bash
+git checkout -b my-contribution
+```
 
 4. **Make Changes**: Make the necessary changes to the code.
 
@@ -24,10 +24,10 @@ Thank you for considering contributing to the Project! We are happy to welcome c
 
 6. **Commit and Push**: Commit your changes and push them to your forked repository.
 
-   ```bash
-   git commit -m "Added a new feature"
-   git push origin my-contribution
-   ```
+```bash
+git commit -m "Added a new feature"
+git push origin my-contribution
+```
 
 7. **Create a Pull Request**: Open a Pull Request (PR) to the main branch of the original project. Be sure to clearly describe the changes you made and provide relevant information.
 
