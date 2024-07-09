@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#iniciando-com-o-risco-5" class="md-skip">
+        <a href="#getting-started-with-risco-5" class="md-skip">
           Skip to content
         </a>
       
@@ -462,19 +462,19 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#testes-simulacao" class="md-nav__link">
+  <a href="#tests-simulation" class="md-nav__link">
     <span class="md-ellipsis">
-      Testes / Simulação
+      Tests / Simulation
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Testes / Simulação">
+    <nav class="md-nav" aria-label="Tests / Simulation">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#requisitos" class="md-nav__link">
+  <a href="#requirements" class="md-nav__link">
     <span class="md-ellipsis">
-      Requisitos:
+      Requirements:
     </span>
   </a>
   
@@ -496,28 +496,28 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#requisitos_1" class="md-nav__link">
+  <a href="#requirements_1" class="md-nav__link">
     <span class="md-ellipsis">
-      Requisitos
+      Requirements
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#executando-o-teste-na-fpga" class="md-nav__link">
+  <a href="#running-the-test-on-fpga" class="md-nav__link">
     <span class="md-ellipsis">
-      Executando o Teste na FPGA
+      Running the Test on FPGA
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Executando o Teste na FPGA">
+    <nav class="md-nav" aria-label="Running the Test on FPGA">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#feedback-da-fpga" class="md-nav__link">
+  <a href="#fpga-feedback" class="md-nav__link">
     <span class="md-ellipsis">
-      Feedback da FPGA
+      FPGA Feedback
     </span>
   </a>
   
@@ -639,21 +639,21 @@
   
 
 
-<h1 id="iniciando-com-o-risco-5">Iniciando com o Risco-5</h1>
-<h2 id="testes-simulacao">Testes / Simulação</h2>
-<p>O diretório "testes" contém alguns testes para os módulos do projeto. Esses testes foram desenvolvidos para serem utilizados com o <a href="https://steveicarus.github.io/iverilog/">Iverilog</a>. Para executar os testes, basta utilizar o Iverilog e o VVP, como mostrado no exemplo abaixo:</p>
+<h1 id="getting-started-with-risco-5">Getting Started with Risco-5</h1>
+<h2 id="tests-simulation">Tests / Simulation</h2>
+<p>The "tests" directory contains some tests for the project modules. These tests were developed to be used with <a href="https://steveicarus.github.io/iverilog/">Iverilog</a>. To run the tests, simply use Iverilog and VVP as shown in the example below:</p>
 <pre><code class="language-bash">iverilog -o build/core_test.o -s core_tb src/core/* src/peripheral/memory.v tests/core_test.v
 vvp build/core_test.o
 </code></pre>
-<p>Para facilitar a execução dos testes, é possível utilizar o script "run_test" disponível na raiz do projeto. Ao executar esse script, ele solicitará o nome do teste e o nome de um dos arquivos de teste em assembly disponíveis no diretório "software/code/". Como resultado, será gerado um arquivo "soc.vcd" em "build/" que pode ser analisado através do GTKWave.</p>
-<h3 id="requisitos">Requisitos:</h3>
+<p>To facilitate running the tests, you can use the "run_test" script available at the root of the project. When running this script, it will prompt for the name of the test and the name of one of the assembly test files available in the "software/code/" directory. As a result, a "soc.vcd" file will be generated in "build/" which can be analyzed using GTKWave.</p>
+<h3 id="requirements">Requirements:</h3>
 <ul>
 <li>Iverilog</li>
 <li>GTKWave</li>
 </ul>
-<p>Essas dependências podem ser obtidas através do <a href="https://github.com/YosysHQ/oss-cad-suite-build">oss cad suite</a> ou podem ser instaladas manualmente de forma individual.</p>
+<p>These dependencies can be obtained through the <a href="https://github.com/YosysHQ/oss-cad-suite-build">oss cad suite</a> or can be installed individually.</p>
 <h2 id="fpga">FPGA</h2>
-<p>O projeto oferece suporte a testes em algumas FPGAs, listadas abaixo:</p>
+<p>The project supports testing on several FPGAs, listed below:</p>
 <ul>
 <li>Colorlight i9 - ECP5 45F</li>
 <li>Digilent Arty A7 100t</li>
@@ -661,31 +661,39 @@ vvp build/core_test.o
 <li>Tangnano 20k</li>
 <li>AMD/Xilinx VC709 Connectivity Kit</li>
 </ul>
-<p>Os exemplos estão disponíveis no diretório "FPGA". Para as FPGAs Sipeed (Tangnano 9k e 20k), os exemplos foram desenvolvidos utilizando a IDE Gowin. Para as FPGAs Lattice/ColorLight, os exemplos foram desenvolvidos utilizando o Yosys + NextPNR e podem ser sintetizados e programados utilizando o makefile disponível nos diretórios. Para as FPGAs Xilinx, foi utilizado o Vivado, e os exemplos podem ser utilizados também utilizando o makefile disponível no diretório.</p>
-<h3 id="requisitos_1">Requisitos</h3>
+<p>Examples are available in the "FPGA" directory. For Sipeed FPGAs (Tangnano 9k and 20k), the examples were developed using the Gowin IDE. For Lattice/ColorLight FPGAs, the examples were developed using Yosys + NextPNR and can be synthesized and programmed using the makefile available in the directories. For Xilinx FPGAs, Vivado was used, and the examples can also be utilized using the makefile available in the directory.</p>
+<h3 id="requirements_1">Requirements</h3>
 <ul>
-<li>AMD/Xilinx:
-    Vivado
-    openFPGALoader</li>
-<li>Lattice/Colorlight:
-    Yosys
-    Nextpnr-ECP5
-    ecppack
-    openFPGALoader</li>
-<li>
-<p>Gowin/Sipeed:
-    Gowin EDA
-    openFPGALoader</p>
+<li>AMD/Xilinx:<ul>
+<li>Vivado</li>
+<li>openFPGALoader</li>
+</ul>
+</li>
+<li>Lattice/Colorlight:<ul>
+<li>Yosys</li>
+<li>Nextpnr-ECP5</li>
+<li>ecppack</li>
+<li>openFPGALoader</li>
+</ul>
 </li>
 <li>
-<p>Geral:
-    Pyserial ou VSCode Serial ou Minicom ou outro software capaz de utilizar serial</p>
+<p>Gowin/Sipeed:</p>
+<ul>
+<li>Gowin EDA</li>
+<li>openFPGALoader</li>
+</ul>
+</li>
+<li>
+<p>General:</p>
+<ul>
+<li>Pyserial or VSCode Serial or Minicom or other software capable of using serial</li>
+</ul>
 </li>
 </ul>
-<h3 id="executando-o-teste-na-fpga">Executando o Teste na FPGA</h3>
-<p>Acesse o diretório "fpga/???" com "???" sendo o nome da FPGA a ser utilizada, e execute o comando "make". Com isso, a síntese do projeto será realizada. Para carregar o bitstream para a placa, utilize "make flash". Caso queira executar tudo de uma vez, use "make run_all".</p>
-<h4 id="feedback-da-fpga">Feedback da FPGA</h4>
-<p>Se tudo ocorrer bem, os LEDs da FPGA começarão a piscar em um ritmo de contagem, e na serial começará a ser enviado um caractere ASCII. A serial opera com um baudrate padrão de 115200 bps.</p>
+<h3 id="running-the-test-on-fpga">Running the Test on FPGA</h3>
+<p>Navigate to the "fpga/???" directory, with "???" being the name of the FPGA to be used, and run the command "make". This will perform the project synthesis. To load the bitstream onto the board, use "make flash". If you want to do everything at once, use "make run_all".</p>
+<h4 id="fpga-feedback">FPGA Feedback</h4>
+<p>If everything goes well, the FPGA LEDs will start blinking in a counting rhythm, and an ASCII character will begin to be sent over the serial connection. The serial operates at a standard baud rate of 115200 bps.</p>
 
 
 

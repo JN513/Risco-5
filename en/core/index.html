@@ -482,73 +482,73 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#introducao" class="md-nav__link">
+  <a href="#introduction" class="md-nav__link">
     <span class="md-ellipsis">
-      Introdução
+      Introduction
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#arquivos-fonte" class="md-nav__link">
+  <a href="#source-files" class="md-nav__link">
     <span class="md-ellipsis">
-      Arquivos Fonte
+      Source Files
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#parametros" class="md-nav__link">
+  <a href="#parameters" class="md-nav__link">
     <span class="md-ellipsis">
-      Parâmetros
+      Parameters
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#sinais" class="md-nav__link">
+  <a href="#signals" class="md-nav__link">
     <span class="md-ellipsis">
-      Sinais
+      Signals
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#exemplo-de-instancia" class="md-nav__link">
+  <a href="#instance-example" class="md-nav__link">
     <span class="md-ellipsis">
-      Exemplo de Instância
+      Instance Example
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#maquina-de-estados-da-unidade-de-controle-e-esquematico" class="md-nav__link">
+  <a href="#control-unit-state-machine-and-schematic" class="md-nav__link">
     <span class="md-ellipsis">
-      Maquina de estados da unidade de controle e Esquemático
+      Control Unit State Machine and Schematic
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Maquina de estados da unidade de controle e Esquemático">
+    <nav class="md-nav" aria-label="Control Unit State Machine and Schematic">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#maquina-de-estados-da-unidade-de-controle" class="md-nav__link">
+  <a href="#control-unit-state-machine" class="md-nav__link">
     <span class="md-ellipsis">
-      Maquina de estados da unidade de controle
+      Control Unit State Machine
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#esquematico-do-processador" class="md-nav__link">
+  <a href="#processor-schematic" class="md-nav__link">
     <span class="md-ellipsis">
-      Esquemático do processador
+      Processor Schematic
     </span>
   </a>
   
@@ -646,35 +646,35 @@
 
 
 <h1 id="risco-5-processor-core">Risco-5 Processor Core</h1>
-<h2 id="introducao">Introdução</h2>
-<p>O Risco-5 é um core RISC-V de 32 bits que implementa o conjunto de instruções básicas do RISC-V RV32I. O Risco-5 é um processador multiciclo, com execução em ordem e sem pipeline. Foi projetado para ser simples e de fácil utilização, sendo útil nos mais diversos sistemas.</p>
-<h2 id="arquivos-fonte">Arquivos Fonte</h2>
-<p>Os arquivos do Risco-5 estão disponíveis na pasta "core/" dentro da pasta "src/", com o top model estando disponível no arquivo core.v.</p>
-<h2 id="parametros">Parâmetros</h2>
+<h2 id="introduction">Introduction</h2>
+<p>Risco-5 is a 32-bit RISC-V core that implements the basic instruction set of the RISC-V RV32I. Risco-5 is a multi-cycle, in-order processor without a pipeline. It was designed to be simple and easy to use, making it useful in various systems.</p>
+<h2 id="source-files">Source Files</h2>
+<p>The Risco-5 files are available in the "core/" folder within the "src/" directory, with the top module located in the core.v file.</p>
+<h2 id="parameters">Parameters</h2>
 <table>
 <thead>
 <tr>
-<th>Nome</th>
-<th>Tamanho</th>
-<th>Descrição</th>
+<th>Name</th>
+<th>Size</th>
+<th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>BOOT_ADDRESS</td>
 <td>32 bits</td>
-<td>Endereço de boot</td>
+<td>Boot address</td>
 </tr>
 </tbody>
 </table>
-<h2 id="sinais">Sinais</h2>
+<h2 id="signals">Signals</h2>
 <table>
 <thead>
 <tr>
-<th>Nome</th>
-<th>Direção</th>
-<th>Tamanho</th>
-<th>Descrição</th>
+<th>Name</th>
+<th>Direction</th>
+<th>Size</th>
+<th>Description</th>
 </tr>
 </thead>
 <tbody>
@@ -682,94 +682,94 @@
 <td>clk</td>
 <td>input</td>
 <td>1 bit</td>
-<td>Sinal de clock</td>
+<td>Clock signal</td>
 </tr>
 <tr>
 <td>halt</td>
 <td>input</td>
 <td>1 bit</td>
-<td>Para a execução do processador</td>
+<td>Halts the processor execution</td>
 </tr>
 <tr>
 <td>reset</td>
 <td>input</td>
 <td>1 bit</td>
-<td>Sinal de reset</td>
+<td>Reset signal</td>
 </tr>
 <tr>
 <td>memory_response</td>
 <td>input</td>
 <td>1 bit</td>
-<td>Resposta do barramento de memória; o core espera até que seja 1</td>
+<td>Memory bus response; the core waits until it is 1</td>
 </tr>
 <tr>
 <td>memory_read</td>
 <td>output</td>
 <td>1 bit</td>
-<td>Habilita leitura na memória</td>
+<td>Enables memory read</td>
 </tr>
 <tr>
 <td>memory_write</td>
 <td>output</td>
 <td>1 bit</td>
-<td>Habilita escrita na memória</td>
+<td>Enables memory write</td>
 </tr>
 <tr>
 <td>write_data</td>
 <td>output</td>
 <td>32 bits</td>
-<td>Valores saindo do core</td>
+<td>Values exiting the core</td>
 </tr>
 <tr>
 <td>read_data</td>
 <td>input</td>
 <td>32 bits</td>
-<td>Valores vindos da memória</td>
+<td>Values coming from memory</td>
 </tr>
 <tr>
 <td>address</td>
 <td>output</td>
 <td>32 bits</td>
-<td>Endereço de memória</td>
+<td>Memory address</td>
 </tr>
 <tr>
 <td>option</td>
 <td>output</td>
 <td>3 bits</td>
-<td>Formato a ser lido da memória</td>
+<td>Format to be read from memory</td>
 </tr>
 </tbody>
 </table>
-<h2 id="exemplo-de-instancia">Exemplo de Instância</h2>
-<p>A seguir está um exemplo de como instanciar o core Risco-5 em um módulo Verilog:</p>
+<h2 id="instance-example">Instance Example</h2>
+<p>Below is an example of how to instantiate the Risco-5 core in a Verilog module:</p>
 <pre><code class="language-verilog">Core #(
-    .BOOT_ADDRESS(32'h00000000) // Endereço de boot - 32 bits
+    .BOOT_ADDRESS(32'h00000000) // Boot address - 32 bits
 ) Core_inst (
-    /* controle */
-    .clk(clk), // Sinal de clock - 1 bit
-    .halt(halt), // Para a execução do processador - 1 bit
-    .reset(reset), // Sinal de reset - 1 bit
-    /* Dados */
-    .memory_response(memory_response), // Resposta do barramento de memória, o core espera até que seja 1 - 1 bit
-    .memory_read(memory_read), // Habilita leitura na memória - 1 bit
-    .memory_write(memory_write), // Habilita escrita na memória - 1 bit
-    .write_data(write_data), // Valores saindo do core - 32 bits
-    .read_data(read_data), // Valores vindo da memória - 32 bits
-    .address(address), // Endereço de memória - 32 bits
-    .option(option) // Formato a ser lido da memória - 3 bits
+    /* control */
+    .clk(clk), // Clock signal - 1 bit
+    .halt(halt), // Halts the processor execution - 1 bit
+    .reset(reset), // Reset signal - 1 bit
+    /* Data */
+    .memory_response(memory_response), // Memory bus response, the core waits until it is 1 - 1 bit
+    .memory_read(memory_read), // Enables memory read - 1 bit
+    .memory_write(memory_write), // Enables memory write - 1 bit
+    .write_data(write_data), // Values exiting the core - 32 bits
+    .read_data(read_data), // Values coming from memory - 32 bits
+    .address(address), // Memory address - 32 bits
+    .option(option) // Format to be read from memory - 3 bits
 );
 </code></pre>
-<h2 id="maquina-de-estados-da-unidade-de-controle-e-esquematico">Maquina de estados da unidade de controle e Esquemático</h2>
-<p><strong>Versão PDF dos diagramas</strong>
-<a href="../../documents/risco5_state_machine.pdf">Maquina de estados da unidade de controle</a>
-<a href="../../documents/risco5_datapath.pdf">Esquemático do processador</a></p>
-<h4 id="maquina-de-estados-da-unidade-de-controle">Maquina de estados da unidade de controle</h4>
-<p><img alt="Maquina de estados da unidade de controle" src="../../imgs/risco5_state_machine.png" /></p>
-<h4 id="esquematico-do-processador">Esquemático do processador</h4>
-<p><strong>Esquemático atual</strong>
-<img alt="Esquemático atual do processador" src="../../imgs/risco5_datapath.png" /></p>
-<p><strong>Esquemático Inicial</strong>
-<img alt="Esquemático antigo do processador" src="../../imgs/esquematico.png" /></p>
+<h2 id="control-unit-state-machine-and-schematic">Control Unit State Machine and Schematic</h2>
+<p><strong>PDF Version of the Diagrams</strong>
+<a href="../../documents/risco5_state_machine.pdf">Control Unit State Machine</a>
+<a href="../../documents/risco5_datapath.pdf">Processor Schematic</a></p>
+<h4 id="control-unit-state-machine">Control Unit State Machine</h4>
+<p><img alt="Control Unit State Machine" src="../../imgs/risco5_state_machine.png" /></p>
+<h4 id="processor-schematic">Processor Schematic</h4>
+<p><strong>Current Schematic</strong>
+<img alt="Current Processor Schematic" src="../../imgs/risco5_datapath.png" /></p>
+<p><strong>Initial Schematic</strong>
+<img alt="Old Processor Schematic" src="../../imgs/esquematico.png" /></p>
 
 
 
