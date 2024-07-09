@@ -6,7 +6,7 @@
 
 ## O Risco 5
 
-O Risco 5 é um núcleo de processador de código aberto que implementa o conjunto de instruções RV32I da arquitetura RISC-V. Foi desenvolvido para uso acadêmico e como o núcleo principal em pequenos SoCs. O projeto tem como foco facilitar a integração e utilização, oferecendo uma arquitetura simplificada e eficiente para diversas aplicações.
+O Risco 5 é um núcleo de processador de código aberto que implementa o conjunto de instruções RV32I[M] da arquitetura RISC-V. Foi desenvolvido para uso acadêmico e como o núcleo principal em pequenos SoCs. O projeto tem como foco facilitar a integração e utilização, oferecendo uma arquitetura simplificada e eficiente para diversas aplicações.
 
 ## Recursos Disponíveis
 
