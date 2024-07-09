@@ -1,54 +1,54 @@
-# Contribuindo para o Projeto
+# Contributing to the Project
 
-Obrigado por considerar contribuir para o Projeto! Estamos felizes em receber contribuições de qualquer pessoa interessada em melhorar este projeto. Antes de começar, por favor, leia este guia para entender como você pode contribuir de forma eficaz.
+Thank you for considering contributing to the Project! We are happy to welcome contributions from anyone interested in improving this project. Before you start, please read this guide to understand how you can contribute effectively.
 
-## Como Contribuir
+## How to Contribute
 
-1. **Fork do Repositório**: Primeiro, faça um fork deste repositório para a sua própria conta.
+1. **Fork the Repository**: First, fork this repository to your own account.
 
-2. **Clone o Repositório**: Clone o repositório forkado para o seu ambiente de desenvolvimento local.
+2. **Clone the Repository**: Clone the forked repository to your local development environment.
 
    ```bash
    git clone https://github.com/JN513/Risco-5.git
    ```
 
-3. **Crie uma Branch**: Crie uma branch para a sua contribuição. Certifique-se de escolher um nome descritivo.
+3. **Create a Branch**: Create a branch for your contribution. Be sure to choose a descriptive name.
 
    ```bash
-   git checkout -b minha-contribuicao
+   git checkout -b my-contribution
    ```
 
-4. **Faça as Mudanças**: Faça as mudanças necessárias no código.
+4. **Make Changes**: Make the necessary changes to the code.
 
-5. **Teste as Mudanças**: Certifique-se de que as suas alterações não causam problemas no projeto. Execute testes relevantes, se aplicável.
+5. **Test Changes**: Ensure that your changes do not cause issues in the project. Run relevant tests if applicable.
 
-6. **Commit e Push**: Faça commit das suas mudanças e envie-as para o seu repositório forkado.
+6. **Commit and Push**: Commit your changes and push them to your forked repository.
 
    ```bash
-   git commit -m "Adicionei uma nova funcionalidade"
-   git push origin minha-contribuicao
+   git commit -m "Added a new feature"
+   git push origin my-contribution
    ```
 
-7. **Crie um Pull Request**: Abra um Pull Request (PR) para a branch principal do projeto original. Certifique-se de descrever claramente as mudanças que você fez e forneça informações relevantes.
+7. **Create a Pull Request**: Open a Pull Request (PR) to the main branch of the original project. Be sure to clearly describe the changes you made and provide relevant information.
 
-8. **Revisão e Discussão**: A equipe do projeto revisará o seu PR e poderá solicitar mudanças ou esclarecimentos. Esteja disposto a colaborar e ajustar o seu código conforme necessário.
+8. **Review and Discussion**: The project team will review your PR and may request changes or clarifications. Be prepared to collaborate and adjust your code as needed.
 
-9. **Aprovação e Mesclagem**: Após a revisão bem-sucedida e a aprovação da equipe, o seu PR será mesclado no projeto principal.
+9. **Approval and Merge**: After a successful review and approval by the team, your PR will be merged into the main project.
 
-10. **Celebração**: Parabéns! Sua contribuição foi mesclada com sucesso.
+10. **Celebrate**: Congratulations! Your contribution has been successfully merged.
 
-## Diretrizes para Contribuições
+## Contribution Guidelines
 
-- Siga os padrões de codificação do projeto.
-- Mantenha mensagens de commit claras e concisas.
-- Evite fazer muitas alterações em um único PR.
-  \*Se você estiver adicionando uma nova funcionalidade, considere incluir testes apropriados.
+- Follow the project's coding standards.
+- Keep commit messages clear and concise.
+- Avoid making too many changes in a single PR.
+- If you are adding a new feature, consider including appropriate tests.
 
-## Comunicação
+## Communication
 
-- Se você tiver dúvidas ou precisar de ajuda, crie uma issue neste repositório.
-- Agradecemos a sua contribuição para tornar o Projeto melhor!
+- If you have questions or need help, create an issue in this repository.
+- We appreciate your contribution to making the Project better!
 
-## Licença
+## License
 
-Ao contribuir para este projeto, você concorda que suas contribuições serão licenciadas sob a mesma licença do projeto. Leia a [licença](hhttps://github.com/JN513/Risco-5/blob/main/LICENSE) para mais detalhes.
+By contributing to this project, you agree that your contributions will be licensed under the same license as the project. Read the [license](https://github.com/JN513/Risco-5/blob/main/LICENSE) for more details.
