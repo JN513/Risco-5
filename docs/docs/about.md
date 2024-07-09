@@ -1,8 +1,9 @@
 # Sobre o Risco-5
 
 <p align="center">
-<img src="../imgs/risco5.jpeg" alt="Logo do processador" width="300px">
+<img src="../imgs/risco5.jpeg" alt="Processor Logo" width="300px">
 </p>
+
 
 ## Origem do projeto
 
@@ -18,7 +19,7 @@ O nome Risco-5 vem de uma piada com o nome RISC-V, a arquitetura que ele impleme
 
 - Baby Risco 5 - RV16EC: Ainda em fase especulativa
 - Pequeno Risco 5 - RV32I: [https://github.com/JN513/Pequeno-Risco-5/](https://github.com/JN513/Pequeno-Risco-5/)
-- Risco 5 - RV32I: [https://github.com/JN513/Risco-5](https://github.com/JN513/Risco-5)
+- Risco 5 - RV32I[M]: [https://github.com/JN513/Risco-5](https://github.com/JN513/Risco-5)
 - Grande Risco 5 - RV32I: [https://github.com/JN513/Grande-Risco-5](https://github.com/JN513/Grande-Risco-5)
 - Risco 5 Bodybuilder - RV64IMA: Ainda em fase especulativa
 
