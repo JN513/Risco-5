@@ -26,34 +26,34 @@ assign ZR = ~( |ALU_out_S );
 always @(*) begin
     case(operation)
         AND: // AND
-            ALU_out_S = ALU_in_X & ALU_in_Y; 
+            ALU_out_S <= ALU_in_X & ALU_in_Y; 
         OR: // OR
-            ALU_out_S = ALU_in_X | ALU_in_Y;
+            ALU_out_S <= ALU_in_X | ALU_in_Y;
         SUM: // Adição
-            ALU_out_S = ALU_in_X + ALU_in_Y;
+            ALU_out_S <= ALU_in_X + ALU_in_Y;
         SUB: // Subtração
-            ALU_out_S = ALU_in_X - ALU_in_Y;
+            ALU_out_S <= ALU_in_X - ALU_in_Y;
         SLT: // SLT
-            ALU_out_S = (ALU_in_X < ALU_in_Y) ? 32'h1 : 32'h0;
+            ALU_out_S <= (ALU_in_X < ALU_in_Y) ? 32'h1 : 32'h0;
         SLT_U: // SLT
-            ALU_out_S = ($unsigned(ALU_in_X) < $unsigned(ALU_in_Y)) ? 32'h1 : 32'h0;
+            ALU_out_S <= ($unsigned(ALU_in_X) < $unsigned(ALU_in_Y)) ? 32'h1 : 32'h0;
         NOR: // NOR
-            ALU_out_S = ~(ALU_in_X | ALU_in_Y);
+            ALU_out_S <= ~(ALU_in_X | ALU_in_Y);
         XOR: // XOR (OU exclusivo)
-            ALU_out_S = ALU_in_X ^ ALU_in_Y;
+            ALU_out_S <= ALU_in_X ^ ALU_in_Y;
         EQUAL: // Igualdade
-            ALU_out_S = ALU_in_X == ALU_in_Y;
+            ALU_out_S <= ALU_in_X == ALU_in_Y;
         SHIFT_LEFT: // Shift Left (deslocamento à esquerda)
-            ALU_out_S = ALU_in_X << ALU_in_Y[4:0];
+            ALU_out_S <= ALU_in_X << ALU_in_Y[4:0];
         SHIFT_RIGHT: // Shift Right (deslocamento à direita)
-            ALU_out_S = ALU_in_X >> ALU_in_Y[4:0];
+            ALU_out_S <= ALU_in_X >> ALU_in_Y[4:0];
         SHIFT_RIGHT_A: // Shift Right Arithmetic (deslocamento à direita)
-            ALU_out_S = ALU_in_X >>> ALU_in_Y[4:0];
+            ALU_out_S <= ALU_in_X >>> ALU_in_Y[4:0];
         GREATER_EQUAL: // Maior igual
-            ALU_out_S = (ALU_in_X >= ALU_in_Y) ? 32'h1 : 32'h0;
+            ALU_out_S <= (ALU_in_X >= ALU_in_Y) ? 32'h1 : 32'h0;
         GREATER_EQUAL_U: // Maior igual
-            ALU_out_S = ($unsigned(ALU_in_X) >= $unsigned(ALU_in_Y)) ? 32'h1 : 32'h0;
-        default: ALU_out_S = ALU_in_X ; // Operação padrão
+            ALU_out_S <= ($unsigned(ALU_in_X) >= $unsigned(ALU_in_Y)) ? 32'h1 : 32'h0;
+        default: ALU_out_S <= ALU_in_X ; // Operação padrão
     endcase
 end
     

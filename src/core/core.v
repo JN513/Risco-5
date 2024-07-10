@@ -1,4 +1,4 @@
-`define MDU_ENABLE 1
+`include "config.vh"
 module Core #(
     parameter BOOT_ADDRESS=32'h00000000
 ) (
@@ -61,15 +61,26 @@ wire [31:0] pc_output, pc_input, register_input,
     register_data_1_out, register_data_2_out,
     csr_data_out, register_data_RD_out;
 reg [31:0] instruction_register, memory_register, alu_out_register,
-    register_data_1, register_data_2, pc_old, temp_address, temp_reg2,
-    temp_reg3, temp_write_value;
+    register_data_1, register_data_2, pc_old;
+
+`ifdef UNALIGNED_ENABLE
+
+reg [31:0] temp_address, memory_saved_value,
+    alu_saved_value, temp_write_value;
+
+`endif
 
 `ifdef MDU_ENABLE
 wire [31:0] mdu_out;
 reg [31:0] mdu_out_reg;
 `endif
 
-assign write_data = (write_data_in == 1'b1)  ? temp_write_value : register_data_2_out;
+`ifdef UNALIGNED_ENABLE
+assign write_data = (write_data_in == 1'b1)  ? temp_write_value : register_data_2;
+`else
+assign write_data = register_data_2;
+`endif 
+
 assign option = (lorD == 2'b00 | control_memory_op == 1'b1) 
     ? control_unit_memory_op : instruction_register[14:12];
 
@@ -80,9 +91,11 @@ initial begin
     register_data_2      = 32'h00000000;
     alu_out_register     = 32'h00000000;
     pc_old               = 32'h00000000;
+    `ifdef UNALIGNED_EN
     temp_address         = 32'h00000000;
-    temp_reg2            = 32'h00000000;
+    memory_saved_value   = 32'h00000000;
     temp_write_value     = 32'h00000000;
+    `endif
 end
 
 PC Pc(
@@ -97,12 +110,9 @@ MUX MemoryAddressMUX(
     .option({1'b0, lorD}),
     .A(pc_output),
     .B(alu_out_register),
+`ifdef UNALIGNED_EN
     .C(temp_address),
-    .D(0),
-    .E(0),
-    .F(0),
-    .G(0),
-    .H(0),
+`endif
     .S(address)
 );
 
@@ -110,7 +120,9 @@ MUX MemoryDataMUX(
     .option(memory_to_reg),
     .A(alu_out_register),
     .B(memory_register),
+`ifdef CSR_ENABLE
     .C(csr_data_out),
+`endif
     .D({16'h0000, alu_out_register[15:0]}),
     .E({24'h000000, alu_out_register[7:0]}),
     .F({{16{alu_out_register[15]}}, alu_out_register[15:0]}),
@@ -133,8 +145,11 @@ MUX AluInputAMUX(
     .D(32'd0),
     .E(memory_register),
     .F(alu_out_register),
+
+`ifdef UNALIGNED_ENABLE
     .G(temp_address),
-    .H(temp_reg2),
+    .H(memory_saved_value),
+`endif
     .S(alu_input_a)
 );
 
@@ -143,11 +158,15 @@ MUX AluInputBMUX(
     .A(register_data_2),
     .B(32'd4),
     .C(immediate),
+
+`ifdef UNALIGNED_ENABLE
     .D(register_data_RD_out),
     .E({27'h00000, temp_address[1:0], 3'h0}),
     .F({26'h00000, 3'b100 - temp_address[1:0], 3'h0}),
-    .G(temp_reg3),
+    .G(alu_saved_value),
     .H({27'h00000, temp_address[1:0] + 1'b1, 3'h0}),
+`endif
+
     .S(alu_input_b)
 );
 
@@ -197,7 +216,11 @@ Control_Unit Control_Unit(
     .clk(clk),
     .reset(reset),
     .last_bits(alu_out[1:0]),
+
+`ifdef UNALIGNED_ENABLE
     .last_bits_saved_address(temp_address[1:0]),
+`endif
+
     .func3(instruction_register[14:12]),
     .instruction_opcode(instruction_register[6:0]),
     .pc_write_cond(pc_write_cond),
@@ -237,12 +260,19 @@ ALU_Control ALU_Control(
     .aluop_out(aluop_out)
 );
 
+`ifdef UNALIGNED_ENABLE
 wire [3:0] aluop_res;
 
 assign aluop_res = (alu_input_selector == 1'b1) ? control_unit_aluop : aluop_out;
+`endif
 
 Alu Alu(
+
+    `ifdef UNALIGNED_ENABLE
     .operation(aluop_res),
+    `else
+    .operation(aluop_out),
+    `endif
     .ALU_in_X(alu_input_a),
     .ALU_in_Y(alu_input_b),
     .ALU_out_S(alu_out),
@@ -254,6 +284,7 @@ Immediate_Generator Immediate_Generator(
     .immediate(immediate)
 );
 
+`ifdef CSR_ENABLE
 CSR_Unit CSR_Unit(
     .clk(clk),
     .reset(reset),
@@ -269,6 +300,7 @@ CSR_Unit CSR_Unit(
     .interruption_request_fast(interruption_request_fast),
     .pc_value(pc_old)
 );
+`endif
 
 always @(posedge clk ) begin
     if(reset == 1'b1) begin
@@ -278,27 +310,31 @@ always @(posedge clk ) begin
         register_data_2 <= 32'h00000000;
         alu_out_register <= 32'h00000000;
         pc_old <= 32'h00000000;
+        `ifdef UNALIGNED_EN
         temp_address <= 32'h00000000;
-        temp_reg2 <= 32'h00000000;
-        temp_reg3 <= 32'h00000000;
+        memory_saved_value <= 32'h00000000;
+        alu_saved_value <= 32'h00000000;
         temp_write_value <= 32'h00000000;
+        `endif
     end else begin
         if(IRWrite == 1'b1)begin
             instruction_register <= read_data;
             pc_old <= pc_output;
         end
+        `ifdef UNALIGNED_EN
         if(save_address == 1'b1) begin
             temp_address <= alu_out;
         end
         if(save_value == 1'b1) begin
-            temp_reg2 <= memory_register;
+            memory_saved_value <= memory_register;
         end
         if(save_value_2 == 1'b1) begin
-            temp_reg3 <= alu_out_register;
+            alu_saved_value <= alu_out_register;
         end
         if(save_write_value) begin
             temp_write_value <= alu_out;
         end
+        `endif
 
         `ifdef MDU_ENABLE
         mdu_out_reg <= mdu_out;

@@ -1,4 +1,4 @@
-`define MDU_ENABLE 1
+`include "config.vh"
 module Control_Unit (
     input wire clk,
     input wire reset,
@@ -101,13 +101,16 @@ localparam AUIPCI  = 7'b0010111;
 localparam LUII    = 7'b0110111;
 localparam CSR     = 7'b1110011;
 
+reg [5:0] state, nextstate;
+
+`ifdef UNALIGNED_ENABLE
 wire unaligned;
 wire [2:0] second_block_write_src_b;
 reg [2:0] wb_filter, clear_hal_byte_one_block_option, 
     clear_hal_byte_one_block_option_2;
-reg [5:0] state, nextstate;
 
 assign unaligned = |last_bits;
+`endif
 assign second_block_write_src_b = (func3[0] == 1) ? 3'b101 : 3'b111 ;
 
 initial begin
@@ -135,8 +138,10 @@ initial begin
     save_value = 1'b0;
     save_value_2 = 1'b0;
     write_data_in = 1'b0;
+    `ifdef UNALIGNED_EN
     clear_hal_byte_one_block_option = 1'b0;
     clear_hal_byte_one_block_option_2 = 1'b0;
+    `endif
     save_write_value = 1'b0;
     mdu_start = 1'b0;
 end
@@ -188,6 +193,7 @@ always @(*) begin
             endcase
         end
         MEMADR: begin
+            `ifdef UNALIGNED_ENABLE
             if(instruction_opcode == LW)
                 if(unaligned == 1'b1) begin
                     nextstate = MEMREAD_UNALIGNED;
@@ -200,6 +206,12 @@ always @(*) begin
                 end else begin
                     nextstate = MEMWRITE;
                 end
+            `else
+            if(instruction_opcode == LW)
+                nextstate = MEMREAD;
+            else
+                nextstate = MEMWRITE;
+            `endif
         end
         MEMREAD: begin
             if(memory_response)
@@ -207,13 +219,7 @@ always @(*) begin
             else
                 nextstate = MEMREAD;
         end
-        MEMREAD_UNALIGNED: begin
-            if(memory_response) begin
-                nextstate = LOAD_FIRST_BLOCK;
-            end else begin
-                nextstate = MEMREAD_UNALIGNED;
-            end
-        end
+        
         MEMWB: nextstate = FETCH;
         MEMWRITE: begin
             if(memory_response)
@@ -221,6 +227,8 @@ always @(*) begin
             else
                 nextstate = MEMWRITE;
         end
+
+        
         EXECUTER: nextstate = ALUWB;
         ALUWB: nextstate = FETCH;
         EXECUTEI: nextstate = ALUWB;
@@ -231,6 +239,17 @@ always @(*) begin
         AUIPC: nextstate = ALUWB;
         LUI: nextstate = ALUWB;
         EXECUTECSR: nextstate = FETCH;
+
+        `ifdef UNALIGNED_ENABLE
+
+        MEMREAD_UNALIGNED: begin
+            if(memory_response) begin
+                nextstate = LOAD_FIRST_BLOCK;
+            end else begin
+                nextstate = MEMREAD_UNALIGNED;
+            end
+        end
+
         LOAD_FIRST_BLOCK: nextstate = SAVE_FIRST_BLOCK;
         SAVE_FIRST_BLOCK: begin
             if(func3[1] == 1'b1 || (func3[0] == 1'b1 && last_bits_saved_address == 2'b11)) begin
@@ -321,6 +340,7 @@ always @(*) begin
                 nextstate = WRITE_VALUE_2;
             end
         end
+        `endif
 
         `ifdef MDU_ENABLE
         EXECUTE_MDU: nextstate = MDU_WAIT;
@@ -388,15 +408,20 @@ always @(*) begin
             lorD        <= 2'b10;
         end
 
-        MEMREAD_UNALIGNED: begin
-            control_memory_op <= 1'b1;
-            memory_read       <= 1'b1;
-            lorD              <= 2'b10;
+        MEMWRITE: begin
+            memory_write <= 1'b1;
+            lorD         <= 2'b10;
         end
 
         MEMWB: begin
             reg_write     <= 1'b1;
             memory_to_reg <= 3'b001;
+        end
+`ifdef UNALIGNED_ENABLE
+        MEMREAD_UNALIGNED: begin
+            control_memory_op <= 1'b1;
+            memory_read       <= 1'b1;
+            lorD              <= 2'b10;
         end
 
         LOAD_FIRST_BLOCK: begin
@@ -433,11 +458,6 @@ always @(*) begin
         MERGE_BLOCKS: begin
             alu_src_a          <= 3'b101;
             alu_src_b          <= 3'b011;
-        end
-
-        MEMWRITE: begin
-            memory_write <= 1'b1;
-            lorD         <= 2'b10;
         end
 
         MEMWRITE_UNALIGNED: begin
@@ -588,6 +608,11 @@ always @(*) begin
             control_memory_op <= 1'b1;
         end
 
+        FILTER_ALU_WB: begin
+            reg_write <= 1'b1;
+            memory_to_reg <= wb_filter;
+        end
+`endif
         EXECUTER: begin
             alu_src_a <= 3'b001;
             aluop     <= 2'b10;
@@ -595,11 +620,6 @@ always @(*) begin
 
         ALUWB: begin
             reg_write <= 1'b1;
-        end
-
-        FILTER_ALU_WB: begin
-            reg_write <= 1'b1;
-            memory_to_reg <= wb_filter;
         end
 
         EXECUTEI: begin
@@ -669,7 +689,7 @@ always @(*) begin
         `endif
     endcase
 end
-
+`ifdef UNALIGNED_ENABLE
 always @(*) begin
     case (func3)
         3'b100: wb_filter <= 3'b100;
@@ -700,5 +720,5 @@ always @(*) begin
         end 
     endcase
 end
-    
+`endif
 endmodule

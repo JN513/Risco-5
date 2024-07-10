@@ -1,3 +1,5 @@
+`include "config.vh"
+`ifdef CSR_ENABLE
 module CSR_Unit (
     input wire clk,
     input wire reset,
@@ -144,3 +146,4 @@ end
 assign csr_input = (func3[2] == 1'b1) ? {27'h0000000, csr_immediate} : csr_data_in;
 
 endmodule
+`endif
