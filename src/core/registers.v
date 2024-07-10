@@ -1,3 +1,4 @@
+`include "config.vh"
 module Registers (
     input wire clk,
     input wire reset,
@@ -11,7 +12,11 @@ module Registers (
     output wire [31:0] readDataRD
 );
 
+`ifdef RV32E
+reg [31:0] registers[0:15];
+`else
 reg [31:0] registers[0:31];
+`endif
 
 initial begin
     registers[0] = 32'h00000000;
@@ -19,7 +24,11 @@ end
 
 assign readData1  = registers[readRegister1];
 assign readData2  = registers[readRegister2];
+`ifdef UNALIGNED_ENABLE
 assign readDataRD = registers[writeRegister];
+`else
+assign readDataRD = 32'h0;
+`endif
 
 always @(posedge clk) begin
     if(reset == 1'b1) begin
