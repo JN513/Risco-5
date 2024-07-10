@@ -1,3 +1,6 @@
+`include "config.vh"
+`ifdef GPIO_ENABLE
+
 module GPIOS #(
     parameter WIDHT = 20
 ) (
@@ -73,3 +76,5 @@ always @(posedge clk) begin
 end
     
 endmodule
+
+`endif

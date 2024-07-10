@@ -1,3 +1,6 @@
+`include "config.vh"
+`ifdef UART_ENABLE
+
 module UART #(
     parameter CLK_FREQ     = 25000000,
     parameter BIT_RATE     = 9600,
@@ -240,3 +243,6 @@ uart_tool_tx #(
 );
     
 endmodule
+
+
+`endif

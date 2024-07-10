@@ -1,3 +1,6 @@
+`include "config.vh"
+`ifdef UART_ENABLE
+
 module FIFO #(
     parameter DEPTH = 8,
     parameter WIDTH = 8
@@ -46,3 +49,5 @@ assign full = (counter == DEPTH) ? 1'b1 : 1'b0;
 assign empty = (counter == 0) ? 1'b1 : 1'b0;
     
 endmodule
+
+`endif

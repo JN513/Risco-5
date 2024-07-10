@@ -1,3 +1,7 @@
+`include "config.vh"
+
+`ifdef GPIO_ENABLE
+
 module PWM (
     input wire clk,
     input wire reset,
@@ -28,3 +32,5 @@ always @(posedge clk) begin
 end
     
 endmodule
+
+`endif

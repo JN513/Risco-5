@@ -1,3 +1,7 @@
+`include "config.vh"
+
+`ifdef LED_ENABLE
+
 module LEDs (
     input wire clk,
     input wire reset,
@@ -31,3 +35,5 @@ end
 assign leds = ~data[7:0];
     
 endmodule
+
+`endif

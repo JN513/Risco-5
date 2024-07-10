@@ -1,3 +1,5 @@
+`include "config.vh"
+
 module Risco_5_SOC #(
     parameter CLOCK_FREQ = 25000000,
     parameter BIT_RATE = 9600,
@@ -57,7 +59,7 @@ Memory #(
     .memory_response(memory_response)
 );
 
-BUS Bus(
+BUS Bus( // verificar as virgulas dependendo dos perifericos selecionados
     .read(memory_read),
     .write(memory_write),
     .write_data(write_data),
@@ -72,12 +74,17 @@ BUS Bus(
     .slave_0_write_data(slave_write_data),
     .slave_0_response(memory_response),
 
+`ifdef LED_ENABLE
+
     .slave_1_read(slave1_read),
     .slave_1_write(slave1_write),
     .slave_1_read_data(slave1_read_data),
     .slave_1_address(slave1_address),
     .slave_1_write_data(slave1_write_data),
     .slave_1_response(leds_response),
+`endif
+
+`ifdef UART_ENABLE
 
     .slave_2_read(slave2_read),
     .slave_2_write(slave2_write),
@@ -86,14 +93,21 @@ BUS Bus(
     .slave_2_write_data(slave2_write_data),
     .slave_2_response(uart_response),
 
+`endif
+
+`ifdef GPIO_ENABLE
+
     .slave_3_read(slave3_read),
     .slave_3_write(slave3_write),
     .slave_3_read_data(slave3_read_data),
     .slave_3_address(slave3_address),
     .slave_3_write_data(slave3_write_data),
     .slave_3_response(gpio_response)
+
+`endif
 );
 
+`ifdef LED_ENABLE
 LEDs Leds(
     .clk(clk),
     .reset(reset),
@@ -105,6 +119,9 @@ LEDs Leds(
     .leds(leds),
     .response(leds_response)
 );
+`endif
+
+`ifdef UART_ENABLE
 
 UART #(
     .CLK_FREQ(CLOCK_FREQ),
@@ -123,6 +140,10 @@ UART #(
     .response(uart_response)
 );
 
+`endif
+
+`ifdef GPIO_ENABLE
+
 GPIOS #(
     .WIDHT(GPIO_WIDHT)
 ) GPIOS (
@@ -136,5 +157,7 @@ GPIOS #(
     .gpios(gpios),
     .response(gpio_response)
 );
+
+`endif
 
 endmodule

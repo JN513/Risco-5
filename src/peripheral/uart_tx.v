@@ -1,3 +1,6 @@
+`include "config.vh"
+`ifdef UART_ENABLE
+
 // Repository: https://github.com/ben-marshall/uart
 // Author: ben-marshall
 // 
@@ -179,3 +182,5 @@ always @(posedge clk) begin : p_txd_reg
 end
 
 endmodule
+
+`endif

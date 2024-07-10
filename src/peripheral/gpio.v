@@ -1,3 +1,7 @@
+`include "config.vh"
+
+`ifdef GPIO_ENABLE
+
 module GPIO (
     inout wire gpio,
     input wire data_in,
@@ -9,3 +13,5 @@ assign data_out = (gpio & direction) | (data_in & ~direction); // direction == 1
 assign gpio = (direction == 1'b1) ? 1'bz : data_in;
     
 endmodule
+
+`endif

@@ -1,3 +1,6 @@
+`include "config.vh"
+`ifdef UART_ENABLE
+
 // Repository: https://github.com/ben-marshall/uart
 // Author: ben-marshall
 // 
@@ -198,3 +201,5 @@ end
 
 
 endmodule
+
+`endif
