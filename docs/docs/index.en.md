@@ -6,13 +6,13 @@
 
 ## Risco 5
 
-Risco 5 is an open-source processor core that implements the RV32I[M] instruction set of the RISC-V architecture. It was developed for academic use and as the main core in small SoCs. The project focuses on facilitating integration and usage, offering a simplified and efficient architecture for various applications.
+Risco 5 is an open-source processor core that implements the RV32I/E[M] instruction set of the RISC-V architecture. It was developed for academic use and as the main core in small SoCs. The project focuses on facilitating integration and usage, offering a simplified and efficient architecture for various applications.
 
 ## Available Resources
 
 ### Risco-5 Core
 
-A RISC-V processor core implementing the RV32I of RISC-V.
+A RISC-V processor core implementing the RV32I/E[M] of RISC-V.
 
 ### Risco-5 SoC
 

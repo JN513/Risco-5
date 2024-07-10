@@ -4,7 +4,7 @@
 <img src="docs/docs/imgs/risco5.jpeg" alt="Processor logo" width="300px">
 </p>
 
-Multi-cycle processor [RISC-V](https://riscv.org/) with RV32I[M] implementation, developed during some days off.
+Multi-cycle processor [RISC-V](https://riscv.org/) with RV32I/E[M] implementation, developed during some days off.
 
 - **Não fala Inglês? [clique aqui](https://github.com/JN513/Risco-5/blob/main/README_pt.md)**
 
@@ -32,7 +32,7 @@ The `tests` directory includes various tests built using [Iverilog](https://stev
 
 - Baby RISCO 5 - RV16I: Still in speculative phase
 - Pequeno RISCO 5 - RV32I: [https://github.com/JN513/Pequeno-Risco-5/](https://github.com/JN513/Pequeno-Risco-5/)
-- RISCO 5 - RV32I[M]: [https://github.com/JN513/Risco-5](https://github.com/JN513/Risco-5)
+- RISCO 5 - RV32I/E[M]: [https://github.com/JN513/Risco-5](https://github.com/JN513/Risco-5)
 - Grande RISCO 5 - RV32I: [https://github.com/JN513/Grande-Risco-5](https://github.com/JN513/Grande-Risco-5)
 - RISCO 5 Bodybuilder - RV64I: Still in speculative phase
 

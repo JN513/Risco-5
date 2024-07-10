@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Risco-5 is a 32-bit RISC-V core that implements the basic instruction set of the RISC-V RV32I[M]. Risco-5 is a multi-cycle, in-order processor without a pipeline. It was designed to be simple and easy to use, making it useful in various systems.
+Risco-5 is a 32-bit RISC-V core that implements the basic instruction set of the RISC-V RV32I/E[M]. Risco-5 is a multi-cycle, in-order processor without a pipeline. It was designed to be simple and easy to use, making it useful in various systems.
 
 ## Source Files
 

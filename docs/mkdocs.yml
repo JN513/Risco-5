@@ -42,7 +42,12 @@ theme:
         icon: material/brightness-4
         name: Switch to light mode
 plugins:
-  - search
+  #- pdf-export
+  #- offline
+  - search:
+      lang:
+        - en
+        - pt
   - i18n:
       languages:
         - locale: pt

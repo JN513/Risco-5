@@ -2,7 +2,7 @@
 
 ## Introdução
 
-O Risco-5 é um core RISC-V de 32 bits que implementa o conjunto de instruções básicas do RISC-V RV32I[M]. O Risco-5 é um processador multiciclo, com execução em ordem e sem pipeline. Foi projetado para ser simples e de fácil utilização, sendo útil nos mais diversos sistemas.
+O Risco-5 é um core RISC-V de 32 bits que implementa o conjunto de instruções básicas do RISC-V RV32I/E[M]. O Risco-5 é um processador multiciclo, com execução em ordem e sem pipeline. Foi projetado para ser simples e de fácil utilização, sendo útil nos mais diversos sistemas.
 
 ## Arquivos Fonte
 
