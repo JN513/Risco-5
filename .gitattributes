@@ -1,1 +1,6 @@
 *.v linguist-language=verilog
+*.S linguist-language=assembly
+*.s lingujson-language=assembly
+*.sv linguist-language=systemverilog
+*.svh linguist-language=systemverilog
+*.md linguist-language=markdown
