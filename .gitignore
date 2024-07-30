@@ -33,3 +33,4 @@ fpga/xilinx_vc709/webtalk.jou
 *.backup.jou
 rascunho/
 .vscode/settings.json
+fpga/de1soc/c5_pin_model_dump.txt
