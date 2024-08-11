@@ -1,12 +1,17 @@
 module top (
     input wire clk, // 50mhz clock
-    output wire LED
+    input wire [3:0] btn,
+    input wire [9:0] sw,
+    input wire uart_rx,
+    output wire uart_tx,
+    output wire [9:0] led
 );
 
 wire reset_o;
-wire [7:0] led;
 
-assign LED = led[0];
+wire [7:0]leds;
+
+assign led = {leds, 2'b01};
 
 ResetBootSystem #(
     .CYCLES(20)
@@ -25,7 +30,7 @@ Risco_5_SOC #(
 ) SOC(
     .clk(clk),
     .reset(reset_o),
-    .leds(led),
+    .leds(leds),
     .rx(),
     .tx(),
     .gpios()

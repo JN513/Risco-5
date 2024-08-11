@@ -19,7 +19,7 @@ pipeline {
                 sh 'mkdir -p build'
                 sh 'cp Risco-5/software/memory/add.hex Risco-5/software/memory/generic.hex'
                 sh'''
-                    /eda/oss-cad-suite/bin/iverilog -o build/soc_test.o -s soc_tb Risco-5/src/core/*.v Risco-5/src/peripheral/*.v Risco-5/tests/soc_test.v
+                    /eda/oss-cad-suite/bin/iverilog -o build/soc_test.o -s soc_tb -I Risco-5/src/ Risco-5/src/core/*.v Risco-5/src/peripheral/*.v Risco-5/tests/soc_test.v
                     '''
                 sh '/eda/oss-cad-suite/bin/vvp build/soc_test.o'
                 sh 'rm -f Risco-5/software/memory/generic.hex'
