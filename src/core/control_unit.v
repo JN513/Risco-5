@@ -405,12 +405,12 @@ always @(*) begin
         
         MEMREAD: begin
             memory_read <= 1'b1;
-            lorD        <= 2'b10;
+            lorD        <= 2'b01;
         end
 
         MEMWRITE: begin
             memory_write <= 1'b1;
-            lorD         <= 2'b10;
+            lorD         <= 2'b01;
         end
 
         MEMWB: begin

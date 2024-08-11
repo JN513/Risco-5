@@ -19,8 +19,8 @@ ResetBootSystem #(
 Risco_5_SOC #(
     .CLOCK_FREQ(25000000),
     .BIT_RATE(115200),
-    .MEMORY_SIZE(128),
-    .MEMORY_FILE("../../software/memory/fpga_test_2.hex"),
+    .MEMORY_SIZE(4096),
+    .MEMORY_FILE("../../software/memory/teste_led.hex"),
     .GPIO_WIDHT(6),
     .UART_BUFFER_SIZE(16)
 ) SOC(

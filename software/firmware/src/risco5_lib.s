@@ -10,9 +10,9 @@
 .globl delay_ms # Declara a função delay_ms global
 
 _start:
-    li sp, 0x00008000 # Inicializa o ponteiro de pilha (SP) com 0x04000
+    li sp, 0x00004000 # Inicializa o ponteiro de pilha (SP) com 0x04000
     li t0, 0x00000000 # Inicializa t0 com 0 (não utilizado posteriormente)
-    li s0, 0x00004000 # Inicializa o frame pointer (S0/FP) com 0x02000
+    li s0, 0x00002000 # Inicializa o frame pointer (S0/FP) com 0x02000
 
     jal main          # Salta e liga para a função main
     jal exit          # Salta e liga para a função exit

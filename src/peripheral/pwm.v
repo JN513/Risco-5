@@ -17,7 +17,7 @@ always @(posedge clk) begin
         counter <= 0;
 
     end else begin
-        if(counter < period) begin
+        if(counter < period - 1'b1) begin
             counter <= counter + 1'b1;
         end else begin
             counter <= 0;
