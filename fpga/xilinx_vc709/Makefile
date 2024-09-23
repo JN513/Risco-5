@@ -1,12 +1,14 @@
 ifndef VIVADO_PATH
-	VIVADO_PATH=vivado
+	VIVADO=vivado
+else
+	VIVADO=$(VIVADO_PATH)/vivado
 endif
 
 all: ./build/out.bit
 
 ./build/out.bit: buildFolder
 	@echo "Building the Design..."
-	$(VIVADO_PATH)/vivado  -mode batch -nolog -nojournal -source run.tcl
+	$(VIVADO) -mode batch -nolog -nojournal -source run.tcl
 buildFolder:
 	@echo "Creating the build folder..."
 	mkdir -p build
