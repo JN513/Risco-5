@@ -12,7 +12,7 @@ Multi-cycle processor [RISC-V](https://riscv.org/) with RV32I/E[M] implementatio
 
 The official language adopted by the project is Brazilian Portuguese; therefore, most of the documentation and commits are in this language.
 
-## Jenkins CI
+## ProcessorCI
 
 [![Build Status](https://lampiao.ic.unicamp.br/jenkins/buildStatus/icon?job=Risco_5)](https://lampiao.ic.unicamp.br/jenkins/blue/organizations/jenkins/Risco_5/activity)
 
