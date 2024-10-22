@@ -72,31 +72,31 @@ BUS Bus( // verificar as virgulas dependendo dos perifericos selecionados
     .slave_0_read_data(slave_read_data),
     .slave_0_address(slave_address),
     .slave_0_write_data(slave_write_data),
-    .slave_0_response(memory_response),
+    .slave_0_response(memory_response)
 
 `ifdef LED_ENABLE
-
+    ,
     .slave_1_read(slave1_read),
     .slave_1_write(slave1_write),
     .slave_1_read_data(slave1_read_data),
     .slave_1_address(slave1_address),
     .slave_1_write_data(slave1_write_data),
-    .slave_1_response(leds_response),
+    .slave_1_response(leds_response)
 `endif
 
 `ifdef UART_ENABLE
-
+    ,
     .slave_2_read(slave2_read),
     .slave_2_write(slave2_write),
     .slave_2_read_data(slave2_read_data),
     .slave_2_address(slave2_address),
     .slave_2_write_data(slave2_write_data),
-    .slave_2_response(uart_response),
+    .slave_2_response(uart_response)
 
 `endif
 
 `ifdef GPIO_ENABLE
-
+    ,
     .slave_3_read(slave3_read),
     .slave_3_write(slave3_write),
     .slave_3_read_data(slave3_read_data),

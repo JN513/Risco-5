@@ -1,9 +1,14 @@
-#!/usr/bin/zsh
+#!/usr/bin/bash
 
 mkdir -p build
 
-echo "Digite o nome do teste:"
-read nome_do_teste
+# Verifica se um argumento foi passado, caso contrário executa read
+if [ -z "$1" ]; then
+    echo "Digite o nome do teste:"
+    read nome_do_teste
+else
+    nome_do_teste=$1
+fi
 
 riscv32-unknown-elf-as -march=rv32izicsr code/$nome_do_teste.S -o build/$nome_do_teste.o
 riscv32-unknown-elf-ld build/$nome_do_teste.o -o build/$nome_do_teste.elf

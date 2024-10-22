@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/bash
 
 diretorio="code"
 march="rv32imzicsr"
