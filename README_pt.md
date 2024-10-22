@@ -8,9 +8,9 @@ Processador multi-ciclo [RISC-V](https://riscv.org/) com implementação RV32I/E
 
 - **Don't speak portuguese? [click here](https://github.com/JN513/Risco-5/blob/main/README.md)**
 
-## Jenkins CI
+## Processor CI
 
-[![Build Status](https://lampiao.ic.unicamp.br/jenkins/buildStatus/icon?job=Risco_5)](https://lampiao.ic.unicamp.br/jenkins/blue/organizations/jenkins/Risco_5/activity)
+[![Build Status](https://processorci.ic.unicamp.br/jenkins/buildStatus/icon?job=Risco-5)](https://processorci.ic.unicamp.br/jenkins/blue/organizations/jenkins/Risco-5/activity)
 
 ## Implementação
 
