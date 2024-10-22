@@ -8,7 +8,7 @@ buildFolder:
 clean:
 	rm -rf build
 
-flash:
+load:
 	openFPGALoader -b tangnano20k ./impl/pnr/project.fs
 
-run_all: ./impl/pnr/project.fs flash
+run_all: ./impl/pnr/project.fs load

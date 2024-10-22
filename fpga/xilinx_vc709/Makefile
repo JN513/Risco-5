@@ -18,9 +18,9 @@ clean:
 	rm -rf build
 
 # openFPGALoader funciona apenas na versão nightly, a versão estavel atual não suporta a vc709 ainda
-flash:
+load:
 	@echo "Flashing the FPGA..."
 	openFPGALoader -b vc709 ./build/out.bit
 #$(VIVADO_PATH)/vivado  -mode batch -nolog -nojournal -source flash.tcl
 
-run_all: ./build/out.bit flash
+run_all: ./build/out.bit load

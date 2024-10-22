@@ -23,7 +23,7 @@ buildFolder:
 clean:
 	rm -rf build
 
-flash:
+load:
 	openFPGALoader -b tangnano20k ./build/out.fs
 
-run_all: ./build/out.fs flash
+run_all: ./build/out.fs load

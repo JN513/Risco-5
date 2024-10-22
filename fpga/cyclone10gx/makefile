@@ -10,19 +10,22 @@ TOP_FILE = main.v
 all: ./$(OUTPUT_DIR)/$(PROJECT_NAME).sof
 
 ./$(OUTPUT_DIR)/$(PROJECT_NAME).sof: ./$(OUTPUT_DIR)/$(PROJECT_NAME).fit.finalize.rpt
-	quartus_asm $(PROJECT_NAME)
+	$(QUARTUS_PATH)quartus_asm $(PROJECT_NAME)
 
 ./$(OUTPUT_DIR)/$(PROJECT_NAME).fit.finalize.rpt: ./$(OUTPUT_DIR)/$(PROJECT_NAME).syn.rpt
-	quartus_fit $(PROJECT_NAME)
+	$(QUARTUS_PATH)quartus_fit $(PROJECT_NAME)
 
 ./$(OUTPUT_DIR)/$(PROJECT_NAME).syn.rpt: $(PROJECT_NAME).qsf $(TOP_FILE)
-	quartus_syn $(PROJECT_NAME)
+	$(QUARTUS_PATH)quartus_syn $(PROJECT_NAME)
 
-flash:
-	quartus_pgm -a -o "p;$(OUTPUT_DIR)/$(PROJECT_NAME).sof"
+load:
+	$(QUARTUS_PATH)quartus_pgm -a -o "p;$(OUTPUT_DIR)/$(PROJECT_NAME).sof"
 
 #flash:
 #	quartus_pgm -a -o "p;build/blink.sof"
 
+
 clean:
 	rm -rf $(OUTPUT_DIR)
+
+run_all: all load
