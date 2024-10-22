@@ -26,7 +26,7 @@ O diretório `tests` inclui diversos testes construídos utilizando o [Iverilog]
 
 ## Família Risco 5:
 
-- Baby Risco 5 - RV16EC: Ainda em fase especulativa
+- Baby Risco 5 - RV32E: [https://github.com/JN513/Baby-Risco-5](https://github.com/JN513/Baby-Risco-5)
 - Pequeno Risco 5 - RV32I: [https://github.com/JN513/Pequeno-Risco-5/](https://github.com/JN513/Pequeno-Risco-5/)
 - Risco 5 - RV32I/E[M]: [https://github.com/JN513/Risco-5](https://github.com/JN513/Risco-5)
 - Grande Risco 5 - RV32I: [https://github.com/JN513/Grande-Risco-5](https://github.com/JN513/Grande-Risco-5)

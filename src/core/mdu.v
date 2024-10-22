@@ -71,7 +71,7 @@ always @(posedge clk) begin
                 end
             end 
             OPERATE: begin
-                acumulador <= $signed(MDU_in_X)*$signed(MDU_in_Y);
+                acumulador <= $signed(Data_X)*$signed(Data_Y);
                 state_mul <= FINISH;
             end
 

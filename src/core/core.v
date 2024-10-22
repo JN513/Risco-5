@@ -21,31 +21,6 @@ module Core #(
     input wire interruption_request_timer,
     input wire interruption_request_software,
     input wire [15:0] interruption_request_fast
-
-    // RISCV FORMAL
-`ifdef RISCV_FORMAL
-    ,output reg 		      rvfi_valid = 1'b0,
-    output reg [63:0] 	      rvfi_order = 64'd0,
-    output reg [31:0] 	      rvfi_insn = 32'd0,
-    output reg 		      rvfi_trap = 1'b0,
-    output reg 		      rvfi_halt = 1'b0,
-    output reg 		      rvfi_intr = 1'b0,
-    output reg [1:0] 	      rvfi_mode = 2'b11,
-    output reg [1:0] 	      rvfi_ixl = 2'b01,
-    output reg [4:0] 	      rvfi_rs1_addr,
-    output reg [4:0] 	      rvfi_rs2_addr,
-    output reg [31:0] 	      rvfi_rs1_rdata,
-    output reg [31:0] 	      rvfi_rs2_rdata,
-    output reg [4:0] 	      rvfi_rd_addr,
-    output reg [31:0] 	      rvfi_rd_wdata,
-    output reg [31:0] 	      rvfi_pc_rdata,
-    output reg [31:0] 	      rvfi_pc_wdata,
-    output reg [31:0] 	      rvfi_mem_addr,
-    output reg [3:0] 	      rvfi_mem_rmask,
-    output reg [3:0] 	      rvfi_mem_wmask,
-    output reg [31:0] 	      rvfi_mem_rdata,
-    output reg [31:0] 	      rvfi_mem_wdata,
-`endif
 );
 
 wire IRWrite, zero, reg_write, pc_load, and_zero_out,
@@ -183,18 +158,10 @@ MDU Mdu(
 );
 `endif
 
-MUX PCSourceMUX(
-    .option({2'b0, pc_source}),
-    .A(alu_out),
-    .B(alu_out_register),
-    .C(0),
-    .D(0),
-    .E(0),
-    .F(0),
-    .G(0),
-    .H(0),
-    .S(pc_input)
-);
+// PC MUX
+assign pc_input = (pc_output == 1'b1) ? alu_out_register : alu_out;
+and(and_zero_out, zero, pc_write_cond);
+or(pc_load, pc_write, and_zero_out);
 
 Registers RegisterBank(
     .clk(clk),
@@ -208,9 +175,6 @@ Registers RegisterBank(
     .readData2(register_data_2_out),
     .readDataRD(register_data_RD_out)
 );
-
-and(and_zero_out, zero, pc_write_cond);
-or(pc_load, pc_write, and_zero_out);
 
 Control_Unit Control_Unit(
     .clk(clk),
@@ -347,20 +311,4 @@ always @(posedge clk ) begin
     end
 end
     
-`ifdef RISCV_FORMAL
-    assign rvfi_rs1_addr = instruction_register[19:15]
-    assign rvfi_rs2_addr = instruction_register[24:20]
-    assign rvfi_rs1_rdata = register_data_1_out;
-    assign rvfi_rs2_rdata = register_data_2_out;
-    assign rvfi_rd_addr = instruction_register[11:7];
-    assign rvfi_rd_wdata = register_input;
-    assign rvfi_pc_rdata = pc_output;
-    assign rvfi_pc_wdata = pc_input;
-    assign rvfi_mem_addr = address;
-    assign rvfi_mem_rmask = {1'b0, option};
-    assign rvfi_mem_wmask = {1'b0, option};
-    assign rvfi_mem_rdata = read_data;
-    assign rvfi_mem_wdata = write_data;
-`endif
-
 endmodule
