@@ -26,11 +26,12 @@ O diretório `tests` inclui diversos testes construídos utilizando o [Iverilog]
 
 ## Família Risco 5:
 
-- Baby Risco 5 - RV32E: [https://github.com/JN513/Baby-Risco-5](https://github.com/JN513/Baby-Risco-5)
-- Pequeno Risco 5 - RV32I: [https://github.com/JN513/Pequeno-Risco-5/](https://github.com/JN513/Pequeno-Risco-5/)
+- Baby Risco 5 - RV32E Implementação otimizada para o TinyTapeout: [https://github.com/JN513/Baby-Risco-5](https://github.com/JN513/Baby-Risco-5)
+- Pequeno Risco 5 - RV32I Implementação de ciclo único (Arquivada): [https://github.com/JN513/Pequeno-Risco-5/](https://github.com/JN513/Pequeno-Risco-5/)
 - Risco 5 - RV32I/E[M]: [https://github.com/JN513/Risco-5](https://github.com/JN513/Risco-5)
 - Grande Risco 5 - RV32I: [https://github.com/JN513/Grande-Risco-5](https://github.com/JN513/Grande-Risco-5)
 - Risco 5 Bodybuilder - RV64IMA: Ainda em fase especulativa
+- RISCO 5S - RV32IM Simulador escrito com a linguagem C: [https://github.com/JN513/Risco-5S](https://github.com/JN513/Risco-5S)
 
 ## Dúvidas e Sugestões
 
