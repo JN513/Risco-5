@@ -31,7 +31,7 @@ The `tests` directory includes various tests built using [Iverilog](https://stev
 ## RISCO 5 Family:
 
 - Baby RISCO 5 - RV32E optimized to TinyTapeout: [https://github.com/JN513/Baby-Risco-5](https://github.com/JN513/Baby-Risco-5)
-- Pequeno RISCO 5 - RV32I single cicly implementation (ARCHIVED): [https://github.com/JN513/Pequeno-Risco-5/](https://github.com/JN513/Pequeno-Risco-5/)
+- Pequeno RISCO 5 - RV32I single cycle implementation (ARCHIVED): [https://github.com/JN513/Pequeno-Risco-5/](https://github.com/JN513/Pequeno-Risco-5/)
 - RISCO 5 - RV32I/E[M]: [https://github.com/JN513/Risco-5](https://github.com/JN513/Risco-5)
 - Grande RISCO 5 - RV32I Implementation with pipeline: [https://github.com/JN513/Grande-Risco-5](https://github.com/JN513/Grande-Risco-5)
 - RISCO 5 Bodybuilder - RV64I: Still in speculative phase
